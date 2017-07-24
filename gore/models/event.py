@@ -2,6 +2,33 @@ import json
 
 from django.db import models
 from django.utils import timezone
+from django.utils.encoding import force_text
+from django.utils.timezone import now
+
+
+def determine_type(body):
+    type = 'unknown'
+    if 'exception' in body:
+        type = 'exception'
+    if 'sentry.interfaces.Message' in body:
+        type = 'message'  # May be overridden by loggeriness
+    if 'logger' in body:
+        type = 'log'
+    return type
+
+
+class EventManager(models.Manager):
+    def create_from_raven(self, project_id, body, timestamp=None):
+        return self.create(
+            data=json.dumps(body),
+            event_id=body['event_id'],
+            message=force_text(body.get('message', ''))[:128],
+            culprit=force_text(body.get('culprit', ''))[:128],
+            level=body.get('level', ''),
+            project_id=project_id,
+            timestamp=(timestamp or now()),
+            type=determine_type(body),
+        )
 
 
 class Event(models.Model):
@@ -14,6 +41,8 @@ class Event(models.Model):
     date_added = models.DateTimeField(default=timezone.now, editable=False)
     timestamp = models.DateTimeField(db_index=True, editable=False)
     data = models.TextField(blank=True, editable=False)
+
+    objects = EventManager()
 
     def __str__(self):
         return self.name
