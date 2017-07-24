@@ -1,0 +1,30 @@
+.EventsList-view {
+  padding: @pad;
+}
+
+.event-row {
+  border: 1px solid @gray-2;
+  border-left-width: 8px;
+  border-radius: 4px;
+  margin-bottom: @pad;
+  padding: @pad;
+  .timestamp, .project {
+    color: @gray-1;
+    float: right;
+    padding-left: @pad;
+  }
+  .message {
+    color: @tea-0;
+    display: block;
+  }
+
+  &.event-exception {
+    border-color: @exception-color;
+  }
+  &.event-log-40, &.event-log-50 {
+    border-color: @warning-color;
+  }
+  &.event-log-30 {
+    border-color: @info-color;
+  }
+}

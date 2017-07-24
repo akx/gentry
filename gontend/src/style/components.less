@@ -1,0 +1,29 @@
+.taboo-tab-bar {
+  display: flex;
+  border-bottom: 1px solid @tea-2;
+  a {
+    flex: 1;
+    padding: @pad;
+    color: @tea-0;
+    text-decoration: none;
+
+    &:hover {
+      background: @pale-2;
+    }
+
+    &.taboo-tab-active {
+      background: @pale-1;
+      color: #000;
+    }
+
+  }
+}
+
+.object-table {
+  width: 100%;
+  margin-bottom: @pad;
+  border-collapse: collapse;
+  th, td {
+    border-bottom: 1px solid @tea-2;
+  }
+}
