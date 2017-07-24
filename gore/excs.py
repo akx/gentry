@@ -1,0 +1,2 @@
+class InvalidAuth(Exception):
+    pass

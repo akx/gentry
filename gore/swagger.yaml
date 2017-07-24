@@ -1,0 +1,26 @@
+swagger: "2.0"
+info:
+  version: "0.0.0"
+  title: "Gentry Core API"
+  description: ""
+host: "gentry.example"
+basePath: "/api"
+schemes:
+- "http"
+consumes:
+- "application/json"
+- "application/octet-stream"
+produces:
+- "application/json"
+paths:
+  "/{project}/store/":
+    parameters:
+    - name: project
+      in: path
+      type: string
+      required: true
+    post:
+      operationId: "storeEvent"
+      responses:
+        201:
+          description: "the event was stored"
