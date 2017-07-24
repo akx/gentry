@@ -24,3 +24,17 @@ paths:
       responses:
         201:
           description: "the event was stored"
+  "/projects/":
+    get:
+      operationId: "getProjectList"
+  "/events/":
+    get:
+      operationId: "getEventList"
+  "/event/{id}/":
+    parameters:
+    - name: id
+      in: path
+      type: string
+      required: true
+    get:
+      operationId: "getEventDetail"
