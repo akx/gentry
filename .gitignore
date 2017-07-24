@@ -1,5 +1,8 @@
 *.py[cod]
 *.sqlite3
+.cache
+.coverage
 .idea
+htmlcov
 node_modules
 yarn.lock
