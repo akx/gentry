@@ -5,9 +5,7 @@ from raven.transport import Transport
 
 
 class MockTransport(Transport):
-    def __init__(self, django_client, response_list=None):
-        if response_list is None:
-            response_list = []
+    def __init__(self, django_client, response_list):
         self.django_client = django_client
         self.response_list = response_list
 

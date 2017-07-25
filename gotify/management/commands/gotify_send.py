@@ -24,5 +24,5 @@ class Command(BaseCommand):
             for notifier in notifiers_per_project_id[event.project_id]:
                 try:
                     notifier.send(event=event)
-                except Exception as exc:
+                except Exception as exc:  # pragma: no cover
                     self.stderr.write('%s failed for %s: %s' % (notifier, event, exc))

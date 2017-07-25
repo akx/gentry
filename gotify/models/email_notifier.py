@@ -21,7 +21,7 @@ class EmailNotifier(Notifier):
     def do_send(self, event):
         recipient_list = self.recipient_list
         if not recipient_list:
-            raise ValueError('no valid recipients')
+            raise ValueError('no valid recipients')  # pragma: no cover
         subject = '[%s] - %s - %s' % (event.project.name, event.timestamp, event.message)
         message = json.dumps(event.data_dict, indent=2, sort_keys=True)  # yolo :)
         return send_mail(
