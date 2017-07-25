@@ -15,7 +15,7 @@ from gotify.models import SlackNotifier
 from gotify.models.email_notifier import EmailNotifier
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db  # noqa: F811
 def test_email_notifier(project, settings):
     settings.GOTIFY_IMMEDIATE = False
     en = EmailNotifier.objects.create(emails='test@example.com')
@@ -27,7 +27,7 @@ def test_email_notifier(project, settings):
     assert event.project.name in message.subject
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db  # noqa: F811
 def test_slack_notifier(project, settings):
     settings.GOTIFY_IMMEDIATE = False
     sn = SlackNotifier.objects.create(
@@ -48,10 +48,10 @@ def test_slack_notifier(project, settings):
     assert sn.message_header_suffix in payload['text']
 
 
-@pytest.mark.django_db
+@pytest.mark.django_db  # noqa: F811
 def test_immediate_notify(raven_with_project, settings):
     settings.GOTIFY_IMMEDIATE = True
-    project = raven_with_project.project
+    project = raven_with_project.project  # noqa: F811
     en = EmailNotifier.objects.create(emails='test@example.com')
     en.projects.add(project)
     raven_with_project.captureMessage('hello world')

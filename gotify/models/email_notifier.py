@@ -11,12 +11,12 @@ class EmailNotifier(Notifier):
 
     @property
     def recipient_list(self):
-        return set(
+        return set([
             address
-                for address
-                in (line.strip() for line in self.emails.splitlines())
-                if address and '@' in address
-        )
+            for address
+            in (line.strip() for line in self.emails.splitlines())
+            if address and '@' in address
+        ])
 
     def do_send(self, event):
         recipient_list = self.recipient_list

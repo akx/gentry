@@ -1,3 +1,4 @@
+# flake8: noqa
 log_payload = """
 {"level": 30, "logger": "zTNXk5vQCfK4", "tags": {}, "extra": {"sys.argv": ["'/virtualenv/bin/py.test'", "'gore'", "'-vvv'", "'--cov'", "'.'", "'--cov-report'", "'html'"], "pathname": "'/code/gore/tests/test_send.py'", "filename": "'test_send.py'", "stack_info": null, "lineno": 44, "thread": 140737291113408, "threadName": "'MainThread'", "processName": "'MainProcess'", "process": 38289}, "sentry.interfaces.Message": {"message": "Oh no!", "params": [], "formatted": "Oh no!"}, "message": "Oh no!", "server_name": "Gaea.local", "modules": {"python": "3.6.0"}, "project": "1", "timestamp": "2017-07-24T16:33:57Z", "time_spent": null, "event_id": "d51329934dba43408bea8e1e20c54c9c", "platform": "python", "sdk": {"name": "raven-python", "version": "6.1.0"}, "repos": {}, "breadcrumbs": {"values": [{"type": "default", "timestamp": 1500914037.6322172, "level": "warning", "message": "Oh no!", "category": "zTNXk5vQCfK4", "data": {}}]}}
 """.strip()
