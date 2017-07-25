@@ -1,5 +1,5 @@
-import json
-
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 from django.http import JsonResponse
 from marshmallow import Schema, fields
 
@@ -27,11 +27,24 @@ class EventDetailSchema(Schema):
         return instance.data_dict
 
 
-def get_event_list(request):
+def get_event_list(request, limit=10, offset=0, project=None, search=None, type=None):
     if not request.user.is_authenticated():
         return JsonResponse({'error': 'not authenticated'}, status=401)
     qs = Event.objects.all().defer('data').order_by('-id')
-    return list(EventSchema().dump(qs, many=True).data)
+    if project:
+        qs = qs.filter(project_id=project)
+    if type:
+        qs = qs.filter(type=type)
+    if search:
+        qs = qs.filter(Q(message__icontains=search) | Q(culprit__icontains=search))
+    total = qs.count()
+    qs = qs[offset:offset + limit]
+    return {
+        'total': total,
+        'offset': offset,
+        'limit': limit,
+        'events': list(EventSchema().dump(qs, many=True).data),
+    }
 
 
 def get_event_detail(request, id):
