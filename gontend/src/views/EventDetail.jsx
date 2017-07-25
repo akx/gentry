@@ -120,16 +120,14 @@ const EventExceptionInfo = ({event, exceptionData}) => (<div>
 </div>);
 
 
-const EventRequestInfo = ({event, requestData}) => {
-  return (
-    <div>
-      <h2>{requestData.method} <a href={requestData.url}>{requestData.url}</a></h2>
-      <ObjectTable className="request-cookies" obj={requestData.cookies || {}} title={<h3>Cookies</h3>} />
-      <ObjectTable className="request-headers" obj={requestData.headers || {}} title={<h3>Headers</h3>} />
-      <ObjectTable className="request-env" obj={requestData.env || {}} title={<h3>Env</h3>} />
-    </div>
-  );
-};
+const EventRequestInfo = ({event, requestData}) => (
+  <div>
+    <h2>{requestData.method} <a href={requestData.url}>{requestData.url}</a></h2>
+    <ObjectTable className="request-cookies" obj={requestData.cookies || {}} title={<h3>Cookies</h3>} />
+    <ObjectTable className="request-headers" obj={requestData.headers || {}} title={<h3>Headers</h3>} />
+    <ObjectTable className="request-env" obj={requestData.env || {}} title={<h3>Env</h3>} />
+  </div>
+);
 
 
 export default class EventDetail extends React.Component {
@@ -156,9 +154,12 @@ export default class EventDetail extends React.Component {
       return <div>Loading...</div>;
     }
     const {project, data} = event;
+    const eventClassSpec = `event-${event.type} event-${event.level} event-${event.type}-${event.level}`;
     return (
-      <div className={`EventDetail-view event-${event.type} event-${event.level} event-${event.type}-${event.level}`}>
-        <h1>{project ? project.name : event.project_id} / Event {event.id} &ndash; {event.message}</h1>
+      <div className={`EventDetail-view ${eventClassSpec}`}>
+        <nav className={`top ${eventClassSpec}`}>
+          <h1>{project ? project.name : event.project_id} / Event {event.id} &ndash; {event.message}</h1>
+        </nav>
         <div className="EventDetail-inner">
           <Tabs
             tabs={[

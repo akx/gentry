@@ -1,4 +1,4 @@
-.EventsList-view {
+.EventsList-view .content {
   padding: @pad;
 }
 
@@ -9,7 +9,7 @@
   margin-bottom: @pad;
   padding: @pad;
   .timestamp, .project {
-    color: @gray-1;
+    color: fade(black, 40%);
     float: right;
     padding-left: @pad;
   }
@@ -20,11 +20,14 @@
 
   &.event-exception {
     border-color: @exception-color;
+    background: fade(@exception-color, 20%);
   }
   &.event-log-40, &.event-log-50 {
     border-color: @warning-color;
+    background: fade(@warning-color, 20%);
   }
   &.event-log-30 {
     border-color: @info-color;
+    background: fade(@info-color, 20%);
   }
 }

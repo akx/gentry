@@ -188,8 +188,8 @@ class EventsList extends React.Component {
     }
     return (
       <div className="EventsList-view">
-        <div className="flex flex-sb" style={{marginBottom: '1em'}}>
-          <h1 style={{margin: 0}}>
+        <nav className="top flex flex-sb">
+          <h1>
             Events
             {this.state.total > 0 ? ` (${this.state.total})` : ''}
           </h1>
@@ -207,8 +207,8 @@ class EventsList extends React.Component {
             handleChangeTypeFilter={this.handleChangeTypeFilter}
             handleChangeSearch={this.handleChangeSearch}
           />
-        </div>
-        {eventsCtr}
+        </nav>
+        <div className="content">{eventsCtr}</div>
       </div>
     );
   }
