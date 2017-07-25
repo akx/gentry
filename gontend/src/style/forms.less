@@ -1,0 +1,29 @@
+.form-el() {
+  padding: 0.4em 0.6em;
+  display: inline-block;
+  border: 1px solid @gray-1;
+  border-radius: 2px;
+  vertical-align: middle;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+input[type=search], select {
+  .form-el();
+  box-shadow: inset 0 1px 3px #ddd;
+}
+
+select, button {
+  height: 2.15em;
+}
+
+button {
+  .form-el();
+  box-shadow: inset 0 -2px 3px #ddd;
+  border-radius: 4px;
+}
+
+button:disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
