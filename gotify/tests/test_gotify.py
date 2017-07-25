@@ -8,7 +8,8 @@ from django.utils.encoding import force_text
 
 from gore.models import Event
 # noinspection PyUnresolvedReferences
-from gore.tests.conftest import project  # noqa
+from gore.signals import event_received
+from gore.tests.conftest import project, raven_with_project  # noqa
 from gore.tests.data import exc_payload
 from gotify.models import SlackNotifier
 from gotify.models.email_notifier import EmailNotifier
@@ -16,7 +17,8 @@ from django.core import mail
 
 
 @pytest.mark.django_db
-def test_email_notifier(project):
+def test_email_notifier(project, settings):
+    settings.GOTIFY_IMMEDIATE = False
     en = EmailNotifier.objects.create(emails='test@example.com')
     en.projects.add(project)
     event = Event.objects.create_from_raven(project_id=project.id, body=json.loads(exc_payload))
@@ -27,7 +29,8 @@ def test_email_notifier(project):
 
 
 @pytest.mark.django_db
-def test_slack_notifier(project):
+def test_slack_notifier(project, settings):
+    settings.GOTIFY_IMMEDIATE = False
     sn = SlackNotifier.objects.create(
         webhook_url='http://example.com',
         message_header_suffix=get_random_string(),
@@ -44,3 +47,13 @@ def test_slack_notifier(project):
     assert event.message in payload['text']
     assert event.project.name in payload['text']
     assert sn.message_header_suffix in payload['text']
+
+
+@pytest.mark.django_db
+def test_immediate_notify(raven_with_project, settings):
+    settings.GOTIFY_IMMEDIATE = True
+    project = raven_with_project.project
+    en = EmailNotifier.objects.create(emails='test@example.com')
+    en.projects.add(project)
+    raven_with_project.captureMessage('hello world')
+    assert len(mail.outbox) == 1

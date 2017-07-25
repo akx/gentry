@@ -17,6 +17,7 @@ WSGI_APPLICATION = 'gentry.wsgi.application'
 ROOT_URLCONF = 'gentry.urls'
 LOGIN_URL = '/admin/login/'
 URL_BASE = env.str('URL_BASE', default=('http://localhost:8000' if DEBUG else None))
+GOTIFY_IMMEDIATE = env.bool('GOTIFY_IMMEDIATE', default=False)
 
 INSTALLED_APPS = [
     'gentry',
