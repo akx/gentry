@@ -27,6 +27,9 @@ paths:
   "/projects/":
     get:
       operationId: "getProjectList"
+  "/event-types/":
+    get:
+      operationId: "getEventTypeList"
   "/events/":
     get:
       operationId: "getEventList"

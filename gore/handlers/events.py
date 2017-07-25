@@ -40,3 +40,7 @@ def get_event_detail(request, id):
     event = Event.objects.get(pk=id)
     data = EventDetailSchema().dump(event).data
     return data
+
+
+def get_event_type_list(request):
+    return ['unknown', 'exception', 'message', 'log']
