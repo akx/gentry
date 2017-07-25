@@ -2,9 +2,13 @@ import os
 
 from environ import Env
 
+BASE_DIR = os.path.realpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+envfile = os.path.join(BASE_DIR, '.env')
 env = Env()
+if os.path.isfile(envfile):
+    env.read_env(envfile)
+
 DEBUG = env.bool('DEBUG', default=False)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SECRET_KEY = env.str('SECRET_KEY', default=('x' if DEBUG else Env.NOTSET))
 ALLOWED_HOSTS = ['*']
 
