@@ -1,5 +1,6 @@
-from gotify.models import Notifier
 from logging import getLogger
+
+from gotify.models import Notifier
 
 logger = getLogger(__name__)
 

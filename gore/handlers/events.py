@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import JsonResponse
-from marshmallow import Schema, fields
+from marshmallow import fields, Schema
 
 from gore.models import Event
 

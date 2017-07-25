@@ -1,6 +1,6 @@
 from django.apps import AppConfig
-from django.db.models.signals import post_save
 from django.conf import settings
+from django.db.models.signals import post_save
 
 
 def maybe_send_notifications(instance, created, **kwargs):

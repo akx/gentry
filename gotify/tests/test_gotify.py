@@ -2,18 +2,17 @@ import json
 
 import pytest
 import requests_mock
+from django.core import mail
 from django.core.management import call_command
 from django.utils.crypto import get_random_string
 from django.utils.encoding import force_text
 
 from gore.models import Event
 # noinspection PyUnresolvedReferences
-from gore.signals import event_received
 from gore.tests.conftest import project, raven_with_project  # noqa
 from gore.tests.data import exc_payload
 from gotify.models import SlackNotifier
 from gotify.models.email_notifier import EmailNotifier
-from django.core import mail
 
 
 @pytest.mark.django_db

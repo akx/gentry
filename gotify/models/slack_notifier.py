@@ -41,4 +41,3 @@ class SlackNotifier(Notifier):
             json={key: value for (key, value) in payload.items() if key and value}
         )
         resp.raise_for_status()
-

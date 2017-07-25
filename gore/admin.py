@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from gore.models import Project, Key
+from gore.models import Key, Project
 
 
 class KeyInline(admin.TabularInline):

@@ -1,9 +1,8 @@
-import raven
 import logging
-from raven.handlers.logging import SentryHandler
+
+import raven
 from raven.conf import setup_logging
-
-
+from raven.handlers.logging import SentryHandler
 
 
 def a():

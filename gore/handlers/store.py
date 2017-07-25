@@ -1,8 +1,8 @@
 import json
+import logging
 import zlib
 from datetime import datetime
 
-import logging
 from django.conf import settings
 from django.db import transaction
 from django.http import JsonResponse
