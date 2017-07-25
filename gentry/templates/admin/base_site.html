@@ -1,0 +1,18 @@
+{% extends "admin/base.html" %}
+{% block title %}{{ title }} | Gentry Admin{% endblock %}
+{% block branding %}
+    <h1 id="site-name"><a href="{% url 'admin:index' %}">Gentry Admin</a></h1>
+{% endblock %}
+{% block nav-global %}{% endblock %}
+{% block extrastyle %}
+    <style>
+        #header, .module h2, .module caption, .inline-group h2 {
+            background: #3e4a21;
+        }
+
+        div.breadcrumbs {
+            background: #363636;
+            border-bottom: 2px solid #95AB63;
+        }
+    </style>
+{% endblock %}

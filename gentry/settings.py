@@ -1,5 +1,6 @@
 import os
 from environ import Env
+
 env = Env()
 DEBUG = env.bool('DEBUG', default=False)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -17,6 +18,7 @@ ROOT_URLCONF = 'gentry.urls'
 LOGIN_URL = '/admin/login/'
 
 INSTALLED_APPS = [
+    'gentry',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
