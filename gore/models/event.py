@@ -45,7 +45,7 @@ class Event(models.Model):
     objects = EventManager()
 
     def __str__(self):
-        return self.name
+        return '[%s] - %s' % (self.project, self.message)
 
     @property
     def data_dict(self):
