@@ -23,13 +23,17 @@
     "webpack-dev-server": "^2.6.1"
   },
   "dependencies": {
+    "immutability-helper": "^2.3.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
     "normalize.css": "^7.0.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-redux": "^5.0.5",
     "react-router": "^4.1.2",
-    "react-router-dom": "^4.1.2"
+    "react-router-dom": "^4.1.2",
+    "redux": "^3.7.2",
+    "redux-localstorage": "^0.4.1"
   },
   "scripts": {
     "dev": "webpack --watch",

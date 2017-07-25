@@ -6,6 +6,10 @@ import moment from 'moment';
 import sortBy from 'lodash/sortBy';
 import debounce from 'lodash/debounce';
 import range from 'lodash/range';
+import isEqual from 'lodash/isEqual';
+import {connect} from 'react-redux';
+
+import {updateSearchParams} from '../actions';
 
 export const EventRow = ({event, project}) => (
   <div className={`event-row event-${event.type} event-${event.level} event-${event.type}-${event.level}`}>
@@ -83,8 +87,7 @@ const FilterBar = ({
   </div>
 );
 
-
-export default class EventsList extends React.Component {
+class EventsList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -93,11 +96,6 @@ export default class EventsList extends React.Component {
       projects: new Map(),
       eventTypes: [],
       total: null,
-      // Search parameters:
-      search: '',
-      type: null,
-      limit: 30,
-      offset: 0,
     };
     this.handleChangeProjectFilter = this.handleChangeProjectFilter.bind(this);
     this.handleChangeTypeFilter = this.handleChangeTypeFilter.bind(this);
@@ -128,10 +126,19 @@ export default class EventsList extends React.Component {
     clearInterval(this.refreshInterval);
   }
 
+  componentDidUpdate(prevProps) {
+    if (!isEqual(this.props.searchParams, prevProps.searchParams)) {
+      // Search parameters were updated, so a search is required
+      this.searchEvents();
+    }
+  }
+
   searchEvents() {
     const params = new URLSearchParams();
-    ['offset', 'limit', 'search', 'type', 'project'].forEach((key) => {
-      const value = this.state[key];
+    const {searchParams} = this.props;
+
+    Object.keys(searchParams).forEach((key) => {
+      const value = searchParams[key];
       if (value !== null && value !== '' && value !== undefined) {
         params.append(key, value);
       }
@@ -143,30 +150,32 @@ export default class EventsList extends React.Component {
       .then(r => r.json())
       .then(({events, total, offset, limit}) => {
         this.setState({total, events, offset, limit});
+        this.props.dispatch(updateSearchParams({offset, limit}));
       });
   }
 
   handleChangeProjectFilter(event) {
-    const projectId = event.target.value;
-    this.setState({project: projectId}, () => this.searchEvents());
+    const project = event.target.value;
+    this.props.dispatch(updateSearchParams({project}));
   }
 
   handleChangeTypeFilter(event) {
     const type = event.target.value;
-    this.setState({type}, () => this.searchEvents());
+    this.props.dispatch(updateSearchParams({type}));
   }
 
   handleChangeOffset(offset) {
-    this.setState({offset}, () => this.searchEvents());
+    this.props.dispatch(updateSearchParams({offset}));
   }
 
   handleChangeSearch(event) {
     const search = event.target.value;
-    this.setState({search}, () => this.debouncedSearchEvents());
+    this.props.dispatch(updateSearchParams({search}));
   }
 
   render() {
     const {events, projects} = this.state;
+    const {searchParams} = this.props;
     let eventsCtr = null;
     if (events === null) {
       eventsCtr = <div>Loading, hold on...</div>;
@@ -185,13 +194,13 @@ export default class EventsList extends React.Component {
             {this.state.total > 0 ? ` (${this.state.total})` : ''}
           </h1>
           <FilterBar
-            project={this.state.project}
+            project={searchParams.project}
+            search={searchParams.search}
+            offset={searchParams.offset}
+            limit={searchParams.limit}
+            eventType={searchParams.type}
             projects={this.state.projects}
             eventTypes={this.state.eventTypes}
-            eventType={this.state.type}
-            search={this.state.search}
-            offset={this.state.offset}
-            limit={this.state.limit}
             total={this.state.total}
             handleChangeOffset={this.handleChangeOffset}
             handleChangeProjectFilter={this.handleChangeProjectFilter}
@@ -204,3 +213,10 @@ export default class EventsList extends React.Component {
     );
   }
 }
+
+export default connect(
+  ({searchParams}) => ({searchParams}),
+  null,
+  null,
+  {pure: false},
+)(EventsList);
