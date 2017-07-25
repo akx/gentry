@@ -1,4 +1,7 @@
 django
 django-environ
+django-polymorphic
 lepo
+python-dateutil
 PyYAML
+requests
