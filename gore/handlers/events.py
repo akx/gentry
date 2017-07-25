@@ -50,7 +50,10 @@ def get_event_list(request, limit=10, offset=0, project=None, search=None, type=
 def get_event_detail(request, id):
     if not request.user.is_authenticated():
         return JsonResponse({'error': 'not authenticated'}, status=401)
-    event = Event.objects.get(pk=id)
+    try:
+        event = Event.objects.get(pk=id)
+    except ObjectDoesNotExist:  # pragma: no cover
+        return JsonResponse({'error': 'no such event'}, status=404)
     data = EventDetailSchema().dump(event).data
     return data
 

@@ -62,3 +62,8 @@ paths:
       required: true
     get:
       operationId: "getEventDetail"
+      responses:
+        200:
+          description: "event object"
+        404:
+          description: "event not found"
