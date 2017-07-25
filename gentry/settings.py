@@ -16,6 +16,7 @@ STATIC_URL = '/static/'
 WSGI_APPLICATION = 'gentry.wsgi.application'
 ROOT_URLCONF = 'gentry.urls'
 LOGIN_URL = '/admin/login/'
+URL_BASE = env.str('URL_BASE', default=('http://localhost:8000' if DEBUG else None))
 
 INSTALLED_APPS = [
     'gentry',
@@ -37,6 +38,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'gentry.middleware.url_root_middleware',
 ]
 
 TEMPLATES = [
