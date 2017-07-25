@@ -15,8 +15,9 @@ def test_events_api(project, admin_client):
         in range(10)
     ]
     list_resp = json.loads(force_text(admin_client.get('/api/events/').content))
-    assert len(list_resp) == len(events)
-    assert list_resp[0]['id'] == events[-1].id
+    event_list = list_resp['events']
+    assert len(event_list) == len(events)
+    assert event_list[0]['id'] == events[-1].id
 
     for event in events:
         detail_resp = json.loads(force_text(admin_client.get('/api/event/{id}/'.format(id=event.id)).content))
