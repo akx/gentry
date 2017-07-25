@@ -1,0 +1,13 @@
+sudo: false
+language: python
+python: "3.5"
+install:
+  - pip install -r requirements.txt
+  - pip install -r requirements-dev.txt
+env:
+  DEBUG: true
+script:
+  - flake8
+  - py.test -vvv --cov .
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
