@@ -5,6 +5,8 @@ from django.utils import timezone
 from django.utils.encoding import force_text
 from django.utils.timezone import now
 
+from gentry.utils import make_absolute_uri
+
 
 def determine_type(body):
     type = 'unknown'
@@ -50,3 +52,6 @@ class Event(models.Model):
     @property
     def data_dict(self):
         return json.loads(self.data)
+
+    def get_display_url(self):
+        return make_absolute_uri('/#/event/{id}'.format(id=self.id))
