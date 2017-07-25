@@ -32,6 +32,7 @@
     "react-router-dom": "^4.1.2"
   },
   "scripts": {
-    "dev": "webpack --watch"
+    "dev": "webpack --watch",
+    "build": "webpack --progress -p"
   }
 }

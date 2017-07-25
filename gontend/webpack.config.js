@@ -1,3 +1,5 @@
+const webpack = require('webpack');
+
 module.exports = env => ({
   entry: `${__dirname}/src/index.jsx`,
   output: {
@@ -32,4 +34,7 @@ module.exports = env => ({
   resolve: {
     extensions: ['.js', '.jsx'],
   },
+  plugins: [
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
+  ],
 });
