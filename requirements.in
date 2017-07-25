@@ -5,3 +5,4 @@ lepo
 python-dateutil
 PyYAML
 requests
+whitenoise
