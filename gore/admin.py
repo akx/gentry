@@ -11,6 +11,7 @@ class KeyInline(admin.TabularInline):
 class ProjectAdmin(admin.ModelAdmin):
     inlines = [KeyInline]
     prepopulated_fields = {'slug': ('name',)}
+    list_display = ('name', 'slug', 'dsn')
 
 
 admin.site.register(Project, ProjectAdmin)

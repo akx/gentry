@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils import timezone
 
+from gentry.utils import make_absolute_uri
+
 
 class Project(models.Model):
     slug = models.SlugField()
@@ -9,3 +11,10 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def dsn(self):
+        key = self.key_set.first()
+        if not key:
+            return None
+        return make_absolute_uri('/%s' % self.id).replace('://', '://%s:%s@' % (key.key, key.secret))
