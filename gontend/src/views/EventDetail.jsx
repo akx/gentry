@@ -81,12 +81,12 @@ const ObjectTable = ({obj, className = '', title = null}) => {
   );
 };
 
-const ExceptionStacktrace = ({exc, stacktrace}) => {
+const Stacktrace = ({stacktrace}) => {
   if (!stacktrace) return null;
   const frames = (stacktrace.frames || []);
   if (!frames.length) return null;
   return (<div>
-    <h3>Stacktrace</h3>
+    <h2>Stacktrace</h2>
     <table className="stacktrace-table">
       <tbody>
         {frames.map((frame, frameIndex) => (
@@ -107,20 +107,20 @@ const ExceptionStacktrace = ({exc, stacktrace}) => {
   </div>);
 };
 
-const EventSingleExceptionInfo = ({event, exc}) => (
+const EventSingleExceptionInfo = ({exc}) => (
   <div>
     <h2>{exc.type}: {exc.value}</h2>
-    <ExceptionStacktrace exc={exc} stacktrace={exc.stacktrace} />
+    <Stacktrace stacktrace={exc.stacktrace} />
     <hr />
   </div>
 );
 
-const EventExceptionInfo = ({event, exceptionData}) => (<div>
-  {exceptionData.values.map((exc, i) => <EventSingleExceptionInfo event={event} exc={exc} key={i} />)}
+const EventExceptionInfo = ({exceptionData}) => (<div>
+  {exceptionData.values.map((exc, i) => <EventSingleExceptionInfo exc={exc} key={i} />)}
 </div>);
 
 
-const EventRequestInfo = ({event, requestData}) => (
+const EventRequestInfo = ({requestData}) => (
   <div>
     <h2>{requestData.method} <a href={requestData.url}>{requestData.url}</a></h2>
     <ObjectTable className="request-cookies" obj={requestData.cookies || {}} title={<h3>Cookies</h3>} />
@@ -165,6 +165,7 @@ export default class EventDetail extends React.Component {
             tabs={[
               {id: 'general', title: 'General'},
               {id: 'exception', title: 'Exception', visible: !!data.exception},
+              {id: 'stacktrace', title: 'Stacktrace', visible: !!data.stacktrace},
               {id: 'request', title: 'Request', visible: !!data.request},
               {id: 'raw', title: 'Raw Data'},
             ]}
@@ -175,10 +176,13 @@ export default class EventDetail extends React.Component {
               <EventTags event={event} />
             </div>
             <div id="exception">
-              {data.exception ? <EventExceptionInfo event={event} exceptionData={data.exception} /> : null}
+              {data.exception ? <EventExceptionInfo exceptionData={data.exception} /> : null}
+            </div>
+            <div id="stacktrace">
+              {data.stacktrace ? <Stacktrace stacktrace={data.stacktrace} /> : null}
             </div>
             <div id="request">
-              {data.request ? <EventRequestInfo event={event} requestData={data.request} /> : null }
+              {data.request ? <EventRequestInfo requestData={data.request} /> : null }
             </div>
             <div id="raw">
               <div style={{maxWidth: '90vw', maxHeight: '80vh', overflow: 'auto'}}>
