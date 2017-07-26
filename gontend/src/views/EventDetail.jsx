@@ -5,6 +5,7 @@ import moment from 'moment';
 import get from 'lodash/get';
 import map from 'lodash/map';
 import isString from 'lodash/isString';
+import isArray from 'lodash/isArray';
 import {Tabs} from '../components/Taboo';
 
 
@@ -130,6 +131,31 @@ const EventRequestInfo = ({requestData}) => (
 );
 
 
+const Crumb = ({crumb}) => (
+  <tr>
+    <td>{crumb.type}</td>
+    <td>{crumb.level}</td>
+    <td>{crumb.category}</td>
+    <td>{moment.unix(crumb.timestamp).format('HH:mm:ss')}</td>
+    <td>{crumb.message}</td>
+  </tr>
+);
+
+const Breadcrumbs = ({breadcrumbs}) => {
+  const crumbs = get(breadcrumbs, 'values');
+  if (!isArray(crumbs)) return null;
+  return (
+    <div>
+      <h2>Breadcrumbs</h2>
+      <table className="breadcrumb-table">
+        <tbody>
+          {crumbs.map((crumb, i) => <Crumb key={i} crumb={crumb} />)}
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 export default class EventDetail extends React.Component {
   constructor(props) {
     super(props);
@@ -171,9 +197,17 @@ export default class EventDetail extends React.Component {
             ]}
           >
             <div id="general">
-              <EventBits event={event} />
-              <h2>Tags</h2>
-              <EventTags event={event} />
+              <div className="flex">
+                <div>
+                  <h2>General</h2>
+                  <EventBits event={event} />
+                  <br />
+                  <EventTags event={event} />
+                </div>
+                <div className="fi1 ml">
+                  <Breadcrumbs breadcrumbs={data.breadcrumbs} />
+                </div>
+              </div>
             </div>
             <div id="exception">
               {data.exception ? <EventExceptionInfo exceptionData={data.exception} /> : null}
