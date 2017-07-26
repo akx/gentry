@@ -1,3 +1,4 @@
+import base64
 import json
 import logging
 import zlib
@@ -27,6 +28,10 @@ def store_event(request, project):
     body = request.body
     if request.META.get('HTTP_CONTENT_ENCODING') == 'deflate':
         body = zlib.decompress(body)
+
+    elif auth_header.get('sentry_version') == '5':  # Support older versions of Raven
+        body = zlib.decompress(base64.b64decode(body)).decode('utf8')
+
     body = json.loads(force_text(body))
     timestamp = make_aware(datetime.fromtimestamp(float(auth_header['sentry_timestamp'])), timezone=UTC)
     with transaction.atomic():
