@@ -1,8 +1,8 @@
-import logging
-
 import raven
-from raven.conf import setup_logging
+import logging
 from raven.handlers.logging import SentryHandler
+from raven.conf import setup_logging
+from raven.scripts.runner import send_test_message
 
 
 def a():
@@ -29,6 +29,8 @@ logging.info('nonimportant info')
 logging.warning('something spooky')
 logging.error('oh dear!')
 logging.critical('eee critical')
+
+send_test_message(cl, {})
 
 with cl.capture_exceptions():
     cl.extra_context({'happy': 'cow'})
