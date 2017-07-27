@@ -9,7 +9,7 @@ import range from 'lodash/range';
 import isEqual from 'lodash/isEqual';
 import {connect} from 'react-redux';
 
-import {updateSearchParams} from '../actions';
+import {updateSearchParams, resetSearchParams} from '../actions';
 
 export const EventRow = ({event, project}) => (
   <div className={`event-row event-${event.type} event-${event.level} event-${event.type}-${event.level}`}>
@@ -27,7 +27,7 @@ const Paginator = ({offset, limit, total, handleChangeOffset}) => {
   const nPages = Math.ceil(total / limit);
   const currPageZero = Math.floor(offset / limit);
   const handleChangePage = pageNo => handleChangeOffset(pageNo * limit);
-  return (<span style={{marginRight: '1em'}}>
+  return (<span className="paginator-group">
     <button
       disabled={currPageZero === 0}
       onClick={() => handleChangePage(currPageZero - 1)}
@@ -61,11 +61,13 @@ const FilterBar = ({
   handleChangeProjectFilter = null,
   handleChangeTypeFilter = null,
   handleChangeSearch = null,
+  handleResetSearch = null,
 }) => (
   <div className="fi-ae">
+    <button className="reset-search" onClick={handleResetSearch}>&times;</button>
     <Paginator offset={offset} limit={limit} total={total} handleChangeOffset={handleChangeOffset} />
     <select
-      value={project}
+      value={project || ''}
       onInput={handleChangeProjectFilter}
       style={{marginRight: '1em'}}
     >
@@ -206,6 +208,7 @@ class EventsList extends React.Component {
             handleChangeProjectFilter={this.handleChangeProjectFilter}
             handleChangeTypeFilter={this.handleChangeTypeFilter}
             handleChangeSearch={this.handleChangeSearch}
+            handleResetSearch={() => this.props.dispatch(resetSearchParams())}
           />
         </nav>
         <div className="content">{eventsCtr}</div>

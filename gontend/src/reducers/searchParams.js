@@ -19,6 +19,8 @@ export default function searchParams(state = initialSearchParams, action = null)
       );
       return update(state, updateSpec);
     }
+    case 'resetSearchParams':
+      return Object.assign({}, initialSearchParams);
     default:
       return state;
   }
