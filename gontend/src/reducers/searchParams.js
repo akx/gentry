@@ -4,7 +4,7 @@ const initialSearchParams = {
   project: null,
   search: '',
   type: null,
-  limit: 5,
+  limit: 30,
   offset: 0,
 };
 
