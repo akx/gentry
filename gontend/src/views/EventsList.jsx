@@ -49,45 +49,51 @@ const Paginator = ({offset, limit, total, handleChangeOffset}) => {
 };
 
 const FilterBar = ({
-  project,
+  searchParams,
   projects,
-  eventType,
   eventTypes,
-  search,
-  offset,
-  limit,
   total,
-  handleChangeOffset = null,
-  handleChangeProjectFilter = null,
-  handleChangeTypeFilter = null,
-  handleChangeSearch = null,
-  handleResetSearch = null,
-}) => (
-  <div className="fi-ae">
-    <button className="reset-search" onClick={handleResetSearch}>&times;</button>
-    <Paginator offset={offset} limit={limit} total={total} handleChangeOffset={handleChangeOffset} />
-    <select
-      value={project || ''}
-      onInput={handleChangeProjectFilter}
-      style={{marginRight: '1em'}}
-    >
-      <option value="">All projects</option>
-      {
-        sortBy(Array.from(projects.values()), 'name')
-          .map(({id, name}) => <option key={id} value={id}>{name}</option>)
-      }
-    </select>
-    <select
-      value={eventType || ''}
-      onInput={handleChangeTypeFilter}
-      style={{marginRight: '1em'}}
-    >
-      <option value="">All types</option>
-      {eventTypes.map(sType => <option key={sType} value={sType}>{sType}</option>)}
-    </select>
-    <input type="search" value={search} onInput={handleChangeSearch} placeholder="Search..." />
-  </div>
-);
+  handleChange,
+  handleReset,
+}) => {
+  const {project, type, search, offset, limit, archived} = searchParams;
+  return (
+    <div className="fi-ae">
+      <button className="reset-search" onClick={handleReset}>&times;</button>
+      <Paginator
+        offset={offset}
+        limit={limit}
+        total={total}
+        handleChangeOffset={e => handleChange('offset', e.target.value)}
+      />
+      <select
+        value={project || ''}
+        onInput={e => handleChange('project', e.target.value)}
+        style={{marginRight: '1em'}}
+      >
+        <option value="">All projects</option>
+        {
+          sortBy(Array.from(projects.values()), 'name')
+            .map(({id, name}) => <option key={id} value={id}>{name}</option>)
+        }
+      </select>
+      <select
+        value={type || ''}
+        onInput={e => handleChange('type', e.target.value)}
+        style={{marginRight: '1em'}}
+      >
+        <option value="">All types</option>
+        {eventTypes.map(sType => <option key={sType} value={sType}>{sType}</option>)}
+      </select>
+      <input
+        type="search"
+        value={search}
+        onInput={e => handleChange('search', e.target.value)}
+        placeholder="Search..."
+      />
+    </div>
+  );
+};
 
 class EventsList extends React.Component {
   constructor(props) {
@@ -99,10 +105,7 @@ class EventsList extends React.Component {
       eventTypes: [],
       total: null,
     };
-    this.handleChangeProjectFilter = this.handleChangeProjectFilter.bind(this);
-    this.handleChangeTypeFilter = this.handleChangeTypeFilter.bind(this);
-    this.handleChangeSearch = this.handleChangeSearch.bind(this);
-    this.handleChangeOffset = this.handleChangeOffset.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.debouncedSearchEvents = debounce(this.searchEvents, 500);
   }
 
@@ -156,23 +159,8 @@ class EventsList extends React.Component {
       });
   }
 
-  handleChangeProjectFilter(event) {
-    const project = event.target.value;
-    this.props.dispatch(updateSearchParams({project}));
-  }
-
-  handleChangeTypeFilter(event) {
-    const type = event.target.value;
-    this.props.dispatch(updateSearchParams({type}));
-  }
-
-  handleChangeOffset(offset) {
-    this.props.dispatch(updateSearchParams({offset}));
-  }
-
-  handleChangeSearch(event) {
-    const search = event.target.value;
-    this.props.dispatch(updateSearchParams({search}));
+  handleChange(key, value) {
+    this.props.dispatch(updateSearchParams({[key]: value}));
   }
 
   render() {
@@ -196,19 +184,12 @@ class EventsList extends React.Component {
             {this.state.total > 0 ? ` (${this.state.total})` : ''}
           </h1>
           <FilterBar
-            project={searchParams.project}
-            search={searchParams.search}
-            offset={searchParams.offset}
-            limit={searchParams.limit}
-            eventType={searchParams.type}
+            searchParams={searchParams}
             projects={this.state.projects}
             eventTypes={this.state.eventTypes}
             total={this.state.total}
-            handleChangeOffset={this.handleChangeOffset}
-            handleChangeProjectFilter={this.handleChangeProjectFilter}
-            handleChangeTypeFilter={this.handleChangeTypeFilter}
-            handleChangeSearch={this.handleChangeSearch}
-            handleResetSearch={() => this.props.dispatch(resetSearchParams())}
+            handleChange={this.handleChange}
+            handleReset={() => this.props.dispatch(resetSearchParams())}
           />
         </nav>
         <div className="content">{eventsCtr}</div>
