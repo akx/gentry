@@ -9,7 +9,7 @@ from lepo.excs import ExceptionalResponse
 
 class EventSchema(Schema):
     class Meta:
-        fields = ('id', 'message', 'culprit', 'level', 'type', 'timestamp', 'project_id')
+        fields = ('id', 'message', 'culprit', 'level', 'type', 'timestamp', 'project_id', 'archived')
 
 
 class ProjectSchema(Schema):
@@ -22,13 +22,13 @@ class EventDetailSchema(Schema):
     data = fields.Method(serialize='get_data')
 
     class Meta:
-        fields = ('id', 'message', 'culprit', 'level', 'type', 'timestamp', 'project', 'data')
+        fields = ('id', 'message', 'culprit', 'level', 'type', 'timestamp', 'project', 'data', 'archived')
 
     def get_data(self, instance):
         return instance.data_dict
 
 
-def get_event_list(request, limit=10, offset=0, project=None, search=None, type=None):
+def get_event_list(request, limit=10, offset=0, project=None, search=None, type=None, archived=None):
     if not request.user.is_authenticated():
         return JsonResponse({'error': 'not authenticated'}, status=401)
     qs = Event.objects.all().defer('data').order_by('-id')
@@ -38,6 +38,8 @@ def get_event_list(request, limit=10, offset=0, project=None, search=None, type=
         qs = qs.filter(type=type)
     if search:
         qs = qs.filter(Q(message__icontains=search) | Q(culprit__icontains=search))
+    if archived is not None:
+        qs = qs.filter(archived=archived)
     total = qs.count()
     qs = qs[offset:offset + limit]
     return {

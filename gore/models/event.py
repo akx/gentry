@@ -43,6 +43,7 @@ class Event(models.Model):
     date_added = models.DateTimeField(default=timezone.now, editable=False)
     timestamp = models.DateTimeField(db_index=True, editable=False)
     data = models.TextField(blank=True, editable=False)
+    archived = models.BooleanField(default=False, db_index=True)
 
     objects = EventManager()
 
