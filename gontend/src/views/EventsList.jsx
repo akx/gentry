@@ -85,6 +85,15 @@ const FilterBar = ({
         <option value="">All types</option>
         {eventTypes.map(sType => <option key={sType} value={sType}>{sType}</option>)}
       </select>
+      <select
+        value={archived || ''}
+        onInput={e => handleChange('archived', e.target.value)}
+        style={{marginRight: '1em'}}
+      >
+        <option value="">All</option>
+        <option value="true">Archived</option>
+        <option value="false">Not Archived</option>
+      </select>
       <input
         type="search"
         value={search}
