@@ -2,7 +2,7 @@
 /* eslint-disable react/prop-types, jsx-a11y/href-no-hash */
 import React from 'react';
 import {Route, Link} from 'react-router-dom';
-import Tophat from './tophat.svg';
+import Tophat from './images/tophat.svg';
 import EventsList from './views/EventsList';
 import EventDetail from './views/EventDetail';
 
