@@ -23,6 +23,7 @@
     "webpack-dev-server": "^2.6.1"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "immutability-helper": "^2.3.0",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
