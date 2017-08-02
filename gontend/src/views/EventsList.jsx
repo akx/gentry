@@ -9,8 +9,10 @@ import range from 'lodash/range';
 import isEqual from 'lodash/isEqual';
 import {connect} from 'react-redux';
 import cx from 'classnames';
+import update from 'immutability-helper';
+import ArchiveButton from '../images/box-add.svg';
 
-import {updateSearchParams, resetSearchParams} from '../actions';
+import {updateSearchParams, resetSearchParams, archiveEvent} from '../actions';
 
 const getEventClassName = event => ({
   'event-row': true,
@@ -21,12 +23,19 @@ const getEventClassName = event => ({
   'event-not-archived': !event.archived,
 });
 
-export const EventRow = ({event, project}) => (
+export const EventRow = ({event, project, onArchiveEvent}) => (
   <div className={cx(getEventClassName(event))}>
     <Link to={`/event/${event.id}`} className="message">
       {event.message}
       {event.culprit ? <span>&nbsp;({event.culprit})</span> : null}
     </Link>
+    <div className="actions">
+      {!event.archived ? (
+        <button onClick={() => onArchiveEvent(event.id)}>
+          <img src={ArchiveButton} alt="Archive" />
+        </button>
+      ) : null}
+    </div>
     <div className="meta">
       <span className="timestamp" title={event.timestamp}>{moment(event.timestamp).fromNow()}</span>
       <span className="project">{project ? project.name : event.project_id}</span>
@@ -127,6 +136,7 @@ class EventsList extends React.Component {
       total: null,
     };
     this.handleChange = this.handleChange.bind(this);
+    this.handleArchive = this.handleArchive.bind(this);
     this.debouncedSearchEvents = debounce(this.searchEvents, 500);
   }
 
@@ -184,6 +194,19 @@ class EventsList extends React.Component {
     this.props.dispatch(updateSearchParams({[key]: value}));
   }
 
+  handleArchive(eventId) {
+    this.props.dispatch(archiveEvent(eventId));
+
+    // Pre-emptively set the event to be archived even if the request possibly failed.
+    const events = this.state.events.map((e) => {
+      if (e.id === eventId) {
+        return update(e, {archived: {$set: true}});
+      }
+      return e;
+    });
+    this.setState({events});
+  }
+
   render() {
     const {events, projects} = this.state;
     const {searchParams} = this.props;
@@ -194,7 +217,14 @@ class EventsList extends React.Component {
       eventsCtr = <div>No events – maybe there are none or your filters exclude all of them.</div>;
     } else {
       eventsCtr = (<div>
-        {events.map(event => <EventRow key={event.id} event={event} project={projects.get(event.project_id)} />)}
+        {events.map(event => (
+          <EventRow
+            key={event.id}
+            event={event}
+            project={projects.get(event.project_id)}
+            onArchiveEvent={this.handleArchive}
+          />
+        ))}
       </div>);
     }
     return (
