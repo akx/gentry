@@ -1,6 +1,8 @@
 import os
 
 from django.conf.urls import include, url
+
+from lepo.decorators import csrf_exempt
 from lepo.router import Router
 from lepo.validate import validate_router
 
@@ -14,10 +16,10 @@ router.add_handlers(gore.handlers.store)
 router.add_handlers(gore.handlers.projects)
 validate_router(router)
 
-urls = router.get_urls()
-
-for u in urls:  # TODO: This shouldn't be necessary :(
-    u.callback.csrf_exempt = True
+urls = router.get_urls(
+    optional_trailing_slash=True,
+    decorate=(csrf_exempt,),
+)
 
 urlpatterns = [
     url(r'^api/', include(urls)),
