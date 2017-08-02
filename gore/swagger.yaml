@@ -70,3 +70,16 @@ paths:
           description: "event object"
         404:
           description: "event not found"
+  "/event/{id}/archive/":
+    parameters:
+    - name: id
+      in: path
+      type: string
+      required: true
+    post:
+      operationId: "archiveEvent"
+      responses:
+        200:
+          description: "event object"
+        404:
+          description: "event not found"
