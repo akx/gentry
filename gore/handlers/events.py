@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from marshmallow import fields, Schema
 
 from gore.models import Event
+from lepo.excs import ExceptionalResponse
 
 
 class EventSchema(Schema):
@@ -47,16 +48,19 @@ def get_event_list(request, limit=10, offset=0, project=None, search=None, type=
     }
 
 
-def get_event_detail(request, id):
-    if not request.user.is_authenticated():
-        return JsonResponse({'error': 'not authenticated'}, status=401)
-    try:
-        event = Event.objects.get(pk=id)
-    except ObjectDoesNotExist:  # pragma: no cover
-        return JsonResponse({'error': 'no such event'}, status=404)
-    data = EventDetailSchema().dump(event).data
-    return data
-
-
 def get_event_type_list(request):
     return ['unknown', 'exception', 'message', 'log']
+
+
+def _get_event_if_allowed(request, id):
+    if not request.user.is_authenticated():
+        raise ExceptionalResponse(JsonResponse({'error': 'not authenticated'}, status=401))
+    try:
+        return Event.objects.get(pk=id)
+    except ObjectDoesNotExist:  # pragma: no cover
+        raise ExceptionalResponse(JsonResponse({'error': 'no such event'}, status=404))
+
+
+def get_event_detail(request, id):
+    event = _get_event_if_allowed(request, id)
+    return EventDetailSchema().dump(event).data
