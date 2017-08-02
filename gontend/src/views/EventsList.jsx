@@ -8,17 +8,29 @@ import debounce from 'lodash/debounce';
 import range from 'lodash/range';
 import isEqual from 'lodash/isEqual';
 import {connect} from 'react-redux';
+import cx from 'classnames';
 
 import {updateSearchParams, resetSearchParams} from '../actions';
 
+const getEventClassName = event => ({
+  'event-row': true,
+  [`event-${event.type}`]: true,
+  [`event-${event.level}`]: true,
+  [`event-${event.type}-${event.level}`]: true,
+  'event-archived': event.archived,
+  'event-not-archived': !event.archived,
+});
+
 export const EventRow = ({event, project}) => (
-  <div className={`event-row event-${event.type} event-${event.level} event-${event.type}-${event.level}`}>
-    <div className="timestamp" title={event.timestamp}>{moment(event.timestamp).fromNow()}</div>
-    <div className="project">{project ? project.name : event.project_id}</div>
+  <div className={cx(getEventClassName(event))}>
     <Link to={`/event/${event.id}`} className="message">
       {event.message}
       {event.culprit ? <span>&nbsp;({event.culprit})</span> : null}
     </Link>
+    <div className="meta">
+      <span className="timestamp" title={event.timestamp}>{moment(event.timestamp).fromNow()}</span>
+      <span className="project">{project ? project.name : event.project_id}</span>
+    </div>
   </div>
 );
 
