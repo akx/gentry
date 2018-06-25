@@ -44,6 +44,7 @@ class Event(models.Model):
     timestamp = models.DateTimeField(db_index=True, editable=False)
     data = models.TextField(blank=True, editable=False)
     archived = models.BooleanField(default=False, db_index=True)
+    group = models.ForeignKey('gore.EventGroup', blank=True, null=True)
 
     objects = EventManager()
 

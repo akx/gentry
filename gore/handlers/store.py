@@ -15,6 +15,7 @@ from gore.auth import validate_auth_header
 from gore.excs import InvalidAuth
 from gore.models import Event
 from gore.signals import event_received
+from gore.utils.event_grouper import group_event
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +37,7 @@ def store_event(request, project):
     timestamp = make_aware(datetime.fromtimestamp(float(auth_header['sentry_timestamp'])), timezone=UTC)
     with transaction.atomic():
         event = Event.objects.create_from_raven(project_id=project, body=body, timestamp=timestamp)
+        group_event(event.project, event)
     try:
         event_received.send(sender=event)
     except:  # pragma: no cover
