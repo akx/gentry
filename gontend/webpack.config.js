@@ -35,6 +35,6 @@ module.exports = env => ({
     extensions: ['.js', '.jsx'],
   },
   plugins: [
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /en/),
+    new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
   ],
 });
