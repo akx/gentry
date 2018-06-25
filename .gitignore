@@ -2,6 +2,7 @@
 *.sqlite3
 .cache
 .coverage
+.env
 .idea
 htmlcov
 node_modules
