@@ -1,31 +1,10 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import JsonResponse
-from marshmallow import fields, Schema
 
 from gore.models import Event
+from gore.api.schemata import EventSchema, EventDetailSchema
 from lepo.excs import ExceptionalResponse
-
-
-class EventSchema(Schema):
-    class Meta:
-        fields = ('id', 'message', 'culprit', 'level', 'type', 'timestamp', 'project_id', 'archived')
-
-
-class ProjectSchema(Schema):
-    class Meta:
-        fields = ('id', 'slug', 'name')
-
-
-class EventDetailSchema(Schema):
-    project = fields.Nested(ProjectSchema)
-    data = fields.Method(serialize='get_data')
-
-    class Meta:
-        fields = ('id', 'message', 'culprit', 'level', 'type', 'timestamp', 'project', 'data', 'archived')
-
-    def get_data(self, instance):
-        return instance.data_dict
 
 
 def get_event_list(request, limit=10, offset=0, project=None, search=None, type=None, archived=None):
@@ -40,6 +19,7 @@ def get_event_list(request, limit=10, offset=0, project=None, search=None, type=
         qs = qs.filter(Q(message__icontains=search) | Q(culprit__icontains=search))
     if archived is not None:
         qs = qs.filter(archived=archived)
+
     total = qs.count()
     qs = qs[offset:offset + limit]
     return {
