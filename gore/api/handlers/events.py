@@ -2,14 +2,14 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import JsonResponse
 
+from gore.api.utils import check_authenticated
 from gore.models import Event
 from gore.api.schemata import EventSchema, EventDetailSchema
 from lepo.excs import ExceptionalResponse
 
 
 def get_event_list(request, limit=10, offset=0, project=None, search=None, type=None, archived=None, group=None):
-    if not request.user.is_authenticated():
-        return JsonResponse({'error': 'not authenticated'}, status=401)
+    check_authenticated(request)
     qs = Event.objects.all().defer('data').prefetch_related('group').order_by('-id')
     if project:
         qs = qs.filter(project_id=project)
@@ -37,8 +37,7 @@ def get_event_type_list(request):
 
 
 def _get_event_if_allowed(request, id):
-    if not request.user.is_authenticated():
-        raise ExceptionalResponse(JsonResponse({'error': 'not authenticated'}, status=401))
+    check_authenticated(request)
     try:
         return Event.objects.get(pk=id)
     except ObjectDoesNotExist:  # pragma: no cover

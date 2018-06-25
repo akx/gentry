@@ -3,13 +3,13 @@ from django.db.models import Prefetch, Q
 from django.http import JsonResponse
 
 from gore.api.schemata import EventGroupDetailSchema, EventGroupListSchema
+from gore.api.utils import check_authenticated
 from gore.models import Event, EventGroup
 from lepo.excs import ExceptionalResponse
 
 
 def get_group_list(request, limit=10, offset=0, project=None, search=None, type=None, archived=None):
-    if not request.user.is_authenticated():
-        return JsonResponse({'error': 'not authenticated'}, status=401)
+    check_authenticated(request)
     qs = EventGroup.objects.all().prefetch_related('first_event').order_by('-last_event_time')
     if project:
         qs = qs.filter(project_id=project)
@@ -31,8 +31,7 @@ def get_group_list(request, limit=10, offset=0, project=None, search=None, type=
 
 
 def _get_group_if_allowed(request, id, for_detail=False):
-    if not request.user.is_authenticated():
-        raise ExceptionalResponse(JsonResponse({'error': 'not authenticated'}, status=401))
+    check_authenticated(request)
     try:
         qs = EventGroup.objects.select_related('first_event')
         if for_detail:
