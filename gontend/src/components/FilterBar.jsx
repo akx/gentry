@@ -17,7 +17,7 @@ const FilterBar = ({
         offset={offset}
         limit={limit}
         total={total}
-        handleChangeOffset={(e) => handleChange('offset', e.target.value)}
+        handleChangeOffset={(newOffset) => handleChange('offset', newOffset)}
       />
       <select
         value={project || ''}
