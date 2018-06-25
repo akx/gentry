@@ -32,3 +32,7 @@ class EventGroup(models.Model):
         self.n_events = d['n_events']
         self.first_event_time = d['first_event_time']
         self.last_event_time = d['last_event_time']
+
+    @property
+    def events(self):  # For marshmallow.
+        return self.event_set.all()

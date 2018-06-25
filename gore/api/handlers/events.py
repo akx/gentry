@@ -7,10 +7,10 @@ from gore.api.schemata import EventSchema, EventDetailSchema
 from lepo.excs import ExceptionalResponse
 
 
-def get_event_list(request, limit=10, offset=0, project=None, search=None, type=None, archived=None):
+def get_event_list(request, limit=10, offset=0, project=None, search=None, type=None, archived=None, group=None):
     if not request.user.is_authenticated():
         return JsonResponse({'error': 'not authenticated'}, status=401)
-    qs = Event.objects.all().defer('data').order_by('-id')
+    qs = Event.objects.all().defer('data').prefetch_related('group').order_by('-id')
     if project:
         qs = qs.filter(project_id=project)
     if type:
@@ -19,6 +19,8 @@ def get_event_list(request, limit=10, offset=0, project=None, search=None, type=
         qs = qs.filter(Q(message__icontains=search) | Q(culprit__icontains=search))
     if archived is not None:
         qs = qs.filter(archived=archived)
+    if group is not None:
+        qs = qs.filter(group_id=group)
 
     total = qs.count()
     qs = qs[offset:offset + limit]
