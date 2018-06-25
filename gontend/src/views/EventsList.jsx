@@ -1,20 +1,20 @@
 /* eslint-env browser */
-/* eslint-disable react/prop-types, jsx-a11y/href-no-hash */
+/* eslint-disable react/no-unused-state */
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import sortBy from 'lodash/sortBy';
 import debounce from 'lodash/debounce';
 import range from 'lodash/range';
 import isEqual from 'lodash/isEqual';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import cx from 'classnames';
 import update from 'immutability-helper';
 import ArchiveButton from '../images/box-add.svg';
 
-import {updateSearchParams, resetSearchParams, archiveEvent} from '../actions';
+import { archiveEvent, resetSearchParams, updateSearchParams } from '../actions';
 
-const getEventClassName = event => ({
+const getEventClassName = (event) => ({
   'event-row': true,
   [`event-${event.type}`]: true,
   [`event-${event.level}`]: true,
@@ -23,7 +23,7 @@ const getEventClassName = event => ({
   'event-not-archived': !event.archived,
 });
 
-export const EventRow = ({event, project, onArchiveEvent}) => (
+export const EventRow = ({ event, project, onArchiveEvent }) => (
   <div className={cx(getEventClassName(event))}>
     <Link to={`/event/${event.id}`} className="message">
       {event.message}
@@ -31,85 +31,81 @@ export const EventRow = ({event, project, onArchiveEvent}) => (
     </Link>
     <div className="actions">
       {!event.archived ? (
-        <button onClick={() => onArchiveEvent(event.id)}>
+        <button type="button" onClick={() => onArchiveEvent(event.id)}>
           <img src={ArchiveButton} alt="Archive" />
         </button>
       ) : null}
     </div>
     <div className="meta">
-      <span className="timestamp" title={event.timestamp}>{moment(event.timestamp).fromNow()}</span>
+      <span className="timestamp" title={event.timestamp}>
+        {moment(event.timestamp).fromNow()}
+      </span>
       <span className="project">{project ? project.name : event.project_id}</span>
     </div>
   </div>
 );
 
-const Paginator = ({offset, limit, total, handleChangeOffset}) => {
+const Paginator = ({ offset, limit, total, handleChangeOffset }) => {
   if (total === null || total === undefined || total <= 0) return null;
   const nPages = Math.ceil(total / limit);
   const currPageZero = Math.floor(offset / limit);
-  const handleChangePage = pageNo => handleChangeOffset(pageNo * limit);
-  return (<span className="paginator-group">
-    <button
-      disabled={currPageZero === 0}
-      onClick={() => handleChangePage(currPageZero - 1)}
-    >&larr;
-    </button>
-    <select
-      value={currPageZero}
-      onChange={e => handleChangePage(parseInt(e.target.value, 10))}
-    >
-      {range(0, nPages).map(pageNo => <option key={pageNo} value={pageNo}>{pageNo + 1}</option>)}
-    </select>
-    <button
-      disabled={currPageZero === nPages - 1}
-      onClick={() => handleChangePage(currPageZero + 1)}
-    >
-      &rarr;
-    </button>
-  </span>);
+  const handleChangePage = (pageNo) => handleChangeOffset(pageNo * limit);
+  return (
+    <span className="paginator-group">
+      <button type="button" disabled={currPageZero === 0} onClick={() => handleChangePage(currPageZero - 1)}>
+        &larr;
+      </button>
+      <select value={currPageZero} onChange={(e) => handleChangePage(parseInt(e.target.value, 10))}>
+        {range(0, nPages).map((pageNo) => (
+          <option key={pageNo} value={pageNo}>
+            {pageNo + 1}
+          </option>
+        ))}
+      </select>
+      <button type="button" disabled={currPageZero === nPages - 1} onClick={() => handleChangePage(currPageZero + 1)}>
+        &rarr;
+      </button>
+    </span>
+  );
 };
 
-const FilterBar = ({
-  searchParams,
-  projects,
-  eventTypes,
-  total,
-  handleChange,
-  handleReset,
-}) => {
-  const {project, type, search, offset, limit, archived} = searchParams;
+const FilterBar = ({ searchParams, projects, eventTypes, total, handleChange, handleReset }) => {
+  const { project, type, search, offset, limit, archived } = searchParams;
   return (
     <div className="fi-ae">
-      <button className="reset-search" onClick={handleReset}>&times;</button>
+      <button type="button" className="reset-search" onClick={handleReset}>
+        &times;
+      </button>
       <Paginator
         offset={offset}
         limit={limit}
         total={total}
-        handleChangeOffset={e => handleChange('offset', e.target.value)}
+        handleChangeOffset={(e) => handleChange('offset', e.target.value)}
       />
       <select
         value={project || ''}
-        onInput={e => handleChange('project', e.target.value)}
-        style={{marginRight: '1em'}}
+        onInput={(e) => handleChange('project', e.target.value)}
+        style={{ marginRight: '1em' }}
       >
         <option value="">All projects</option>
-        {
-          sortBy(Array.from(projects.values()), 'name')
-            .map(({id, name}) => <option key={id} value={id}>{name}</option>)
-        }
+        {sortBy(Array.from(projects.values()), 'name').map(({ id, name }) => (
+          <option key={id} value={id}>
+            {name}
+          </option>
+        ))}
       </select>
-      <select
-        value={type || ''}
-        onInput={e => handleChange('type', e.target.value)}
-        style={{marginRight: '1em'}}
-      >
+      <select value={type || ''} onInput={(e) => handleChange('type', e.target.value)} style={{ marginRight: '1em' }}>
         <option value="">All types</option>
-        {eventTypes.map(sType => <option key={sType} value={sType}>{sType}</option>)}
+        {eventTypes.map((sType) => (
+          <option key={sType} value={sType}>
+            {sType}
+          </option>
+        ))}
       </select>
       <select
         value={archived || ''}
-        onInput={e => handleChange('archived', e.target.value)}
-        style={{marginRight: '1em'}}
+        onInput={(e) => handleChange('archived', e.target.value)}
+        style={{ marginRight: '1em' }}
       >
         <option value="">All</option>
         <option value="true">Archived</option>
@@ -118,7 +114,7 @@ const FilterBar = ({
       <input
         type="search"
         value={search}
-        onInput={e => handleChange('search', e.target.value)}
+        onInput={(e) => handleChange('search', e.target.value)}
         placeholder="Search..."
       />
     </div>
@@ -144,14 +140,14 @@ class EventsList extends React.Component {
     fetch('/api/projects/', {
       credentials: 'same-origin',
     })
-      .then(r => r.json())
+      .then((r) => r.json())
       .then((projects) => {
-        this.setState({projects: new Map(projects.map(p => [p.id, p]))});
+        this.setState({ projects: new Map(projects.map((p) => [p.id, p])) });
       });
     fetch('/api/event-types/')
-      .then(r => r.json())
+      .then((r) => r.json())
       .then((eventTypes) => {
-        this.setState({eventTypes});
+        this.setState({ eventTypes });
       });
 
     this.searchEvents();
@@ -171,7 +167,7 @@ class EventsList extends React.Component {
 
   searchEvents() {
     const params = new URLSearchParams();
-    const {searchParams} = this.props;
+    const { searchParams } = this.props;
 
     Object.keys(searchParams).forEach((key) => {
       const value = searchParams[key];
@@ -179,53 +175,58 @@ class EventsList extends React.Component {
         params.append(key, value);
       }
     });
-    fetch(
-      `/api/events/?${params.toString()}`,
-      {credentials: 'same-origin'},
-    )
-      .then(r => r.json())
-      .then(({events, total, offset, limit}) => {
-        this.setState({total, events, offset, limit});
-        this.props.dispatch(updateSearchParams({offset, limit}));
+    fetch(`/api/events/?${params.toString()}`, { credentials: 'same-origin' })
+      .then((r) => r.json())
+      .then(({ events, total, offset, limit }) => {
+        this.setState({
+          total,
+          events,
+          offset,
+          limit,
+        });
+        this.props.dispatch(updateSearchParams({ offset, limit }));
       });
   }
 
   handleChange(key, value) {
-    this.props.dispatch(updateSearchParams({[key]: value}));
+    this.props.dispatch(updateSearchParams({ [key]: value }));
   }
 
   handleArchive(eventId) {
     this.props.dispatch(archiveEvent(eventId));
 
     // Pre-emptively set the event to be archived even if the request possibly failed.
+    // eslint-disable-next-line react/no-access-state-in-setstate
     const events = this.state.events.map((e) => {
       if (e.id === eventId) {
-        return update(e, {archived: {$set: true}});
+        return update(e, { archived: { $set: true } });
       }
       return e;
     });
-    this.setState({events});
+    this.setState({ events });
   }
 
   render() {
-    const {events, projects} = this.state;
-    const {searchParams} = this.props;
+    const { events, projects } = this.state;
+    const { searchParams } = this.props;
     let eventsCtr = null;
     if (events === null) {
       eventsCtr = <div>Loading, hold on...</div>;
     } else if (events.length === 0) {
       eventsCtr = <div>No events – maybe there are none or your filters exclude all of them.</div>;
     } else {
-      eventsCtr = (<div>
-        {events.map(event => (
-          <EventRow
-            key={event.id}
-            event={event}
-            project={projects.get(event.project_id)}
-            onArchiveEvent={this.handleArchive}
-          />
-        ))}
-      </div>);
+      eventsCtr = (
+        <div>
+          {events.map((event) => (
+            <EventRow
+              key={event.id}
+              event={event}
+              project={projects.get(event.project_id)}
+              onArchiveEvent={this.handleArchive}
+            />
+          ))}
+        </div>
+      );
     }
     return (
       <div className="EventsList-view">
@@ -250,8 +251,8 @@ class EventsList extends React.Component {
 }
 
 export default connect(
-  ({searchParams}) => ({searchParams}),
+  ({ searchParams }) => ({ searchParams }),
   null,
   null,
-  {pure: false},
+  { pure: false }
 )(EventsList);

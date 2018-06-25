@@ -17,6 +17,7 @@
     "file-loader": "^1.1.11",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
+    "prettier": "^1.13.6",
     "style-loader": "^0.21.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.12.1",
@@ -39,6 +40,15 @@
   },
   "scripts": {
     "dev": "webpack --watch --mode=development",
-    "build": "webpack --progress --mode=production"
+    "build": "webpack --progress --mode=production",
+    "lint": "eslint --ext .jsx --ext .js src",
+    "prettify": "prettier --write 'src/**/*.js*'"
+  },
+  "prettier": {
+    "arrowParens": "always",
+    "parser": "flow",
+    "printWidth": 120,
+    "singleQuote": true,
+    "trailingComma": "es5"
   }
 }
