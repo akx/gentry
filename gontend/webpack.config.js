@@ -18,15 +18,15 @@ module.exports = env => ({
       {
         test: /\.less$/,
         use: [
-          {loader: 'style-loader'},
-          {loader: 'css-loader'},
-          {loader: 'less-loader'},
+          { loader: 'style-loader' },
+          { loader: 'css-loader' },
+          { loader: 'less-loader' },
         ],
       },
       {
         test: /\.(svg|png)$/,
         use: [
-          {loader: 'url-loader'},
+          { loader: 'url-loader' },
         ],
       },
     ],
