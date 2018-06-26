@@ -9,11 +9,13 @@ module.exports = env => ({
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: {
-          loader: 'babel-loader',
-        },
+        use: [
+          {
+            loader: 'awesome-typescript-loader',
+          },
+        ],
       },
       {
         test: /\.less$/,
@@ -32,7 +34,7 @@ module.exports = env => ({
     ],
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   plugins: [
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /en/),
