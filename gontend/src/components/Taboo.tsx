@@ -1,22 +1,38 @@
-import React from 'react';
+import React, {ReactElement} from 'react';
 
-export class Tabs extends React.Component {
+interface TabsState {
+  activeTab: any;
+}
+
+interface Tab {
+  visible?: boolean;
+  id: string;
+  title: string;
+}
+
+interface TabsProps {
+  activeTab?: string;
+  tabs: Tab[];
+}
+
+export class Tabs extends React.Component<TabsProps, TabsState> {
   constructor(props) {
     super(props);
-    this.state = { activeTab: props.activeTab || props.tabs[0].id || null };
+    this.state = {activeTab: props.activeTab || props.tabs[0].id || null};
     this.handleTabSelect = this.handleTabSelect.bind(this);
   }
 
-  handleTabSelect(event, tab) {
-    this.setState({ activeTab: tab.id });
+  public handleTabSelect(event, tab) {
+    this.setState({activeTab: tab.id});
     event.preventDefault();
   }
 
-  render() {
-    let activeTab = null;
+  public render() {
+    let activeTab: ReactElement<any> | undefined;
     React.Children.forEach(this.props.children, (child) => {
-      if (child.props.id === this.state.activeTab) {
-        activeTab = child;
+      const el = child as ReactElement<any>;
+      if (el.props && el.props.id === this.state.activeTab) {
+        activeTab = el;
       }
     });
     return (
@@ -33,7 +49,7 @@ export class Tabs extends React.Component {
                 >
                   {tab.title}
                 </a>
-              ) : null
+              ) : null,
           )}
         </div>
         <div className="taboo-content">{activeTab}</div>

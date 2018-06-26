@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import moment from 'moment';
 import cx from 'classnames';
 import ArchiveButton from '../images/box-add.svg';
-
 
 const getEventClassName = (event) => ({
   'event-row': true,
@@ -13,8 +12,7 @@ const getEventClassName = (event) => ({
   'event-archived': event.archived,
   'event-not-archived': !event.archived,
 });
-
-const EventRow = ({ event, project, onArchiveEvent }) => (
+const EventRow = ({event, project, onArchiveEvent}) => (
   <div className={cx(getEventClassName(event))}>
     <Link to={`/event/${event.id}`} className="message">
       {event.message}
@@ -35,5 +33,4 @@ const EventRow = ({ event, project, onArchiveEvent }) => (
     </div>
   </div>
 );
-
 export default EventRow;

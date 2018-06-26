@@ -3,97 +3,101 @@
 import React from 'react';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import update from 'immutability-helper';
-
-import { archiveEvent, resetSearchParams, updateSearchParams } from '../actions';
+import {archiveEvent, resetSearchParams, updateSearchParams} from '../actions';
 import EventRow from '../components/EventRow';
 import FilterBar from '../components/FilterBar';
+import {AppThunkDispatch, SearchParams, State} from '../types/state';
+import {Event, Project} from '../types/api';
 
+interface EventsListState {
+  total: number;
+  events: Event[];
+  offset: number;
+  limit: number;
+}
 
-class EventsList extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // From API:
-      events: null,
-      total: null,
-    };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleArchive = this.handleArchive.bind(this);
-    this.debouncedSearchEvents = debounce(this.searchEvents, 500);
-  }
+interface EventsListProps {
+  dispatch: AppThunkDispatch;
+  searchParams: SearchParams;
+  projects: Project[];
+  eventTypes: string[];
+}
 
-  componentDidMount() {
+class EventsList extends React.Component<EventsListProps, EventsListState> {
+  public state: EventsListState = {
+    events: [],
+    total: 0,
+    offset: 0,
+    limit: 0,
+  };
+  private debouncedSearchEvents = debounce(this.searchEvents, 500);
+  private refreshInterval?: number;
+
+  public componentDidMount() {
     this.searchEvents();
-    this.refreshInterval = setInterval(() => this.searchEvents(), 10000);
+    this.refreshInterval = window.setInterval(() => this.searchEvents(), 10000);
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     clearInterval(this.refreshInterval);
   }
 
-  componentDidUpdate(prevProps) {
+  public componentDidUpdate(prevProps) {
     if (!isEqual(this.props.searchParams, prevProps.searchParams)) {
       // Search parameters were updated, so a search is required
       this.searchEvents();
     }
   }
 
-  searchEvents() {
+  public searchEvents() {
     const params = new URLSearchParams();
-    const { searchParams } = this.props;
-
+    const {searchParams} = this.props;
     Object.keys(searchParams).forEach((key) => {
       const value = searchParams[key];
       if (value !== null && value !== '' && value !== undefined) {
         params.append(key, value);
       }
     });
-    fetch(`/api/events/?${params.toString()}`, { credentials: 'same-origin' })
+    fetch(`/api/events/?${params.toString()}`, {credentials: 'same-origin'})
       .then((r) => r.json())
-      .then(({
-        events, total, offset, limit,
-      }) => {
+      .then(({events, total, offset, limit}) => {
         this.setState({
           total,
           events,
           offset,
           limit,
         });
-        this.props.dispatch(updateSearchParams({ offset, limit }));
+        this.props.dispatch(updateSearchParams({offset, limit}));
       });
   }
 
-  handleChange(key, value) {
-    this.props.dispatch(updateSearchParams({ [key]: value }));
-  }
+  public handleChange = (key, value) => {
+    this.props.dispatch(updateSearchParams({[key]: value}));
+  };
 
-  handleArchive(eventId) {
+  public handleArchive = (eventId) => {
     this.props.dispatch(archiveEvent(eventId));
-
     // Pre-emptively set the event to be archived even if the request possibly failed.
     // eslint-disable-next-line react/no-access-state-in-setstate
     const events = this.state.events.map((e) => {
       if (e.id === eventId) {
-        return update(e, { archived: { $set: true } });
+        return update(e, {archived: {$set: true}});
       }
       return e;
     });
-    this.setState({ events });
-  }
+    this.setState({events});
+  };
 
-  render() {
-    const { events } = this.state;
-    const { searchParams, projects, eventTypes } = this.props;
-    let eventsCtr = null;
+  private renderEventsCtr(events: Event[], projects: Project[]) {
     if (events === null) {
-      eventsCtr = <div>Loading, hold on...</div>;
+      return <div>Loading, hold on...</div>;
     } else if (events.length === 0) {
-      eventsCtr = <div>No events – maybe there are none or your filters exclude all of them.</div>;
+      return <div>No events – maybe there are none or your filters exclude all of them.</div>;
     } else {
-      const projectsMap = new Map(projects.map((p) => [p.id, p]));
-      eventsCtr = (
+      const projectsMap = new Map(projects.map<[number, Project]>((p) => [p.id, p]));
+      return (
         <div>
           {events.map((event) => (
             <EventRow
@@ -106,6 +110,12 @@ class EventsList extends React.Component {
         </div>
       );
     }
+  }
+
+  public render() {
+    const {events} = this.state;
+    const {searchParams, projects, eventTypes} = this.props;
+    const eventsCtr = this.renderEventsCtr(events, projects);
     return (
       <div className="EventsList-view">
         <nav className="top flex flex-sb">
@@ -129,15 +139,14 @@ class EventsList extends React.Component {
 }
 
 export default connect(
-  ({ searchParams, metadata }) => {
-    console.log(searchParams, metadata);
-    return ({
+  ({searchParams, metadata}: State) => {
+    return {
       searchParams,
       projects: metadata.projects,
       eventTypes: metadata.eventTypes,
-    });
+    };
   },
   null,
   null,
-  { pure: false },
+  {pure: false},
 )(EventsList);

@@ -1,8 +1,7 @@
 import React from 'react';
 import range from 'lodash/range';
-
 const Paginator = ({ offset, limit, total, handleChangeOffset }) => {
-  if (total === null || total === undefined || total <= 0) return null;
+  if (total === null || total === undefined || total <= 0) { return null; }
   const nPages = Math.ceil(total / limit);
   const currPageZero = Math.floor(offset / limit);
   const handleChangePage = (pageNo) => handleChangeOffset(pageNo * limit);
@@ -24,5 +23,4 @@ const Paginator = ({ offset, limit, total, handleChangeOffset }) => {
     </span>
   );
 };
-
 export default Paginator;

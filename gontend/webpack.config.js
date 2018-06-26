@@ -1,7 +1,7 @@
 const webpack = require('webpack');
 
 module.exports = env => ({
-  entry: `${__dirname}/src/index.jsx`,
+  entry: `${__dirname}/src/index.tsx`,
   output: {
     path: `${__dirname}/static/gontend`,
     filename: 'gontend.js',
