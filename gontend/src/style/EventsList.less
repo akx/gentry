@@ -40,20 +40,26 @@
       }
     }
   }
+  .occurrences {
+    display: inline-block;
+    width: 2em;
+    margin-right: 0.5em;
+    text-align: right;
+  }
 
-  &.event-exception {
+  &.r-exception {
     border-color: @exception-color;
     background: fade(@exception-color, 20%);
   }
-  &.event-log-40, &.event-log-50 {
+  &.r-log-40, &.r-log-50 {
     border-color: @warning-color;
     background: fade(@warning-color, 20%);
   }
-  &.event-log-30 {
+  &.r-log-30 {
     border-color: @info-color;
     background: fade(@info-color, 20%);
   }
-  &.event-archived {
+  &.r-archived {
     opacity: 0.7;
     filter: grayscale(50%);
   }

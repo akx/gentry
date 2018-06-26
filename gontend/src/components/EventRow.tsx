@@ -3,17 +3,19 @@ import {Link} from 'react-router-dom';
 import moment from 'moment';
 import cx from 'classnames';
 import ArchiveButton from '../images/box-add.svg';
+import {Event, Project} from '../types/api';
+import {getRowClassName} from '../utils';
 
-const getEventClassName = (event) => ({
-  'event-row': true,
-  [`event-${event.type}`]: true,
-  [`event-${event.level}`]: true,
-  [`event-${event.type}-${event.level}`]: true,
-  'event-archived': event.archived,
-  'event-not-archived': !event.archived,
-});
-const EventRow = ({event, project, onArchiveEvent}) => (
-  <div className={cx(getEventClassName(event))}>
+
+interface EventRowProps {
+  event: Event;
+  project?: Project;
+  onArchiveEvent: (eventId: number) => void;
+}
+
+
+const EventRow: React.SFC<EventRowProps> = ({event, project, onArchiveEvent}) => (
+  <div className={cx(getRowClassName(event, event.archived))}>
     <Link to={`/event/${event.id}`} className="message">
       {event.message}
       {event.culprit ? <span>&nbsp;({event.culprit})</span> : null}

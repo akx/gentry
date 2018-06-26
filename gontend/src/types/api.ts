@@ -32,9 +32,8 @@ export interface Event {
   type: string;
 }
 
-export interface Group {
+export interface GroupBase {
   archived: boolean;
-  first_event?: Event;
   first_event_time: ISO8601;
   group_hash: string;
   id: number;
@@ -42,7 +41,11 @@ export interface Group {
   n_events: number;
 }
 
-export interface GroupDetail extends Group {
+export interface Group extends GroupBase {
+  first_event: Event;
+}
+
+export interface GroupDetail extends GroupBase {
   events: Event[];
 }
 

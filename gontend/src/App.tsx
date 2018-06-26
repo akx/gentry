@@ -1,11 +1,12 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Link, Route} from 'react-router-dom';
-import Tophat from './images/tophat.svg';
-import EventListView from './views/EventListView';
+import {Link, Redirect, Route, Switch} from 'react-router-dom';
 import EventDetailView from './views/EventDetailView';
-import {updateMetadata} from './actions';
+import EventListView from './views/EventListView';
+import GroupListView from './views/GroupListView';
+import Tophat from './images/tophat.svg';
 import {AppThunkDispatch} from './types/state';
+import {updateMetadata} from './actions';
 
 interface AppProps {
   dispatch: AppThunkDispatch;
@@ -26,8 +27,12 @@ class App extends React.Component<AppProps, {}> {
           </Link>
         </nav>
         <main>
-          <Route path="/event/:id" component={EventDetailView} />
-          <Route path="/" exact component={EventListView} />
+          <Switch>
+            <Route path="/event/:id" component={EventDetailView} />
+            <Route path="/events" exact component={EventListView} />
+            <Route path="/groups" exact component={GroupListView} />
+            <Redirect path="/" to="/groups" exact />
+          </Switch>
         </main>
       </div>
     );
