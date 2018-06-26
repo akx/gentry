@@ -10,7 +10,7 @@ const Crumb: React.SFC<{ crumb: Crumb }> = ({crumb}) => (
     <td>{crumb.level}</td>
     <td>{crumb.category}</td>
     <td>{moment.unix(crumb.timestamp).format('HH:mm:ss')}</td>
-    <td>{crumb.message}</td>
+    <td className="message">{crumb.message}</td>
   </tr>
 );
 

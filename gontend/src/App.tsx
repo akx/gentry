@@ -2,8 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Link, Route} from 'react-router-dom';
 import Tophat from './images/tophat.svg';
-import EventsList from './views/EventsList';
-import EventDetail from './views/EventDetail';
+import EventsListView from './views/EventsListView';
+import EventDetailView from './views/EventDetailView';
 import {updateMetadata} from './actions';
 import {AppThunkDispatch} from './types/state';
 
@@ -26,8 +26,8 @@ class App extends React.Component<AppProps, {}> {
           </Link>
         </nav>
         <main>
-          <Route path="/event/:id" component={EventDetail} />
-          <Route path="/" exact component={EventsList} />
+          <Route path="/event/:id" component={EventDetailView} />
+          <Route path="/" exact component={EventsListView} />
         </main>
       </div>
     );

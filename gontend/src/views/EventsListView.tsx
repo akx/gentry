@@ -1,5 +1,3 @@
-/* eslint-env browser */
-/* eslint-disable react/no-unused-state */
 import React from 'react';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
@@ -9,7 +7,8 @@ import {archiveEvent, resetSearchParams, updateSearchParams} from '../actions';
 import EventRow from '../components/EventRow';
 import FilterBar from '../components/FilterBar';
 import {AppThunkDispatch, SearchParams, State} from '../types/state';
-import {Event, Project} from '../types/api';
+import {Event, EventsResponse, Project} from '../types/api';
+import {fetchJSON} from '../utils';
 
 interface EventsListState {
   total: number;
@@ -25,7 +24,7 @@ interface EventsListProps {
   eventTypes: string[];
 }
 
-class EventsList extends React.Component<EventsListProps, EventsListState> {
+class EventsListView extends React.Component<EventsListProps, EventsListState> {
   public state: EventsListState = {
     events: [],
     total: 0,
@@ -60,8 +59,7 @@ class EventsList extends React.Component<EventsListProps, EventsListState> {
         params.append(key, value);
       }
     });
-    fetch(`/api/events/?${params.toString()}`, {credentials: 'same-origin'})
-      .then((r) => r.json())
+    fetchJSON<EventsResponse>(`/api/events/?${params.toString()}`)
       .then(({events, total, offset, limit}) => {
         this.setState({
           total,
@@ -80,7 +78,6 @@ class EventsList extends React.Component<EventsListProps, EventsListState> {
   public handleArchive = (eventId) => {
     this.props.dispatch(archiveEvent(eventId));
     // Pre-emptively set the event to be archived even if the request possibly failed.
-    // eslint-disable-next-line react/no-access-state-in-setstate
     const events = this.state.events.map((e) => {
       if (e.id === eventId) {
         return update(e, {archived: {$set: true}});
@@ -149,4 +146,4 @@ export default connect(
   null,
   null,
   {pure: false},
-)(EventsList);
+)(EventsListView);
