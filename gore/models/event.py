@@ -34,7 +34,7 @@ class EventManager(models.Manager):
 
 
 class Event(models.Model):
-    project = models.ForeignKey('gore.Project')
+    project = models.ForeignKey('gore.Project', on_delete=models.CASCADE)
     event_id = models.CharField(max_length=64)
     type = models.CharField(max_length=32, default='unknown')
     message = models.CharField(max_length=128, blank=True)
@@ -44,7 +44,7 @@ class Event(models.Model):
     timestamp = models.DateTimeField(db_index=True, editable=False)
     data = models.TextField(blank=True, editable=False)
     archived = models.BooleanField(default=False, db_index=True)
-    group = models.ForeignKey('gore.EventGroup', blank=True, null=True)
+    group = models.ForeignKey('gore.EventGroup', blank=True, null=True, on_delete=models.CASCADE)
 
     objects = EventManager()
 

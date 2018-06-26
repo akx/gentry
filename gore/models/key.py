@@ -3,7 +3,7 @@ from django.utils import timezone
 
 
 class Key(models.Model):
-    project = models.ForeignKey('gore.Project')
+    project = models.ForeignKey('gore.Project', on_delete=models.CASCADE)
     date_added = models.DateTimeField(default=timezone.now, editable=False)
     key = models.CharField(db_index=True, max_length=64)
     secret = models.CharField(db_index=True, max_length=64)
