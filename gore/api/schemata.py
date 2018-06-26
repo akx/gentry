@@ -38,7 +38,7 @@ class EventDetailSchema(Schema):
     data = fields.Method(serialize='get_data')
 
     class Meta:
-        fields = EventSchema.Meta.fields + ('project',)
+        fields = EventSchema.Meta.fields + ('project', 'data')
 
     def get_data(self, instance):
         return instance.data_dict
