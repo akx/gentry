@@ -6,9 +6,9 @@ from gentry.utils import make_absolute_uri
 
 
 class EventGroup(models.Model):
-    project = models.ForeignKey('gore.Project')
+    project = models.ForeignKey('gore.Project', on_delete=models.CASCADE)
     group_hash = models.CharField(max_length=64)
-    first_event = models.ForeignKey('gore.Event')
+    first_event = models.ForeignKey('gore.Event', on_delete=models.CASCADE)
     first_event_time = models.DateTimeField(default=now, editable=False)
     last_event_time = models.DateTimeField(default=now, editable=False)
     n_events = models.IntegerField(default=0, editable=False)

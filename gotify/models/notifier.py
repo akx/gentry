@@ -30,8 +30,8 @@ class Notifier(PolymorphicModel):
 
 
 class NotifierEventLog(models.Model):
-    notifier = models.ForeignKey(Notifier, related_name='event_logs')
-    event = models.ForeignKey('gore.event')
+    notifier = models.ForeignKey(Notifier, related_name='event_logs', on_delete=models.CASCADE)
+    event = models.ForeignKey('gore.event', on_delete=models.CASCADE)
     success = models.BooleanField()
     error = models.CharField(max_length=128, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
