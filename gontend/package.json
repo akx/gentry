@@ -41,7 +41,7 @@
   "scripts": {
     "dev": "webpack --watch --mode=development",
     "build": "webpack --progress --mode=production",
-    "lint": "eslint --ext .jsx --ext .js src",
+    "lint": "tslint src/**.ts*",
     "prettify": "prettier --write 'src/**/*.js*'"
   },
   "prettier": {

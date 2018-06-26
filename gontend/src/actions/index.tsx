@@ -1,5 +1,3 @@
-/* eslint-env browser */
-
 import {fetchJSON} from '../utils';
 import {Action, ActionCreator, Dispatch} from 'redux';
 import {ThunkAction} from 'redux-thunk';

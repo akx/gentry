@@ -1,5 +1,3 @@
-/* eslint-env browser */
-/* eslint-disable react/prop-types, jsx-a11y/href-no-hash, react/prefer-stateless-function */
 import React from 'react';
 import {connect} from 'react-redux';
 import {Link, Route} from 'react-router-dom';

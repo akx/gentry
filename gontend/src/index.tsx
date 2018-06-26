@@ -1,4 +1,3 @@
-/* eslint-env browser */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {HashRouter} from 'react-router-dom';
@@ -10,7 +9,7 @@ import rootReducer from './reducers';
 import App from './App';
 import './style/style.less';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose; // eslint-disable-line
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const enhancer = composeEnhancers(applyMiddleware(thunk), persistState(null, 'gontend'));
 const store = createStore(rootReducer, enhancer);
 window.addEventListener('load', () => {
