@@ -37,10 +37,14 @@ def store_event(request, project):
     timestamp = make_aware(datetime.fromtimestamp(float(auth_header['sentry_timestamp'])), timezone=UTC)
     with transaction.atomic():
         event = Event.objects.create_from_raven(project_id=project, body=body, timestamp=timestamp)
-        group = group_event(event.project, event)
-        group.archived = False
-        group.cache_values()
-        group.save()
+    try:
+        with transaction.atomic():
+            group = group_event(event.project, event)
+            group.archived = False
+            group.cache_values()
+            group.save()
+    except:  # pragma: no cover
+        logger.warning('event with ID %s could not be grouped' % event.id, exc_info=True)
     try:
         event_received.send(sender=event)
     except:  # pragma: no cover
