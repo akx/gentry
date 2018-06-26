@@ -1,6 +1,6 @@
 *.py[cod]
 *.sqlite3
-.cache
+.*cache
 .coverage
 .env
 .idea
