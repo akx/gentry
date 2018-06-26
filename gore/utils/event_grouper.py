@@ -1,13 +1,29 @@
 import hashlib
+import re
 
-from django.utils.encoding import force_bytes
+from django.utils.encoding import force_bytes, force_text
 
 from gore.models import EventGroup
+
+PYTHON_ADDRESS_RE = re.compile('at 0x[0-9a-f]+', flags=re.I)
+
+
+def clean_group_hash_component(s):
+    s = force_text(s or '')
+    # Clean out `at 0xFFFFF`(i.e. Python object addresses)
+    s = PYTHON_ADDRESS_RE.sub('x', s)
+    return s
 
 
 def compute_group_hash(event):
     return hashlib.sha256(b'\x00'.join(
-        force_bytes(s or '') for s in (event.type, event.message, event.culprit, event.level)
+        force_bytes(clean_group_hash_component(s))
+            for s in (
+            event.type,
+            event.message,
+            event.culprit,
+            event.level,
+        )
     )).hexdigest()
 
 
