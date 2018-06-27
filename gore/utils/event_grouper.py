@@ -64,3 +64,11 @@ def group_all_events():
         events = project.event_set.filter(group__isnull=True).order_by('timestamp').iterator()
         n_events_updated += len(group_events(project, events))
     return n_events_updated
+
+
+def update_all_group_archival():
+    n_groups_updated = 0
+    for group in EventGroup.objects.filter(archived=False).iterator():
+        if group.archive_if_all_events_archived():
+            n_groups_updated += 1
+    return n_groups_updated

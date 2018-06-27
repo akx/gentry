@@ -11,6 +11,7 @@ def group_all_events(apps, schema_editor):
     import gore.utils.event_grouper as eg
     with transaction.atomic():
         eg.group_all_events()
+        eg.update_all_group_archival()
 
 
 class Migration(migrations.Migration):

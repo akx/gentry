@@ -36,3 +36,14 @@ class EventGroup(models.Model):
     @property
     def events(self):  # For marshmallow.
         return self.event_set.all()
+
+    def archive(self):
+        self.archived = True
+        self.event_set.update(archived=True)
+        self.save(update_fields=('archived',))
+
+    def archive_if_all_events_archived(self):
+        if not self.event_set.filter(archived=False).exists():
+            self.archive()
+            return True
+        return False
