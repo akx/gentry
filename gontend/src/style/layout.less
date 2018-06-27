@@ -9,18 +9,28 @@ body {
 #root {
   display: flex;
   flex: 1;
+  flex-direction: column;
 }
 
 nav.main {
   background: @blue;
-  width: 64px;
   top: 0;
   bottom: 0;
   padding: @pad;
+  display: flex;
+  align-items: center;
   img {
-    width: 100%;
-    margin: auto;
+    height: 2em;
     display: block;
+  }
+  a {
+    min-width: 2em;
+    color: #fff;
+    text-decoration: none;
+    margin-right: 1em;
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 

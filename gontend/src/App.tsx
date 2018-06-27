@@ -25,6 +25,8 @@ class App extends React.Component<AppProps, {}> {
           <Link to="/">
             <img alt="Logo" src={Tophat} />
           </Link>
+          <Link to="/groups" className="t">Groups</Link>
+          <Link to="/events" className="t">Events</Link>
         </nav>
         <main>
           <Switch>
