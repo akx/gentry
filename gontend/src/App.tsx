@@ -1,11 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Link, Redirect, Route, Switch} from 'react-router-dom';
+import {Redirect, Route, Switch} from 'react-router-dom';
 import EventDetailView from './views/EventDetailView';
 import EventListView from './views/EventListView';
 import GroupDetailView from './views/GroupDetailView';
 import GroupListView from './views/GroupListView';
-import Tophat from './images/tophat.svg';
+import NotFoundView from './views/NotFoundView';
+import MainNav from './components/MainNav';
+
 import {AppThunkDispatch} from './types/state';
 import {updateMetadata} from './actions';
 
@@ -22,22 +24,15 @@ class App extends React.Component<AppProps, {}> {
   public render() {
     return (
       <React.Fragment>
-        <nav className="main">
-          <Link to="/">
-            <img alt="Logo" src={Tophat} />
-          </Link>
-          <Link to="/groups" className="t">Groups</Link>
-          <Link to="/events" className="t">Events</Link>
-        </nav>
-        <main>
-          <Switch>
-            <Route path="/event/:id" component={EventDetailView} />
-            <Route path="/events" exact component={EventListView} />
-            <Route path="/group/:id" component={GroupDetailView} />
-            <Route path="/groups" exact component={GroupListView} />
-            <Redirect path="/" to="/groups" exact />
-          </Switch>
-        </main>
+        <MainNav />
+        <Switch>
+          <Route path="/event/:id" component={EventDetailView} />
+          <Route path="/events" exact component={EventListView} />
+          <Route path="/group/:id" component={GroupDetailView} />
+          <Route path="/groups" exact component={GroupListView} />
+          <Redirect path="/" to="/groups" exact />
+          <Route component={NotFoundView} />
+        </Switch>
       </React.Fragment>
     );
   }
