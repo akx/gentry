@@ -19,7 +19,7 @@ def clean_group_hash_component(s):
 def compute_group_hash(event):
     return hashlib.sha256(b'\x00'.join(
         force_bytes(clean_group_hash_component(s))
-            for s in (
+        for s in (
             event.type,
             event.message,
             event.culprit,
