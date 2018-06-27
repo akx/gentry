@@ -1,10 +1,10 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import moment from 'moment';
 import cx from 'classnames';
 import {Event, Project} from '../types/api';
 import getRowClassName from '../utils/getRowClassName';
 import ArchiveButton from './ArchiveButton';
+import Timestamp from './Timestamp';
 
 
 interface EventRowProps {
@@ -21,14 +21,12 @@ const EventRow: React.SFC<EventRowProps> = ({event, project, onArchiveEvent}) =>
       {event.culprit ? <span>&nbsp;({event.culprit})</span> : null}
     </Link>
     <div className="meta">
-      <span className="timestamp" title={event.timestamp}>
-        {moment(event.timestamp).fromNow()}
-      </span>
+      <Timestamp start={event.timestamp}/>
       <span className="project">{project ? project.name : event.project_id}</span>
     </div>
 
     <div className="actions">
-      {!event.archived ? <ArchiveButton onClick={() => onArchiveEvent(event.id)} /> : null}
+      {!event.archived ? <ArchiveButton onClick={() => onArchiveEvent(event.id)}/> : null}
     </div>
   </div>
 );

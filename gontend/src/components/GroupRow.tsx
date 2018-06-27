@@ -1,35 +1,17 @@
 import React, {CSSProperties} from 'react';
 import {Link} from 'react-router-dom';
-import moment from 'moment';
 import cx from 'classnames';
 import {Group, Project} from '../types/api';
 import generateGradient from '../utils/generateGradient';
 import getRowClassName from '../utils/getRowClassName';
 import ArchiveButton from './ArchiveButton';
+import Timestamp from './Timestamp';
 
 interface GroupRowProps {
   group: Group;
   project?: Project;
   onArchiveGroup: any;
   maxNEvents: number;
-}
-
-function renderTimestamp(startTime, endTime) {
-  if (startTime === endTime) {
-    return (
-      <span className="timestamp">
-        <time dateTime={startTime}>{moment(startTime).fromNow()}</time>
-      </span>
-    );
-  } else {
-    return (
-      <span className="timestamp timerange">
-        <time dateTime={startTime}>{moment(startTime).fromNow()}</time>
-        ..
-        <time dateTime={endTime}>{moment(endTime).fromNow()}</time>
-      </span>
-    );
-  }
 }
 
 let severityGradient: string[];
@@ -61,7 +43,7 @@ const GroupRow: React.SFC<GroupRowProps> = ({group, project, onArchiveGroup, max
         {event.culprit ? <span>&nbsp;({event.culprit})</span> : null}
       </Link>
       <div className="meta">
-        {renderTimestamp(group.first_event_time, group.last_event_time)}
+        <Timestamp start={group.first_event_time} end={group.last_event_time}/>
         <span className="project">{project ? project.name : event.project_id}</span>
       </div>
       <div className="actions">
