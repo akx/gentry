@@ -55,5 +55,6 @@ def get_group_detail(request, id):
 def archive_group(request, id):
     group = _get_group_if_allowed(request, id)
     group.archived = True
+    group.event_set.update(archived=True)
     group.save()
     return EventGroupDetailSchema().dump(group).data
