@@ -1,4 +1,17 @@
 .NotFound-view {
   flex: 1;
   background: #111;
+  > div, > img {
+    pointer-events: none;
+    position: absolute;
+  }
+  .spark {
+    background: orangered;
+    opacity: .7;
+    width: 16px;
+    height: 16px;
+    border-radius: 16px;
+    mix-blend-mode: screen;
+    -webkit-mix-blend-mode: screen;
+  }
 }
