@@ -38,7 +38,7 @@ def _get_group_if_allowed(request, id, for_detail=False):
             qs = qs.prefetch_related(
                 Prefetch(
                     'event_set',
-                    queryset=Event.objects.select_related('project'),
+                    queryset=Event.objects.select_related('project').defer('data'),
                 ),
             )
 
