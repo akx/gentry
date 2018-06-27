@@ -3,8 +3,8 @@ import {EventsResponse, Project} from '../types/api';
 import {connectListView, ListView} from './ListView';
 import {archiveEvent} from '../actions';
 import EventRow from '../components/EventRow';
-import {fetchJSON} from '../utils';
 import update from 'immutability-helper';
+import fetchJSON from '../utils/fetchJSON';
 
 class EventListView extends ListView<EventsResponse> {
   protected getData(params: URLSearchParams): Promise<EventsResponse> {

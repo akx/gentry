@@ -1,15 +1,17 @@
-import React from 'react';
+import React, {CSSProperties} from 'react';
 import {Link} from 'react-router-dom';
 import moment from 'moment';
 import cx from 'classnames';
 import ArchiveButton from '../images/box-add.svg';
-import {Group, Project} from "../types/api";
-import {getRowClassName} from "../utils";
+import {Group, Project} from '../types/api';
+import generateGradient from '../utils/generateGradient';
+import getRowClassName from '../utils/getRowClassName';
 
 interface GroupRowProps {
   group: Group;
   project?: Project;
   onArchiveGroup: any;
+  maxNEvents: number;
 }
 
 function renderTimestamp(startTime, endTime) {
@@ -30,12 +32,28 @@ function renderTimestamp(startTime, endTime) {
   }
 }
 
-const GroupRow: React.SFC<GroupRowProps> = ({group, project, onArchiveGroup}) => {
+let severityGradient: string[];
+
+function getSeverityCSS(nEvents: number, maxNEvents: number): CSSProperties {
+  if (nEvents <= 1 || maxNEvents === 1) {
+    return {};
+  }
+  const i = nEvents / maxNEvents;
+  if (!severityGradient) {
+    severityGradient = generateGradient(['#000', '#d80', '#f00'], 32);
+  }
+  const index = Math.floor(i * (severityGradient.length - 1));
+  return {
+    color: severityGradient[index],
+  };
+}
+
+const GroupRow: React.SFC<GroupRowProps> = ({group, project, onArchiveGroup, maxNEvents}) => {
   const event = group.first_event!;
 
   return (
     <div className={cx(getRowClassName(event, group.archived))}>
-      <span className="occurrences">
+      <span className="occurrences" style={getSeverityCSS(group.n_events, maxNEvents)}>
           {group.n_events}
       </span>
       <Link to={`/group/${group.id}`} className="message">

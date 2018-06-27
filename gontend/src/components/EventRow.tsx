@@ -4,7 +4,7 @@ import moment from 'moment';
 import cx from 'classnames';
 import ArchiveButton from '../images/box-add.svg';
 import {Event, Project} from '../types/api';
-import {getRowClassName} from '../utils';
+import getRowClassName from '../utils/getRowClassName';
 
 
 interface EventRowProps {

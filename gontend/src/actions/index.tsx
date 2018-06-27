@@ -1,7 +1,7 @@
-import {fetchJSON} from '../utils';
 import {Action, ActionCreator, Dispatch} from 'redux';
 import {ThunkAction} from 'redux-thunk';
 import {State} from '../types/state';
+import fetchJSON from '../utils/fetchJSON';
 
 type GenericThunkAction = ThunkAction<void, State, void, Action>;
 

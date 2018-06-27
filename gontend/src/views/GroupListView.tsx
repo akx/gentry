@@ -2,10 +2,9 @@ import React from 'react';
 import {GroupsResponse, Project} from '../types/api';
 import {connectListView, ListView} from './ListView';
 // import {archiveGroup} from '../actions';
-// import GroupRow from '../components/GroupRow';
-import {fetchJSON} from '../utils';
 import update from 'immutability-helper';
 import GroupRow from '../components/GroupRow';
+import fetchJSON from '../utils/fetchJSON';
 
 class GroupListView extends ListView<GroupsResponse> {
   protected getData(params: URLSearchParams): Promise<GroupsResponse> {
@@ -42,14 +41,16 @@ class GroupListView extends ListView<GroupsResponse> {
       return <div>No groups – maybe there are none or your filters exclude all of them.</div>;
     }
     const projectsMap = new Map(projects.map<[number, Project]>((p) => [p.id, p]));
+    const maxNEvents = groups.reduce((num, g) => Math.max(num, g.n_events), 0);
     return (
-      <div>
+      <div className="groups-table s-table">
         {groups.map((group) => (
           <GroupRow
             key={group.id}
             group={group}
             project={projectsMap.get(group.first_event.project_id)}
             onArchiveGroup={this.handleArchiveGroup}
+            maxNEvents={maxNEvents}
           />
         ))}
       </div>
