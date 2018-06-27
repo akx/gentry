@@ -1,7 +1,7 @@
 import React from 'react';
 import {GroupsResponse, Project} from '../types/api';
 import {connectListView, ListView} from './ListView';
-// import {archiveGroup} from '../actions';
+import {archiveGroup} from '../actions';
 import update from 'immutability-helper';
 import GroupRow from '../components/GroupRow';
 import fetchJSON from '../utils/fetchJSON';
@@ -12,7 +12,6 @@ class GroupListView extends ListView<GroupsResponse> {
   }
 
   private handleArchiveGroup = (groupId) => {
-    /*
     this.props.dispatch(archiveGroup(groupId));
     // Pre-emptively set the group to be archived even if the request possibly failed.
     const response = this.state.response!;
@@ -23,7 +22,6 @@ class GroupListView extends ListView<GroupsResponse> {
       return e;
     });
     this.setState({response: {...response, groups}});
-    */
   };
 
   protected getTitle(): string {
