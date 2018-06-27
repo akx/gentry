@@ -16,3 +16,19 @@ def test_address_cleaning():
         level='fatal',
     )
     assert compute_group_hash(e1) == compute_group_hash(e2)
+
+
+def test_mysql_cleaning():
+    e1 = Event(
+        type='error',
+        message='IntegrityError: (1062, "Duplicate entry \'1-3-183\' for key x_b25cbd95_uniq") ()',
+        culprit='foo',
+        level='fatal',
+    )
+    e2 = Event(
+        type='error',
+        message='IntegrityError: (1062, "Duplicate entry \'1-3-61\' for key x_b25cbd95_uniq") ()',
+        culprit='foo',
+        level='fatal',
+    )
+    assert compute_group_hash(e1) == compute_group_hash(e2)
