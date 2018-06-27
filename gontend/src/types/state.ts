@@ -8,7 +8,8 @@ export interface SearchParams {
   type: null;
   limit: number;
   offset: number;
-  archived: '';
+  archived: '' | 'true' | 'false';
+  order: 'latest' | 'earliest' | 'most_common';
 }
 
 export interface Metadata {

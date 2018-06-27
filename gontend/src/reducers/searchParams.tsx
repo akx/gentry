@@ -8,6 +8,7 @@ const initialSearchParams: SearchParams = {
   limit: 30,
   offset: 0,
   archived: '',
+  order: 'latest',
 };
 
 const searchParamsReducer: Reducer<SearchParams> = (state = initialSearchParams, action) => {

@@ -55,13 +55,30 @@ abstract class ListView<TResponse extends ListResponse>
     });
   }
 
-  private handleChange = (key, value) => {
+  protected handleChange = (key, value) => {
     this.props.dispatch(updateSearchParams({[key]: value}));
   };
 
   protected abstract getData(params: URLSearchParams): Promise<TResponse>;
+
   protected abstract renderContent(): React.ReactChild;
+
   protected abstract getTitle(): string;
+
+  protected renderFilterBar(): React.ReactChild {
+    const {searchParams, projects, eventTypes, dispatch} = this.props;
+    const {response} = this.state;
+    return (
+      <FilterBar
+        searchParams={searchParams}
+        projects={projects}
+        eventTypes={eventTypes}
+        total={response ? response.total : 0}
+        handleChange={this.handleChange}
+        handleReset={() => this.props.dispatch(resetSearchParams())}
+      />
+    );
+  }
 
   public render() {
     const {searchParams, projects, eventTypes, dispatch} = this.props;
@@ -76,14 +93,7 @@ abstract class ListView<TResponse extends ListResponse>
             {this.getTitle()}
             {response ? ` (${response.total})` : ''}
           </h1>
-          <FilterBar
-            searchParams={searchParams}
-            projects={projects}
-            eventTypes={eventTypes}
-            total={response ? response.total : 0}
-            handleChange={this.handleChange}
-            handleReset={() => this.props.dispatch(resetSearchParams())}
-          />
+          {this.renderFilterBar()}
         </nav>
         <div className="content">{content}</div>
       </div>
