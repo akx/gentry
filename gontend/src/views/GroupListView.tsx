@@ -1,10 +1,11 @@
 import React from 'react';
 import {GroupsResponse, Project} from '../types/api';
 import {connectListView, ListView} from './ListView';
-import {archiveGroup} from '../actions';
+import {archiveGroup, resetSearchParams} from '../actions';
 import update from 'immutability-helper';
 import GroupRow from '../components/GroupRow';
 import fetchJSON from '../utils/fetchJSON';
+import FilterBar from '../components/FilterBar';
 
 class GroupListView extends ListView<GroupsResponse> {
   protected getData(params: URLSearchParams): Promise<GroupsResponse> {
@@ -26,6 +27,23 @@ class GroupListView extends ListView<GroupsResponse> {
 
   protected getTitle(): string {
     return 'Groups';
+  }
+
+
+  protected renderFilterBar(): React.ReactChild {
+    const {searchParams, projects, eventTypes, dispatch} = this.props;
+    const {response} = this.state;
+    return (
+      <FilterBar
+        searchParams={searchParams}
+        projects={projects}
+        eventTypes={eventTypes}
+        total={response ? response.total : 0}
+        handleChange={this.handleChange}
+        handleReset={() => this.props.dispatch(resetSearchParams())}
+        showOrder
+      />
+    );
   }
 
   protected renderContent(): React.ReactChild {
