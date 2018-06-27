@@ -10,6 +10,7 @@ import EventTags from '../components/EventTags';
 import Stacktrace from '../components/Stacktrace';
 import RawDataContainer from '../components/RawDataContainer';
 import fetchJSON from '../utils/fetchJSON';
+import GroupButton from '../components/GroupButton';
 
 interface EventDetailState {
   event?: EventDetail;
@@ -52,6 +53,13 @@ export default class EventDetailView extends React.Component<EventDetailProps, E
           <h1>
             {project ? project.name : event.project_id} / Event {event.id} &ndash; {event.message}
           </h1>
+          <div className="actions">
+            {
+              event.group && event.group.n_events > 1 ?
+                <GroupButton onClick={() => this.props.history.push(`/group/${event.group!.id}`)}/>
+                : null
+            }
+          </div>
         </nav>
         <div className="EventDetail-inner">
           <Tabs
