@@ -8,9 +8,9 @@ from gore.models import Event, EventGroup
 from lepo.excs import ExceptionalResponse
 
 
-def get_group_list(request, limit=10, offset=0, project=None, search=None, type=None, archived=None):
+def get_group_list(request, limit=10, offset=0, project=None, search=None, type=None, archived=None, order=None):
     check_authenticated(request)
-    qs = EventGroup.objects.all().prefetch_related('first_event').order_by('-last_event_time')
+    qs = EventGroup.objects.all().prefetch_related('first_event')
     if project:
         qs = qs.filter(project_id=project)
     if type:
@@ -19,6 +19,13 @@ def get_group_list(request, limit=10, offset=0, project=None, search=None, type=
         qs = qs.filter(Q(first_event__message__icontains=search) | Q(first_event__culprit__icontains=search))
     if archived is not None:
         qs = qs.filter(archived=archived)
+
+    if order == 'earliest':
+        qs = qs.order_by('first_event_time')
+    elif order == 'most_common':
+        qs = qs.order_by('-n_events')
+    else:  # aka "latest"
+        qs = qs.order_by('-last_event_time')
 
     total = qs.count()
     qs = qs[offset:offset + limit]

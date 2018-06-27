@@ -108,6 +108,9 @@ paths:
     - name: archived
       in: query
       type: boolean
+    - name: order
+      in: query
+      type: string
     get:
       operationId: "getGroupList"
       responses:
