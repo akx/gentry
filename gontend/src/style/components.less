@@ -32,9 +32,11 @@ nav.top {
   padding: @pad;
   background: @tea-2;
   border-bottom: 1px solid @tea-1;
+  display: flex;
 
   h1 {
     margin: 0;
+    flex: 1;
   }
 
   &.event-exception {
@@ -46,5 +48,10 @@ nav.top {
   }
   &.event-log-30 {
     background: @info-color;
+  }
+
+  .actions {
+    flex: 0;
+
   }
 }

@@ -1,4 +1,3 @@
-
 html, body {
   min-height: 100vh;
 }
@@ -10,28 +9,29 @@ body {
 #root {
   display: flex;
   flex: 1;
-}
-
-.main-container {
-  display: flex;
-  flex: 1;
+  flex-direction: column;
 }
 
 nav.main {
   background: @blue;
-  width: 70px;
   top: 0;
   bottom: 0;
   padding: @pad;
+  display: flex;
+  align-items: center;
   img {
-    width: 80%;
-    margin: auto;
+    height: 2em;
     display: block;
   }
-}
-
-main {
-  flex: 1;
+  a {
+    min-width: 2em;
+    color: #fff;
+    text-decoration: none;
+    margin-right: 1em;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 .flex {

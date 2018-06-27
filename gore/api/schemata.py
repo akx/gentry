@@ -1,9 +1,14 @@
 from marshmallow import Schema, fields
 
 
+class ProjectSchema(Schema):
+    class Meta:
+        fields = ('id', 'slug', 'name')
+
+
 class EventGroupSubSchema(Schema):
     class Meta:
-        fields = ('id', 'group_hash', 'first_event_time', 'last_event_time', 'n_events', 'archived')
+        fields = ('id', 'group_hash', 'first_event_time', 'last_event_time', 'project_id', 'n_events', 'archived')
 
 
 class EventSchema(Schema):
@@ -22,14 +27,10 @@ class EventGroupListSchema(EventGroupSubSchema):
 
 class EventGroupDetailSchema(EventGroupListSchema):
     events = fields.Nested(EventSchema, exclude=('group',), many=True)
+    project = fields.Nested(ProjectSchema)
 
     class Meta:
-        fields = EventGroupListSchema.Meta.fields + ('events',)
-
-
-class ProjectSchema(Schema):
-    class Meta:
-        fields = ('id', 'slug', 'name')
+        fields = EventGroupListSchema.Meta.fields + ('events', 'project')
 
 
 class EventDetailSchema(Schema):

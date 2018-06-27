@@ -4,26 +4,26 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.4",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
+    "awesome-typescript-loader": "^5.2.0",
     "css-loader": "^0.28.11",
-    "eslint": "^4.3.0",
-    "eslint-config-airbnb": "^17.0.0",
-    "eslint-plugin-import": "^2.13.0",
-    "eslint-plugin-jsx-a11y": "^6.0.3",
-    "eslint-plugin-react": "^7.10.0",
     "file-loader": "^1.1.11",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "prettier": "^1.13.6",
     "style-loader": "^0.21.0",
+    "tslint": "^5.10.0",
+    "typescript": "^2.9.2",
     "url-loader": "^1.0.1",
     "webpack": "^4.12.1",
     "webpack-command": "^0.3.0"
   },
   "dependencies": {
+    "@types/lodash": "^4.14.110",
+    "@types/node": "^10.3.6",
+    "@types/react": "^16.4.2",
+    "@types/react-redux": "^6.0.3",
+    "@types/react-router": "^4.0.27",
+    "@types/react-router-dom": "^4.2.7",
     "classnames": "^2.2.6",
     "immutability-helper": "^2.7.1",
     "lodash": "^4.17.10",
@@ -41,7 +41,7 @@
   "scripts": {
     "dev": "webpack --watch --mode=development",
     "build": "webpack --progress --mode=production",
-    "lint": "eslint --ext .jsx --ext .js src",
+    "lint": "tslint src/**.ts*",
     "prettify": "prettier --write 'src/**/*.js*'"
   },
   "prettier": {
@@ -49,6 +49,6 @@
     "parser": "flow",
     "printWidth": 120,
     "singleQuote": true,
-    "trailingComma": "es5"
+    "trailingComma": "all"
   }
 }
