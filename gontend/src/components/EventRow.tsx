@@ -2,9 +2,9 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import moment from 'moment';
 import cx from 'classnames';
-import ArchiveButton from '../images/box-add.svg';
 import {Event, Project} from '../types/api';
 import getRowClassName from '../utils/getRowClassName';
+import ArchiveButton from './ArchiveButton';
 
 
 interface EventRowProps {
@@ -28,11 +28,7 @@ const EventRow: React.SFC<EventRowProps> = ({event, project, onArchiveEvent}) =>
     </div>
 
     <div className="actions">
-      {!event.archived ? (
-        <button type="button" onClick={() => onArchiveEvent(event.id)}>
-          <img src={ArchiveButton} alt="Archive" />
-        </button>
-      ) : null}
+      {!event.archived ? <ArchiveButton onClick={() => onArchiveEvent(event.id)} /> : null}
     </div>
   </div>
 );

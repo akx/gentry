@@ -37,6 +37,7 @@ export interface GroupBase {
   first_event_time: ISO8601;
   group_hash: string;
   id: number;
+  project_id: number;
   last_event_time: ISO8601;
   n_events: number;
 }
@@ -47,6 +48,7 @@ export interface Group extends GroupBase {
 
 export interface GroupDetail extends GroupBase {
   events: Event[];
+  project: Project;
 }
 
 export interface Project {

@@ -1,10 +1,9 @@
 import React from 'react';
 import {EventsResponse, Project} from '../types/api';
 import {connectListView, ListView} from './ListView';
-import {archiveEvent} from '../actions';
 import EventRow from '../components/EventRow';
-import update from 'immutability-helper';
 import fetchJSON from '../utils/fetchJSON';
+import handleArchiveEvent from '../utils/handleArchiveEvent';
 
 class EventListView extends ListView<EventsResponse> {
   protected getData(params: URLSearchParams): Promise<EventsResponse> {
@@ -12,15 +11,9 @@ class EventListView extends ListView<EventsResponse> {
   }
 
   private handleArchiveEvent = (eventId) => {
-    this.props.dispatch(archiveEvent(eventId));
-    // Pre-emptively set the event to be archived even if the request possibly failed.
     const response = this.state.response!;
-    const events = response.events.map((e) => {
-      if (e.id === eventId) {
-        return update(e, {archived: {$set: true}});
-      }
-      return e;
-    });
+    const events = response.events;
+    const newEvents = handleArchiveEvent(this.props.dispatch, events, eventId);
     this.setState({response: {...response, events}});
   };
 

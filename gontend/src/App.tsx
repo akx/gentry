@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {Link, Redirect, Route, Switch} from 'react-router-dom';
 import EventDetailView from './views/EventDetailView';
 import EventListView from './views/EventListView';
+import GroupDetailView from './views/GroupDetailView';
 import GroupListView from './views/GroupListView';
 import Tophat from './images/tophat.svg';
 import {AppThunkDispatch} from './types/state';
@@ -32,6 +33,7 @@ class App extends React.Component<AppProps, {}> {
           <Switch>
             <Route path="/event/:id" component={EventDetailView} />
             <Route path="/events" exact component={EventListView} />
+            <Route path="/group/:id" component={GroupDetailView} />
             <Route path="/groups" exact component={GroupListView} />
             <Redirect path="/" to="/groups" exact />
           </Switch>

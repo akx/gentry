@@ -2,10 +2,10 @@ import React, {CSSProperties} from 'react';
 import {Link} from 'react-router-dom';
 import moment from 'moment';
 import cx from 'classnames';
-import ArchiveButton from '../images/box-add.svg';
 import {Group, Project} from '../types/api';
 import generateGradient from '../utils/generateGradient';
 import getRowClassName from '../utils/getRowClassName';
+import ArchiveButton from './ArchiveButton';
 
 interface GroupRowProps {
   group: Group;
@@ -65,11 +65,7 @@ const GroupRow: React.SFC<GroupRowProps> = ({group, project, onArchiveGroup, max
         <span className="project">{project ? project.name : event.project_id}</span>
       </div>
       <div className="actions">
-        {!group.archived ? (
-          <button type="button" onClick={() => onArchiveGroup(group.id)}>
-            <img src={ArchiveButton} alt="Archive" />
-          </button>
-        ) : null}
+        {!group.archived ? <ArchiveButton onClick={() => onArchiveGroup(group.id)}/> : null}
       </div>
     </div>
   );

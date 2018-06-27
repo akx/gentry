@@ -9,6 +9,7 @@ import EventRequestInfo from '../components/EventRequestInfo';
 import EventTags from '../components/EventTags';
 import Stacktrace from '../components/Stacktrace';
 import RawDataContainer from '../components/RawDataContainer';
+import fetchJSON from '../utils/fetchJSON';
 
 interface EventDetailState {
   event?: EventDetail;
@@ -25,13 +26,9 @@ export default class EventDetailView extends React.Component<EventDetailProps, E
 
   public componentDidMount() {
     const {id} = this.props.match.params;
-    fetch(`/api/event/${id}`, {
-      credentials: 'same-origin',
-    })
-      .then((r) => r.json())
-      .then((event) => {
-        this.setState({event});
-      });
+    fetchJSON<EventDetail>(`/api/event/${id}`).then((event) => {
+      this.setState({event});
+    });
   }
 
   public render() {
@@ -71,9 +68,9 @@ export default class EventDetailView extends React.Component<EventDetailProps, E
               <div className="flex">
                 <div>
                   <h2>General</h2>
-                  <EventBits event={event} />
-                  <br />
-                  <EventTags event={event} />
+                  <EventBits event={event}/>
+                  <br/>
+                  <EventTags event={event}/>
                 </div>
                 <div className="fi1 ml">
                   <h2>Group</h2>
@@ -81,12 +78,12 @@ export default class EventDetailView extends React.Component<EventDetailProps, E
                 </div>
               </div>
             </div>
-            <div id="breadcrumbs">{data.breadcrumbs ? <Breadcrumbs breadcrumbs={data.breadcrumbs} /> : null}</div>
-            <div id="exception">{data.exception ? <EventExceptionInfo exceptionData={data.exception} /> : null}</div>
-            <div id="stacktrace">{data.stacktrace ? <Stacktrace stacktrace={data.stacktrace} /> : null}</div>
-            <div id="request">{data.request ? <EventRequestInfo requestData={data.request} /> : null}</div>
+            <div id="breadcrumbs">{data.breadcrumbs ? <Breadcrumbs breadcrumbs={data.breadcrumbs}/> : null}</div>
+            <div id="exception">{data.exception ? <EventExceptionInfo exceptionData={data.exception}/> : null}</div>
+            <div id="stacktrace">{data.stacktrace ? <Stacktrace stacktrace={data.stacktrace}/> : null}</div>
+            <div id="request">{data.request ? <EventRequestInfo requestData={data.request}/> : null}</div>
             <div id="raw">
-              <RawDataContainer data={data} />
+              <RawDataContainer data={data}/>
             </div>
           </Tabs>
         </div>
