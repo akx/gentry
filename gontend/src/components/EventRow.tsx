@@ -20,18 +20,19 @@ const EventRow: React.SFC<EventRowProps> = ({event, project, onArchiveEvent}) =>
       {event.message}
       {event.culprit ? <span>&nbsp;({event.culprit})</span> : null}
     </Link>
+    <div className="meta">
+      <span className="timestamp" title={event.timestamp}>
+        {moment(event.timestamp).fromNow()}
+      </span>
+      <span className="project">{project ? project.name : event.project_id}</span>
+    </div>
+
     <div className="actions">
       {!event.archived ? (
         <button type="button" onClick={() => onArchiveEvent(event.id)}>
           <img src={ArchiveButton} alt="Archive" />
         </button>
       ) : null}
-    </div>
-    <div className="meta">
-      <span className="timestamp" title={event.timestamp}>
-        {moment(event.timestamp).fromNow()}
-      </span>
-      <span className="project">{project ? project.name : event.project_id}</span>
     </div>
   </div>
 );

@@ -40,7 +40,7 @@ class EventListView extends ListView<EventsResponse> {
     }
     const projectsMap = new Map(projects.map<[number, Project]>((p) => [p.id, p]));
     return (
-      <div>
+      <div className="events-table s-table">
         {events.map((event) => (
           <EventRow
             key={event.id}

@@ -2,18 +2,37 @@
   padding: @pad;
 }
 
-.event-row {
+.s-table {
   border: 1px solid @gray-2;
-  border-left-width: 8px;
-  border-radius: 4px;
-  margin-bottom: @pad;
   padding: @pad;
+}
+
+.type-bg-gen(@color) {
+  border-left-color: @color;
+  background: linear-gradient(90deg, fade(@color, 20%), fade(@color, 0%) 5vw);
+}
+
+.s-row {
+  border-left: @pad / 2 solid @gray-2;
+  margin-bottom: @pad;
   display: flex;
   contain: content;
+  &:hover {
+    outline: 1px solid @gray-2;
+  }
+
+  a {
+    text-decoration: none;
+    padding: @pad;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 
   .meta {
+    padding: @pad;
     color: fade(black, 40%);
-    &>* {
+    & > * {
       padding-left: @pad;
     }
   }
@@ -25,6 +44,7 @@
     }
   }
   .actions {
+    padding: @pad;
     button {
       margin: 0;
       height: auto;
@@ -41,6 +61,7 @@
     }
   }
   .occurrences {
+    padding: @pad 0;
     display: inline-block;
     width: 2em;
     margin-right: 0.5em;
@@ -48,16 +69,13 @@
   }
 
   &.r-exception {
-    border-color: @exception-color;
-    background: fade(@exception-color, 20%);
+    .type-bg-gen(@exception-color);
   }
   &.r-log-40, &.r-log-50 {
-    border-color: @warning-color;
-    background: fade(@warning-color, 20%);
+    .type-bg-gen(@warning-color);
   }
   &.r-log-30 {
-    border-color: @info-color;
-    background: fade(@info-color, 20%);
+    .type-bg-gen(@info-color);
   }
   &.r-archived {
     opacity: 0.7;

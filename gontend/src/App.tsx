@@ -20,7 +20,7 @@ class App extends React.Component<AppProps, {}> {
 
   public render() {
     return (
-      <div className="main-container">
+      <React.Fragment>
         <nav className="main">
           <Link to="/">
             <img alt="Logo" src={Tophat} />
@@ -34,7 +34,7 @@ class App extends React.Component<AppProps, {}> {
             <Redirect path="/" to="/groups" exact />
           </Switch>
         </main>
-      </div>
+      </React.Fragment>
     );
   }
 }
