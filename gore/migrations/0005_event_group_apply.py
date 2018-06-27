@@ -4,15 +4,13 @@ from __future__ import unicode_literals
 
 from django.db import migrations, transaction
 
-from gore.utils.event_grouper import group_events
-
 
 def group_all_events(apps, schema_editor):
-    from gore.models import Project
+    # Using apps.get_model() won't work here anyway,
+    # so we can use the utility in gore.utils.event_groups
+    import gore.utils.event_grouper as eg
     with transaction.atomic():
-        for project in Project.objects.all():  # Using apps.get_model() won't work here.
-            events = project.event_set.all().order_by('timestamp')
-            group_events(project, events)
+        eg.group_all_events()
 
 
 class Migration(migrations.Migration):
