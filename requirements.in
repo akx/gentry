@@ -1,8 +1,9 @@
-django
 django-environ
 django-polymorphic
-lepo
+django<3.0
+lepo~=0.1.0
+marshmallow<3.0  # via lepo (doesn't have it properly pinned)
 python-dateutil
 PyYAML
 requests
-whitenoise
+whitenoise<4.0

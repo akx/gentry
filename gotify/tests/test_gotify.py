@@ -8,15 +8,14 @@ from django.utils.crypto import get_random_string
 from django.utils.encoding import force_text
 
 from gore.models import Event
-# noinspection PyUnresolvedReferences
-from gore.tests.conftest import project, raven_with_project  # noqa
+from gore.tests.conftest import project, raven_with_project   # noqa: F401
 from gore.tests.data import exc_payload
 from gotify.models import SlackNotifier
 from gotify.models.email_notifier import EmailNotifier
 
 
 @pytest.mark.django_db  # noqa: F811
-def test_email_notifier(project, settings):
+def test_email_notifier(project, settings):  # noqa: F811
     settings.GOTIFY_IMMEDIATE = False
     en = EmailNotifier.objects.create(emails='test@example.com')
     en.projects.add(project)
@@ -28,7 +27,7 @@ def test_email_notifier(project, settings):
 
 
 @pytest.mark.django_db  # noqa: F811
-def test_slack_notifier(project, settings):
+def test_slack_notifier(project, settings):  # noqa: F811
     settings.GOTIFY_IMMEDIATE = False
     sn = SlackNotifier.objects.create(
         webhook_url='http://example.com',
@@ -49,7 +48,7 @@ def test_slack_notifier(project, settings):
 
 
 @pytest.mark.django_db  # noqa: F811
-def test_immediate_notify(raven_with_project, settings):
+def test_immediate_notify(raven_with_project, settings):  # noqa: F811
     settings.GOTIFY_IMMEDIATE = True
     project = raven_with_project.project  # noqa: F811
     en = EmailNotifier.objects.create(emails='test@example.com')
