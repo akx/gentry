@@ -21,7 +21,7 @@ unit_to_relativedelta_kwarg = {
 def parse_relative_delta(s):
     kwargs = Counter()
     for atom in re.split(r'[,\s]+', s):
-        atom_m = re.match('(\d+)\s*(.+)', atom)
+        atom_m = re.match(r'(\d+)\s*(.+)', atom)
         if not atom_m:
             raise ValueError('can not parse time atom %s' % atom_m)
         qty, unit = atom_m.groups()
