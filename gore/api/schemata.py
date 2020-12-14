@@ -8,14 +8,32 @@ class ProjectSchema(Schema):
 
 class EventGroupSubSchema(Schema):
     class Meta:
-        fields = ('id', 'group_hash', 'first_event_time', 'last_event_time', 'project_id', 'n_events', 'archived')
+        fields = (
+            'id',
+            'group_hash',
+            'first_event_time',
+            'last_event_time',
+            'project_id',
+            'n_events',
+            'archived',
+        )
 
 
 class EventSchema(Schema):
     group = fields.Nested(EventGroupSubSchema)
 
     class Meta:
-        fields = ('id', 'message', 'culprit', 'level', 'type', 'timestamp', 'project_id', 'archived', 'group')
+        fields = (
+            'id',
+            'message',
+            'culprit',
+            'level',
+            'type',
+            'timestamp',
+            'project_id',
+            'archived',
+            'group',
+        )
 
 
 class EventGroupListSchema(EventGroupSubSchema):

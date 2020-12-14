@@ -6,7 +6,11 @@ from polymorphic.admin.childadmin import PolymorphicChildModelAdmin
 from .models import Notifier
 
 for cls in Notifier.__subclasses__():
-    admin_cls = type('%sAdmin' % cls.__name__, (PolymorphicChildModelAdmin,), {'base_model': Notifier})
+    admin_cls = type(
+        '%sAdmin' % cls.__name__,
+        (PolymorphicChildModelAdmin,),
+        {'base_model': Notifier},
+    )
     try:
         admin.site.register(cls, admin_cls)
     except AlreadyRegistered:  # pragma: no cover

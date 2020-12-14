@@ -13,21 +13,45 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='EventGroup',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('group_hash', models.CharField(max_length=64)),
-                ('first_event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gore.Event')),
-                ('first_event_time', models.DateTimeField(default=django.utils.timezone.now, editable=False)),
-                ('last_event_time', models.DateTimeField(default=django.utils.timezone.now, editable=False)),
+                (
+                    'first_event',
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gore.Event'),
+                ),
+                (
+                    'first_event_time',
+                    models.DateTimeField(default=django.utils.timezone.now, editable=False),
+                ),
+                (
+                    'last_event_time',
+                    models.DateTimeField(default=django.utils.timezone.now, editable=False),
+                ),
                 ('n_events', models.IntegerField(default=0, editable=False)),
                 ('archived', models.BooleanField(default=False, db_index=True)),
-                ('project', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gore.Project')),
+                (
+                    'project',
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gore.Project'),
+                ),
             ],
         ),
         migrations.AddField(
             model_name='event',
             name='group',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE,
-                to='gore.EventGroup'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='gore.EventGroup',
+            ),
         ),
         migrations.AlterUniqueTogether(
             name='eventgroup',

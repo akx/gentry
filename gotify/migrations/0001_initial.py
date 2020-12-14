@@ -17,7 +17,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Notifier',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('enabled', models.BooleanField(default=True)),
             ],
             options={
@@ -27,17 +35,38 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='NotifierEventLog',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    'id',
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name='ID',
+                    ),
+                ),
                 ('success', models.BooleanField()),
                 ('error', models.CharField(blank=True, max_length=128)),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
-                ('event', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gore.Event')),
+                (
+                    'event',
+                    models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='gore.Event'),
+                ),
             ],
         ),
         migrations.CreateModel(
             name='EmailNotifier',
             fields=[
-                ('notifier_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='gotify.Notifier')),
+                (
+                    'notifier_ptr',
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to='gotify.Notifier',
+                    ),
+                ),
                 ('emails', models.TextField()),
             ],
             options={
@@ -48,7 +77,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SlackNotifier',
             fields=[
-                ('notifier_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='gotify.Notifier')),
+                (
+                    'notifier_ptr',
+                    models.OneToOneField(
+                        auto_created=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        parent_link=True,
+                        primary_key=True,
+                        serialize=False,
+                        to='gotify.Notifier',
+                    ),
+                ),
                 ('webhook_url', models.URLField()),
                 ('message_header_suffix', models.CharField(blank=True, max_length=128)),
             ],
@@ -61,12 +100,22 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='notifiereventlog',
             name='notifier',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='event_logs', to='gotify.Notifier'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='event_logs',
+                to='gotify.Notifier',
+            ),
         ),
         migrations.AddField(
             model_name='notifier',
             name='polymorphic_ctype',
-            field=models.ForeignKey(editable=False, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='polymorphic_gotify.notifier_set+', to='contenttypes.ContentType'),
+            field=models.ForeignKey(
+                editable=False,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name='polymorphic_gotify.notifier_set+',
+                to='contenttypes.ContentType',
+            ),
         ),
         migrations.AddField(
             model_name='notifier',

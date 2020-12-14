@@ -19,7 +19,7 @@ def url_root_middleware(get_response):
 class GentryWhiteNoiseMiddleware(WhiteNoiseMiddleware):
     def find_file(self, url):
         if url.startswith(self.static_prefix):
-            path = finders.find(url[len(self.static_prefix):])
+            path = finders.find(url[len(self.static_prefix) :])
             if path:
                 try:
                     return self.get_static_file(path, url)

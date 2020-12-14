@@ -10,11 +10,7 @@ def validate_auth_header(request, project):
     if not auth_header.startswith('Sentry '):
         raise InvalidAuth('Not a Sentry auth header')
 
-    auth_header = {
-        key: value
-        for (key, value)
-        in (kv.split('=') for kv in auth_header[7:].split(', '))
-    }
+    auth_header = {key: value for (key, value) in (kv.split('=') for kv in auth_header[7:].split(', '))}
     try:
         if not Key.objects.filter(
             project_id=project,

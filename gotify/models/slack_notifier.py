@@ -38,6 +38,6 @@ class SlackNotifier(Notifier):
         payload = {'text': text}
         resp = requests.post(
             url=self.webhook_url,
-            json={key: value for (key, value) in payload.items() if key and value}
+            json={key: value for (key, value) in payload.items() if key and value},
         )
         resp.raise_for_status()

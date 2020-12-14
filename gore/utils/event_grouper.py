@@ -17,15 +17,17 @@ def clean_group_hash_component(s):
 
 
 def compute_group_hash(event):
-    return hashlib.sha256(b'\x00'.join(
-        force_bytes(clean_group_hash_component(s))
-        for s in (
-            event.type,
-            event.message,
-            event.culprit,
-            event.level,
+    return hashlib.sha256(
+        b'\x00'.join(
+            force_bytes(clean_group_hash_component(s))
+            for s in (
+                event.type,
+                event.message,
+                event.culprit,
+                event.level,
+            )
         )
-    )).hexdigest()
+    ).hexdigest()
 
 
 def group_events(project, events):
@@ -44,7 +46,7 @@ def group_events(project, events):
 
 def group_event(project, event, group_cache=None):
     group_hash = compute_group_hash(event)
-    group = (group_cache.get(group_hash) if group_cache is not None else None)
+    group = group_cache.get(group_hash) if group_cache is not None else None
     if not group:
         group, created = EventGroup.objects.get_or_create(
             project_id=project.id,

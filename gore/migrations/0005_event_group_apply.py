@@ -7,6 +7,7 @@ def group_all_events(apps, schema_editor):
     # Using apps.get_model() won't work here anyway,
     # so we can use the utility in gore.utils.event_groups
     import gore.utils.event_grouper as eg
+
     with transaction.atomic():
         eg.group_all_events()
         eg.update_all_group_archival()
