@@ -37,7 +37,7 @@ def test_exception_capture(raven_with_project):
 
 @pytest.mark.django_db
 def test_log_capture(raven_with_project):
-    logger_id = get_random_string()
+    logger_id = get_random_string(12)
     logger = logging.getLogger(logger_id)
     logger.setLevel(logging.WARN)
     logger.addHandler(SentryHandler(client=raven_with_project))

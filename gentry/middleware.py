@@ -1,7 +1,8 @@
-from django.utils.lru_cache import lru_cache
+from functools import lru_cache
+
 from django.contrib.staticfiles import finders
 from whitenoise.middleware import WhiteNoiseMiddleware
-from whitenoise.utils import IsDirectoryError
+from whitenoise.responders import IsDirectoryError
 
 from gentry import settings
 from gentry.utils import set_detected_url_root

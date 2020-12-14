@@ -1,7 +1,7 @@
 import hashlib
 import re
 
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_bytes, force_str
 
 from gore.models import EventGroup, Project
 
@@ -10,7 +10,7 @@ MYSQL_DUPLICATE_RE = re.compile("Duplicate entry '(.+?)' for key")
 
 
 def clean_group_hash_component(s):
-    s = force_text(s or '')
+    s = force_str(s or '')
     s = PYTHON_ADDRESS_RE.sub('x', s)  # Clean out `at 0xFFFFF`(i.e. Python object addresses)
     s = MYSQL_DUPLICATE_RE.sub('x', s)  # Clean out MySQL's duplicate keys "Duplicate entry '1-3-183' for key ..."
     return s

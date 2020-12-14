@@ -1,11 +1,11 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import JsonResponse
+from lepo.excs import ExceptionalResponse
 
+from gore.api.schemata import EventDetailSchema, EventSchema
 from gore.api.utils import check_authenticated
 from gore.models import Event
-from gore.api.schemata import EventSchema, EventDetailSchema
-from lepo.excs import ExceptionalResponse
 
 
 def get_event_list(request, limit=10, offset=0, project=None, search=None, type=None, archived=None, group=None):

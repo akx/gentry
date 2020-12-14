@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Min, Max, Count
+from django.db.models import Count, Max, Min
 from django.utils.timezone import now
 
 from gentry.utils import make_absolute_uri

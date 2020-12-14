@@ -2,7 +2,7 @@ import json
 
 from django.db import models
 from django.utils import timezone
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.timezone import now
 
 from gentry.utils import make_absolute_uri
@@ -24,8 +24,8 @@ class EventManager(models.Manager):
         return self.create(
             data=json.dumps(body),
             event_id=body['event_id'],
-            message=force_text(body.get('message', ''))[:128],
-            culprit=force_text(body.get('culprit', ''))[:128],
+            message=force_str(body.get('message', ''))[:128],
+            culprit=force_str(body.get('culprit', ''))[:128],
             level=body.get('level', ''),
             project_id=project_id,
             timestamp=(timestamp or now()),

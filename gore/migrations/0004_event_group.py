@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 import django.utils.timezone
 from django.db import migrations, models
 
+
 class Migration(migrations.Migration):
     dependencies = [
         ('gore', '0003_event_archived'),

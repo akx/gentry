@@ -7,7 +7,7 @@ from datetime import datetime
 from django.conf import settings
 from django.db import transaction
 from django.http import JsonResponse
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.timezone import make_aware
 from pytz import UTC
 
@@ -33,7 +33,7 @@ def store_event(request, project):
     elif auth_header.get('sentry_version') == '5':  # Support older versions of Raven
         body = zlib.decompress(base64.b64decode(body)).decode('utf8')
 
-    body = json.loads(force_text(body))
+    body = json.loads(force_str(body))
     timestamp = make_aware(datetime.fromtimestamp(float(auth_header['sentry_timestamp'])), timezone=UTC)
     with transaction.atomic():
         event = Event.objects.create_from_raven(project_id=project, body=body, timestamp=timestamp)
