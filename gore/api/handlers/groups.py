@@ -1,14 +1,23 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Prefetch, Q
 from django.http import JsonResponse
+from lepo.excs import ExceptionalResponse
 
 from gore.api.schemata import EventGroupDetailSchema, EventGroupListSchema
 from gore.api.utils import check_authenticated
 from gore.models import Event, EventGroup
-from lepo.excs import ExceptionalResponse
 
 
-def get_group_list(request, limit=10, offset=0, project=None, search=None, type=None, archived=None, order=None):
+def get_group_list(
+    request,
+    limit=10,
+    offset=0,
+    project=None,
+    search=None,
+    type=None,
+    archived=None,
+    order=None,
+):
     check_authenticated(request)
     qs = EventGroup.objects.all().prefetch_related('first_event')
     if project:
@@ -28,7 +37,7 @@ def get_group_list(request, limit=10, offset=0, project=None, search=None, type=
         qs = qs.order_by('-last_event_time')
 
     total = qs.count()
-    qs = qs[offset:offset + limit]
+    qs = qs[offset : offset + limit]
     return {
         'total': total,
         'offset': offset,

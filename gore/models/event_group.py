@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Min, Max, Count
+from django.db.models import Count, Max, Min
 from django.utils.timezone import now
 
 from gentry.utils import make_absolute_uri
@@ -21,7 +21,7 @@ class EventGroup(models.Model):
         return '[%s] - group of %d events' % (self.project, self.n_events)
 
     def get_display_url(self):
-        return make_absolute_uri('/#/group/{id}'.format(id=self.id))
+        return make_absolute_uri(f'/#/group/{self.id}')
 
     def cache_values(self):
         d = self.event_set.aggregate(

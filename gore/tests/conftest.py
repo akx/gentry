@@ -19,7 +19,7 @@ def project():
 @pytest.fixture()
 def raven_with_project(client, project):
     raven_client = _get_mock_raven_client(
-        dsn='http://%s:%s@localhost/%s' % ('aaa', 'bbb', project.id),
+        dsn='http://{}:{}@localhost/{}'.format('aaa', 'bbb', project.id),
         django_client=client,
     )
     raven_client.project = project

@@ -1,14 +1,23 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django.http import JsonResponse
-
-from gore.api.utils import check_authenticated
-from gore.models import Event
-from gore.api.schemata import EventSchema, EventDetailSchema
 from lepo.excs import ExceptionalResponse
 
+from gore.api.schemata import EventDetailSchema, EventSchema
+from gore.api.utils import check_authenticated
+from gore.models import Event
 
-def get_event_list(request, limit=10, offset=0, project=None, search=None, type=None, archived=None, group=None):
+
+def get_event_list(
+    request,
+    limit=10,
+    offset=0,
+    project=None,
+    search=None,
+    type=None,
+    archived=None,
+    group=None,
+):
     check_authenticated(request)
     qs = Event.objects.all().defer('data').prefetch_related('group').order_by('-id')
     if project:
@@ -23,7 +32,7 @@ def get_event_list(request, limit=10, offset=0, project=None, search=None, type=
         qs = qs.filter(group_id=group)
 
     total = qs.count()
-    qs = qs[offset:offset + limit]
+    qs = qs[offset : offset + limit]
     return {
         'total': total,
         'offset': offset,

@@ -33,11 +33,11 @@ class SlackNotifier(Notifier):
         if event.culprit:
             text += '\n:point_right: %s' % event.culprit
         if emoji:
-            text = '%s %s' % (emoji, text)
+            text = f'{emoji} {text}'
 
         payload = {'text': text}
         resp = requests.post(
             url=self.webhook_url,
-            json={key: value for (key, value) in payload.items() if key and value}
+            json={key: value for (key, value) in payload.items() if key and value},
         )
         resp.raise_for_status()

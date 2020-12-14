@@ -35,4 +35,4 @@ def parse_relative_delta(s):
 def format_timestamp(timestamp):
     if timestamp.date() != now().date():
         return timestamp.strftime('%Y-%m-%d %H:%M:%S')
-    return '%s ago (%s)' % (timesince(timestamp), timestamp.strftime('%H:%M:%S'))
+    return '{} ago ({})'.format(timesince(timestamp), timestamp.strftime('%H:%M:%S'))

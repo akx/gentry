@@ -1,5 +1,4 @@
 from django.http import JsonResponse
-
 from lepo.excs import ExceptionalResponse
 
 

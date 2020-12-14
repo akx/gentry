@@ -1,4 +1,4 @@
-autopep8
+black
 flake8
 isort
 pip-tools

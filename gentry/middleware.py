@@ -1,7 +1,8 @@
-from django.utils.lru_cache import lru_cache
+from functools import lru_cache
+
 from django.contrib.staticfiles import finders
 from whitenoise.middleware import WhiteNoiseMiddleware
-from whitenoise.utils import IsDirectoryError
+from whitenoise.responders import IsDirectoryError
 
 from gentry import settings
 from gentry.utils import set_detected_url_root
@@ -9,7 +10,7 @@ from gentry.utils import set_detected_url_root
 
 def url_root_middleware(get_response):
     def middleware(request):
-        set_detected_url_root('{scheme}://{host}'.format(scheme=request.scheme, host=request.get_host()))
+        set_detected_url_root(f'{request.scheme}://{request.get_host()}')
         return get_response(request)
 
     return middleware
@@ -18,7 +19,7 @@ def url_root_middleware(get_response):
 class GentryWhiteNoiseMiddleware(WhiteNoiseMiddleware):
     def find_file(self, url):
         if url.startswith(self.static_prefix):
-            path = finders.find(url[len(self.static_prefix):])
+            path = finders.find(url[len(self.static_prefix) :])
             if path:
                 try:
                     return self.get_static_file(path, url)

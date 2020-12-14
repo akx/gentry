@@ -5,10 +5,10 @@ import requests_mock
 from django.core import mail
 from django.core.management import call_command
 from django.utils.crypto import get_random_string
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 from gore.models import Event
-from gore.tests.conftest import project, raven_with_project   # noqa: F401
+from gore.tests.conftest import project, raven_with_project  # noqa: F401
 from gore.tests.data import exc_payload
 from gotify.models import SlackNotifier
 from gotify.models.email_notifier import EmailNotifier
@@ -31,7 +31,7 @@ def test_slack_notifier(project, settings):  # noqa: F811
     settings.GOTIFY_IMMEDIATE = False
     sn = SlackNotifier.objects.create(
         webhook_url='http://example.com',
-        message_header_suffix=get_random_string(),
+        message_header_suffix=get_random_string(12),
     )
     sn.projects.add(project)
     event = Event.objects.create_from_raven(project_id=project.id, body=json.loads(exc_payload))
@@ -41,7 +41,7 @@ def test_slack_notifier(project, settings):  # noqa: F811
     assert m.called
     req = m.request_history[0]
     assert req.method == 'POST'
-    payload = json.loads(force_text(req.body))
+    payload = json.loads(force_str(req.body))
     assert event.message in payload['text']
     assert event.project.name in payload['text']
     assert sn.message_header_suffix in payload['text']

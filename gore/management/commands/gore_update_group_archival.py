@@ -8,4 +8,4 @@ class Command(BaseCommand):
     def handle(self, **options):
         with transaction.atomic():
             n_groups_updated = update_all_group_archival()
-        self.stdout.write('{n} groups updated.'.format(n=n_groups_updated))
+        self.stdout.write(f'{n_groups_updated} groups updated.')

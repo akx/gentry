@@ -1,7 +1,7 @@
 import hashlib
 import re
 
-from django.utils.encoding import force_bytes, force_text
+from django.utils.encoding import force_bytes, force_str
 
 from gore.models import EventGroup, Project
 
@@ -10,22 +10,24 @@ MYSQL_DUPLICATE_RE = re.compile("Duplicate entry '(.+?)' for key")
 
 
 def clean_group_hash_component(s):
-    s = force_text(s or '')
+    s = force_str(s or '')
     s = PYTHON_ADDRESS_RE.sub('x', s)  # Clean out `at 0xFFFFF`(i.e. Python object addresses)
     s = MYSQL_DUPLICATE_RE.sub('x', s)  # Clean out MySQL's duplicate keys "Duplicate entry '1-3-183' for key ..."
     return s
 
 
 def compute_group_hash(event):
-    return hashlib.sha256(b'\x00'.join(
-        force_bytes(clean_group_hash_component(s))
-        for s in (
-            event.type,
-            event.message,
-            event.culprit,
-            event.level,
+    return hashlib.sha256(
+        b'\x00'.join(
+            force_bytes(clean_group_hash_component(s))
+            for s in (
+                event.type,
+                event.message,
+                event.culprit,
+                event.level,
+            )
         )
-    )).hexdigest()
+    ).hexdigest()
 
 
 def group_events(project, events):
@@ -44,7 +46,7 @@ def group_events(project, events):
 
 def group_event(project, event, group_cache=None):
     group_hash = compute_group_hash(event)
-    group = (group_cache.get(group_hash) if group_cache is not None else None)
+    group = group_cache.get(group_hash) if group_cache is not None else None
     if not group:
         group, created = EventGroup.objects.get_or_create(
             project_id=project.id,

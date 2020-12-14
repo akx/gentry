@@ -1,7 +1,8 @@
-from django.conf.urls import include, url
+from django.conf.urls import include
+from django.urls import path
+from lepo.decorators import csrf_exempt
 
 from gore.api.router import make_router
-from lepo.decorators import csrf_exempt
 
 router = make_router()
 urls = router.get_urls(
@@ -10,5 +11,5 @@ urls = router.get_urls(
 )
 
 urlpatterns = [
-    url(r'^api/', include(urls)),
+    path('api/', include(urls)),
 ]

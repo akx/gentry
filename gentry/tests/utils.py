@@ -16,12 +16,14 @@ class MockTransport(Transport):
             content_type=headers['Content-Type'],
             **{'HTTP_%s' % name.upper().replace('-', '_'): value for (name, value) in headers.items()},
         )
-        self.response_list.append({
-            'url': url,
-            'data': data,
-            'headers': headers,
-            'response': response,
-        })
+        self.response_list.append(
+            {
+                'url': url,
+                'data': data,
+                'headers': headers,
+                'response': response,
+            }
+        )
         return response
 
 
