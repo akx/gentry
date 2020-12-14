@@ -3,5 +3,5 @@ from django.urls import path
 from gontend.views import dashboard
 
 urlpatterns = [
-    path('', dashboard),
+    path('', dashboard, name='dashboard'),
 ]
