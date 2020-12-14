@@ -15,7 +15,7 @@ def test_events_api(project, admin_client):
     assert event_list[0]['id'] == events[-1].id
 
     for event in events:
-        detail_resp = json.loads(force_str(admin_client.get('/api/event/{id}/'.format(id=event.id)).content))
+        detail_resp = json.loads(force_str(admin_client.get(f'/api/event/{event.id}/').content))
         assert detail_resp['id'] == event.id
         assert isinstance(detail_resp['data'], dict)
         assert set(detail_resp.keys()) >= set(event_list[0].keys())

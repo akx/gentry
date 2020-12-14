@@ -10,4 +10,4 @@ def send_notifications(event):
         try:
             notifier.send(event)
         except:
-            logger.warning('%s failed for %s' % (notifier, event), exc_info=True)
+            logger.warning(f'{notifier} failed for {event}', exc_info=True)

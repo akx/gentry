@@ -25,4 +25,4 @@ class Command(BaseCommand):
                 try:
                     notifier.send(event=event)
                 except Exception as exc:  # pragma: no cover
-                    self.stderr.write('%s failed for %s: %s' % (notifier, event, exc))
+                    self.stderr.write(f'{notifier} failed for {event}: {exc}')

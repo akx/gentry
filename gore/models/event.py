@@ -49,11 +49,11 @@ class Event(models.Model):
     objects = EventManager()
 
     def __str__(self):
-        return '[%s] - %s' % (self.project, self.message)
+        return f'[{self.project}] - {self.message}'
 
     @property
     def data_dict(self):
         return json.loads(self.data)
 
     def get_display_url(self):
-        return make_absolute_uri('/#/event/{id}'.format(id=self.id))
+        return make_absolute_uri(f'/#/event/{self.id}')

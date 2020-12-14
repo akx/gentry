@@ -7,7 +7,7 @@ class Notifier(PolymorphicModel):
     enabled = models.BooleanField(default=True)
 
     def __str__(self):
-        return '%s for %s' % (
+        return '{} for {}'.format(
             self.get_real_instance_class()._meta.verbose_name.title(),
             ', '.join(self.projects.values_list('name', flat=True)),
         )

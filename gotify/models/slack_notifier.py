@@ -33,7 +33,7 @@ class SlackNotifier(Notifier):
         if event.culprit:
             text += '\n:point_right: %s' % event.culprit
         if emoji:
-            text = '%s %s' % (emoji, text)
+            text = f'{emoji} {text}'
 
         payload = {'text': text}
         resp = requests.post(
