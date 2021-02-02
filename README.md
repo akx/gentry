@@ -4,9 +4,7 @@
 <a href="https://codecov.io/gh/akx/gentry">
   <img src="https://codecov.io/gh/akx/gentry/branch/master/graph/badge.svg" alt="Codecov" />
 </a>
-<a href="https://travis-ci.org/akx/gentry">
-  <img src="https://travis-ci.org/akx/gentry.svg?branch=master" alt="Travis" />
-</a>
+<img src="https://github.com/akx/gentry/workflows/Build/badge.svg" alt="GHA" />
 <img src="https://img.shields.io/github/license/akx/gentry.svg" alt="License" />
 </div>
 
