@@ -1,6 +1,6 @@
 django-environ
 django-polymorphic
-django~=3.0
+django~=3.1
 lepo~=0.1.0
 marshmallow<3.0  # via lepo (doesn't have it properly pinned)
 python-dateutil
