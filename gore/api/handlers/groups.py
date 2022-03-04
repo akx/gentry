@@ -42,7 +42,7 @@ def get_group_list(
         'total': total,
         'offset': offset,
         'limit': limit,
-        'groups': list(EventGroupListSchema().dump(qs, many=True).data),
+        'groups': list(EventGroupListSchema().dump(qs, many=True)),
     }
 
 
@@ -65,10 +65,10 @@ def _get_group_if_allowed(request, id, for_detail=False):
 
 def get_group_detail(request, id):
     group = _get_group_if_allowed(request, id, for_detail=True)
-    return EventGroupDetailSchema().dump(group).data
+    return EventGroupDetailSchema().dump(group)
 
 
 def archive_group(request, id):
     group = _get_group_if_allowed(request, id)
     group.archive()
-    return EventGroupDetailSchema().dump(group).data
+    return EventGroupDetailSchema().dump(group)

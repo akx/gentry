@@ -6,6 +6,7 @@ from django.utils.encoding import force_str
 
 @pytest.mark.django_db
 def test_projects_api(project, admin_client):
+    assert project.dsn
     list_resp = json.loads(force_str(admin_client.get('/api/projects/').content))
     assert len(list_resp) == 1
     proj_obj = list_resp[0]
