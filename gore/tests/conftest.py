@@ -1,6 +1,6 @@
 import pytest
 
-from gentry.tests.utils import _get_mock_raven_client
+from gore.tests.mock_raven import _get_mock_raven_client
 from gore.models import Project
 
 
@@ -19,7 +19,7 @@ def project():
 @pytest.fixture()
 def raven_with_project(client, project):
     raven_client = _get_mock_raven_client(
-        dsn='http://{}:{}@localhost/{}'.format('aaa', 'bbb', project.id),
+        dsn=project.dsn,
         django_client=client,
     )
     raven_client.project = project
