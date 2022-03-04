@@ -24,6 +24,17 @@ paths:
       responses:
         201:
           description: "the event was stored"
+  "/{project}/envelope/":
+    parameters:
+    - name: project
+      in: path
+      type: string
+      required: true
+    post:
+      operationId: "storeEnvelope"
+      responses:
+        201:
+          description: "the envelope was stored"
   "/projects/":
     get:
       operationId: "getProjectList"

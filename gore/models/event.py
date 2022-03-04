@@ -1,8 +1,8 @@
 import json
+from typing import Dict, Any, Optional
 
 from django.db import models
 from django.utils import timezone
-from django.utils.encoding import force_str
 from django.utils.timezone import now
 
 from gentry.utils import make_absolute_uri
@@ -16,16 +16,33 @@ def determine_type(body):
         type = 'message'  # May be overridden by loggeriness
     if 'logger' in body:
         type = 'log'
+    if body.get('level') == "info":
+        type = 'message'
     return type
 
 
+def get_message_from_body(body: Dict[str, Any]) -> Optional[str]:
+    if 'message' in body:
+        return str(body['message'])
+
+    if 'exception' in body:  # sentry-sdk
+        for exception_info in body['exception'].get('values', []):
+            type = exception_info.get('type', 'Error')
+            value = exception_info.get('value', '')
+            return f'{type}: {value}'
+
+    return None
+
+
 class EventManager(models.Manager):
-    def create_from_raven(self, project_id, body, timestamp=None):
+    def create_from_raven(self, project_id, body: Dict[str, Any], timestamp=None):
+        message = get_message_from_body(body) or ''
+        culprit = str(body.get('culprit', ''))
         return self.create(
             data=json.dumps(body),
             event_id=body['event_id'],
-            message=force_str(body.get('message', ''))[:128],
-            culprit=force_str(body.get('culprit', ''))[:128],
+            message=message[:128],
+            culprit=culprit[:128],
             level=body.get('level', ''),
             project_id=project_id,
             timestamp=(timestamp or now()),

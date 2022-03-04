@@ -3,7 +3,7 @@ import os
 from lepo.router import Router
 from lepo.validate import validate_router
 
-from .handlers import events, groups, projects, store
+from .handlers import events, groups, projects, store, envelope
 
 
 def make_router():
@@ -12,5 +12,6 @@ def make_router():
     router.add_handlers(groups)
     router.add_handlers(projects)
     router.add_handlers(store)
+    router.add_handlers(envelope)
     validate_router(router)
     return router

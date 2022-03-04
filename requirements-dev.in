@@ -7,3 +7,4 @@ pytest-cov
 pytest-django
 raven
 requests_mock
+sentry-sdk

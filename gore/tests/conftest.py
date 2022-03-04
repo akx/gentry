@@ -1,6 +1,7 @@
 import pytest
+from django.utils.crypto import get_random_string
 
-from gentry.tests.utils import _get_mock_raven_client
+from gore.tests.mock_raven import _get_mock_raven_client
 from gore.models import Project
 
 
@@ -12,14 +13,14 @@ def projectless_raven(client):
 @pytest.fixture()
 def project():
     project = Project.objects.create(slug='dummy', name='dummy')
-    project.key_set.create(key='aaa', secret='bbb')
+    project.key_set.create(key=get_random_string(8), secret=get_random_string(8))
     return project
 
 
 @pytest.fixture()
 def raven_with_project(client, project):
     raven_client = _get_mock_raven_client(
-        dsn='http://{}:{}@localhost/{}'.format('aaa', 'bbb', project.id),
+        dsn=project.dsn,
         django_client=client,
     )
     raven_client.project = project
