@@ -1,15 +1,12 @@
 import json
 import logging
-from datetime import datetime
 
 from django.conf import settings
 from django.db import transaction
 from django.http import JsonResponse
 from django.utils.encoding import force_str
-from django.utils.timezone import make_aware
-from pytz import UTC
 
-from gore.auth import validate_auth_header
+from gore.auth import validate_auth_header, get_header_timestamp
 from gore.excs import InvalidAuth
 from gore.models import Event
 from gore.signals import event_received
@@ -27,7 +24,7 @@ def store_event(request, project):
 
     body = decode_body(request, auth_header)
     body = json.loads(force_str(body))
-    timestamp = make_aware(datetime.fromtimestamp(float(auth_header['sentry_timestamp'])), timezone=UTC)
+    timestamp = get_header_timestamp(auth_header)
     with transaction.atomic():
         event = Event.objects.create_from_raven(project_id=project, body=body, timestamp=timestamp)
     try:

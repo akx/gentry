@@ -1,3 +1,8 @@
+from datetime import datetime
+
+from django.utils.timezone import make_aware
+from pytz import UTC
+
 from gore.excs import InvalidAuth
 from gore.models import Key
 
@@ -21,3 +26,10 @@ def validate_auth_header(request, project):
     except KeyError:
         raise InvalidAuth('Missing sentry_key or sentry_secret in auth header')
     return auth_header
+
+
+def get_header_timestamp(auth_header):
+    timestamp = None
+    if 'sentry_timestamp' in auth_header:
+        timestamp = make_aware(datetime.fromtimestamp(float(auth_header['sentry_timestamp'])), timezone=UTC)
+    return timestamp
