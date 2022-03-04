@@ -37,7 +37,7 @@ def get_event_list(
         'total': total,
         'offset': offset,
         'limit': limit,
-        'events': list(EventSchema().dump(qs, many=True).data),
+        'events': list(EventSchema().dump(qs, many=True)),
     }
 
 
@@ -55,11 +55,11 @@ def _get_event_if_allowed(request, id):
 
 def get_event_detail(request, id):
     event = _get_event_if_allowed(request, id)
-    return EventDetailSchema().dump(event).data
+    return EventDetailSchema().dump(event)
 
 
 def archive_event(request, id):
     event = _get_event_if_allowed(request, id)
     event.archived = True
     event.save()
-    return EventDetailSchema().dump(event).data
+    return EventDetailSchema().dump(event)

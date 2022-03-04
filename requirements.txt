@@ -12,7 +12,7 @@ certifi==2021.10.8
     # via requests
 charset-normalizer==2.0.12
     # via requests
-django==3.2.12
+django==4.0.3
     # via
     #   -r requirements.in
     #   django-polymorphic
@@ -25,29 +25,32 @@ idna==3.3
     # via requests
 iso8601==1.0.2
     # via lepo
-jsonschema==4.4.0
+jsonschema==3.2.0
     # via lepo
-lepo==0.1.0
+lepo==0.4.0rc1
     # via -r requirements.in
-marshmallow==2.21.0
-    # via
-    #   -r requirements.in
-    #   lepo
+marshmallow==3.14.1
+    # via lepo
 pyrsistent==0.18.1
     # via jsonschema
 python-dateutil==2.8.2
     # via -r requirements.in
 pytz==2021.3
-    # via django
+    # via -r requirements.in
 pyyaml==6.0
     # via -r requirements.in
 requests==2.27.1
     # via -r requirements.in
 six==1.16.0
-    # via python-dateutil
+    # via
+    #   jsonschema
+    #   python-dateutil
 sqlparse==0.4.2
     # via django
 urllib3==1.26.8
     # via requests
 whitenoise==6.0.0
     # via -r requirements.in
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
