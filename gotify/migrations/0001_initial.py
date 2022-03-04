@@ -113,7 +113,7 @@ class Migration(migrations.Migration):
                 editable=False,
                 null=True,
                 on_delete=django.db.models.deletion.CASCADE,
-                related_name='polymorphic_gotify.notifier_set+',
+                related_name='polymorphic_%(app_label)s.%(class)s_set+',
                 to='contenttypes.ContentType',
             ),
         ),
