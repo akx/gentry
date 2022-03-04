@@ -1,7 +1,5 @@
-import base64
 import json
 import logging
-import zlib
 from datetime import datetime
 
 from django.conf import settings
@@ -15,6 +13,7 @@ from gore.auth import validate_auth_header
 from gore.excs import InvalidAuth
 from gore.models import Event
 from gore.signals import event_received
+from gore.utils.encoding import decode_body
 from gore.utils.event_grouper import group_event
 
 logger = logging.getLogger(__name__)
@@ -26,13 +25,7 @@ def store_event(request, project):
     except InvalidAuth as ia:
         return JsonResponse({'error': str(ia)}, status=401)
 
-    body = request.body
-    if request.META.get('HTTP_CONTENT_ENCODING') == 'deflate':
-        body = zlib.decompress(body)
-
-    elif auth_header.get('sentry_version') == '5':  # Support older versions of Raven
-        body = zlib.decompress(base64.b64decode(body)).decode('utf8')
-
+    body = decode_body(request, auth_header)
     body = json.loads(force_str(body))
     timestamp = make_aware(datetime.fromtimestamp(float(auth_header['sentry_timestamp'])), timezone=UTC)
     with transaction.atomic():
