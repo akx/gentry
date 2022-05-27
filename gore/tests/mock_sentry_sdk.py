@@ -21,7 +21,7 @@ class MockTransport(HttpTransport):
             path=urlparse(url).path,
             data=body,
             content_type=headers['Content-Type'],
-            **{'HTTP_%s' % name.upper().replace('-', '_'): value for (name, value) in headers.items()},
+            **{f"HTTP_{name.upper().replace('-', '_')}": value for (name, value) in headers.items()},
         )
         self.response_queue.put((request_info, response))
         return response

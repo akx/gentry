@@ -17,4 +17,4 @@ class Project(models.Model):
         key = self.key_set.first()
         if not key:
             return None
-        return make_absolute_uri('/%s' % self.id).replace('://', f'://{key.key}:{key.secret}@')
+        return make_absolute_uri(f'/{self.id}').replace('://', f'://{key.key}:{key.secret}@')

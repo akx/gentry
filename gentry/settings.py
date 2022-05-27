@@ -68,7 +68,7 @@ TEMPLATES = [
 ]
 
 DATABASES = {
-    'default': env.db_url('DATABASE_URL', default='sqlite:///%s' % os.path.join(BASE_DIR, 'db.sqlite3')),
+    'default': env.db_url('DATABASE_URL', default=f"sqlite:///{os.path.join(BASE_DIR, 'db.sqlite3')}"),
 }
 
 AUTH_PASSWORD_VALIDATORS = [

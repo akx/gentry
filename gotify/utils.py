@@ -24,10 +24,10 @@ def parse_relative_delta(s):
     for atom in re.split(r'[,\s]+', s):
         atom_m = re.match(r'(\d+)\s*(.+)', atom)
         if not atom_m:
-            raise ValueError('can not parse time atom %s' % atom_m)
+            raise ValueError(f'can not parse time atom {atom_m}')
         qty, unit = atom_m.groups()
         if unit not in unit_to_relativedelta_kwarg:
-            raise KeyError('unknown unit %s' % unit)
+            raise KeyError(f'unknown unit {unit}')
         kwargs[unit_to_relativedelta_kwarg[unit]] += float(qty)
 
     return relativedelta(**kwargs)
@@ -36,7 +36,7 @@ def parse_relative_delta(s):
 def format_timestamp(timestamp):
     if timestamp.date() != now().date():
         return timestamp.strftime('%Y-%m-%d %H:%M:%S')
-    return '{} ago ({})'.format(timesince(timestamp), timestamp.strftime('%H:%M:%S'))
+    return f"{timesince(timestamp)} ago ({timestamp.strftime('%H:%M:%S')})"
 
 
 def is_valid_regex(regex):

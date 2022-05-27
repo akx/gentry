@@ -15,7 +15,7 @@ def test_groups_api(project, admin_client):
     group_list = list_resp['groups']
     assert len(group_list) == 1
     assert group_list[0]['n_events'] == len(events)
-    detail_resp = json.loads(force_str(admin_client.get('/api/group/{id}/'.format(id=group_list[0]['id'])).content))
+    detail_resp = json.loads(force_str(admin_client.get(f"/api/group/{group_list[0]['id']}/").content))
     assert len(detail_resp['events']) == len(events)
     assert {e['id'] for e in detail_resp['events']} == {e.id for e in events}
 

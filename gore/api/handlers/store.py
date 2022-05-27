@@ -34,7 +34,7 @@ def store_event(request, project):
             group.cache_values()
             group.save()
     except:  # pragma: no cover
-        logger.warning('event with ID %s could not be grouped' % event.id, exc_info=True)
+        logger.warning(f'event with ID {event.id} could not be grouped', exc_info=True)
     try:
         event_received.send(sender=event)
     except:  # pragma: no cover

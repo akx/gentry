@@ -31,7 +31,7 @@ class SlackNotifier(Notifier):
             message=event.message,
         )
         if event.culprit:
-            text += '\n:point_right: %s' % event.culprit
+            text += f'\n:point_right: {event.culprit}'
         if emoji:
             text = f'{emoji} {text}'
 

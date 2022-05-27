@@ -12,7 +12,7 @@ class ExcludeInline(admin.TabularInline):
 
 for cls in Notifier.__subclasses__():
     admin_cls = type(
-        '%sAdmin' % cls.__name__,
+        f'{cls.__name__}Admin',
         (PolymorphicChildModelAdmin,),
         {
             'base_model': Notifier,
