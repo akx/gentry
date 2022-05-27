@@ -3,13 +3,21 @@ from django.contrib.admin.sites import AlreadyRegistered
 from polymorphic.admin import PolymorphicChildModelFilter, PolymorphicParentModelAdmin
 from polymorphic.admin.childadmin import PolymorphicChildModelAdmin
 
-from .models import Notifier
+from .models import Notifier, Exclude
+
+
+class ExcludeInline(admin.TabularInline):
+    model = Exclude
+
 
 for cls in Notifier.__subclasses__():
     admin_cls = type(
         '%sAdmin' % cls.__name__,
         (PolymorphicChildModelAdmin,),
-        {'base_model': Notifier},
+        {
+            'base_model': Notifier,
+            'inlines': [ExcludeInline],
+        },
     )
     try:
         admin.site.register(cls, admin_cls)
@@ -23,3 +31,4 @@ class NotifierParentAdmin(PolymorphicParentModelAdmin):
     child_models = Notifier.__subclasses__()
     list_filter = (PolymorphicChildModelFilter, 'enabled')
     list_display = ('__str__', 'enabled')
+    inlines = [ExcludeInline]
