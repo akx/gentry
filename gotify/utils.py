@@ -2,6 +2,7 @@ import re
 from collections import Counter
 
 from dateutil.relativedelta import relativedelta
+from django.core.exceptions import ValidationError
 from django.utils.timesince import timesince
 from django.utils.timezone import now
 
@@ -36,3 +37,11 @@ def format_timestamp(timestamp):
     if timestamp.date() != now().date():
         return timestamp.strftime('%Y-%m-%d %H:%M:%S')
     return '{} ago ({})'.format(timesince(timestamp), timestamp.strftime('%H:%M:%S'))
+
+
+def is_valid_regex(regex):
+    try:
+        re.compile(regex)
+        return regex
+    except re.error as err:
+        raise ValidationError(f"Invalid regular expression: {err}")

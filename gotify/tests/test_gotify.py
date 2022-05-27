@@ -55,3 +55,14 @@ def test_immediate_notify(raven_with_project, settings):  # noqa: F811
     en.projects.add(project)
     raven_with_project.captureMessage('hello world')
     assert len(mail.outbox) == 1
+
+
+@pytest.mark.django_db  # noqa: F811
+def test_exclude(raven_with_project, settings):  # noqa: F811
+    settings.GOTIFY_IMMEDIATE = True
+    project = raven_with_project.project  # noqa: F811
+    en = EmailNotifier.objects.create(emails='test@example.com')
+    en.excludes.create(pattern='hello')
+    en.projects.add(project)
+    raven_with_project.captureMessage('hello world')
+    assert len(mail.outbox) == 0

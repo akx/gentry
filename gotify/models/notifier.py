@@ -17,6 +17,8 @@ class Notifier(PolymorphicModel):
             return False
         if self.event_logs.filter(event=event).exists():
             return False
+        if self.is_event_excluded(event):
+            return False
         try:
             self.do_send(event)
         except Exception as exc:
@@ -27,6 +29,9 @@ class Notifier(PolymorphicModel):
 
     def do_send(self, event):
         raise NotImplementedError('...')  # pragma: no cover
+
+    def is_event_excluded(self, event):
+        return any(ex.test(event.message) for ex in self.excludes.all())
 
 
 class NotifierEventLog(models.Model):
