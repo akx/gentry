@@ -14,6 +14,9 @@ module.exports = env => ({
         use: [
           {
             loader: 'awesome-typescript-loader',
+            options: {
+              errorsAsWarnings: true,
+            },
           },
         ],
       },

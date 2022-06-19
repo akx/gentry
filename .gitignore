@@ -6,4 +6,3 @@
 .idea
 htmlcov
 node_modules
-yarn.lock
