@@ -1,4 +1,5 @@
 import json
+import time
 
 import pytest
 import requests_mock
@@ -47,13 +48,17 @@ def test_slack_notifier(project, settings):  # noqa: F811
     assert sn.message_header_suffix in payload['text']
 
 
-@pytest.mark.django_db  # noqa: F811
-def test_immediate_notify(raven_with_project, settings):  # noqa: F811
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize('thread', [True, False])
+def test_immediate_notify(raven_with_project, settings, thread):  # noqa: F811
     settings.GOTIFY_IMMEDIATE = True
+    settings.GOTIFY_IMMEDIATE_THREAD = thread
     project = raven_with_project.project  # noqa: F811
     en = EmailNotifier.objects.create(emails='test@example.com')
     en.projects.add(project)
     raven_with_project.captureMessage('hello world')
+    if thread:
+        time.sleep(1)
     assert len(mail.outbox) == 1
 
 
