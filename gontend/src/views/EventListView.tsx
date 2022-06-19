@@ -1,6 +1,6 @@
 import React from 'react';
-import {EventsResponse, Project} from '../types/api';
-import {connectListView, ListView} from './ListView';
+import { EventsResponse, Project } from '../types/api';
+import { connectListView, ListView } from './ListView';
 import EventRow from '../components/EventRow';
 import fetchJSON from '../utils/fetchJSON';
 import handleArchiveEvent from '../utils/handleArchiveEvent';
@@ -14,7 +14,7 @@ class EventListView extends ListView<EventsResponse> {
     const response = this.state.response!;
     const events = response.events;
     const newEvents = handleArchiveEvent(this.props.dispatch, events, eventId);
-    this.setState({response: {...response, events}});
+    this.setState({ response: { ...response, events } });
   };
 
   protected getTitle(): string {
@@ -22,12 +22,12 @@ class EventListView extends ListView<EventsResponse> {
   }
 
   protected renderContent(): React.ReactChild {
-    const {projects} = this.props;
-    const {response} = this.state;
+    const { projects } = this.props;
+    const { response } = this.state;
     if (!response) {
       return <div>Loading...</div>;
     }
-    const {events} = response;
+    const { events } = response;
     if (events.length === 0) {
       return <div>No events – maybe there are none or your filters exclude all of them.</div>;
     }
@@ -45,7 +45,6 @@ class EventListView extends ListView<EventsResponse> {
       </div>
     );
   }
-
 }
 
 export default connectListView(EventListView);

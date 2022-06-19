@@ -1,6 +1,6 @@
 import React from 'react';
-import {connect} from 'react-redux';
-import {Redirect, Route, Switch} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import EventDetailView from './views/EventDetailView';
 import EventListView from './views/EventListView';
 import GroupDetailView from './views/GroupDetailView';
@@ -8,8 +8,8 @@ import GroupListView from './views/GroupListView';
 import NotFoundView from './views/NotFoundView';
 import MainNav from './components/MainNav';
 
-import {AppThunkDispatch} from './types/state';
-import {updateMetadata} from './actions';
+import { AppThunkDispatch } from './types/state';
+import { updateMetadata } from './actions';
 
 interface AppProps {
   dispatch: AppThunkDispatch;
@@ -17,7 +17,7 @@ interface AppProps {
 
 class App extends React.Component<AppProps, {}> {
   public componentDidMount() {
-    const {dispatch} = this.props;
+    const { dispatch } = this.props;
     dispatch(updateMetadata());
   }
 
@@ -38,4 +38,4 @@ class App extends React.Component<AppProps, {}> {
   }
 }
 
-export default connect(null, null, null, {pure: false})(App);
+export default connect(null, null, null, { pure: false })(App);

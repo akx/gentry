@@ -1,5 +1,5 @@
-import {Metadata} from '../types/state';
-import {Reducer} from 'redux';
+import { Metadata } from '../types/state';
+import { Reducer } from 'redux';
 
 const initialMetadata: Metadata = {
   projects: [],
@@ -12,7 +12,7 @@ const metadataReducer: Reducer<Metadata> = (state = initialMetadata, action) => 
   }
   switch (action.type) {
     case 'receiveMetadata': {
-      const {projects, eventTypes} = action.payload;
+      const { projects, eventTypes } = action.payload;
       return {
         ...state,
         projects,

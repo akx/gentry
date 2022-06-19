@@ -1,4 +1,4 @@
-import {GenericMap} from './api';
+import { GenericMap } from './api';
 
 export interface EventData {
   time_spent: null;

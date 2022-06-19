@@ -1,4 +1,4 @@
-import React, {MouseEvent} from 'react';
+import React, { MouseEvent } from 'react';
 import Tophat from '../images/tophat.svg';
 
 interface Coord2D {
@@ -20,8 +20,8 @@ function spring(
   const springForceY = -k * (position.y - anchor.y);
   const springForceX = -k * (position.x - anchor.x);
 
-  const forceY = springForceY + mass * gravity.y - (damping * velocity.y);
-  const forceX = springForceX + mass * gravity.x - (damping * velocity.x);
+  const forceY = springForceY + mass * gravity.y - damping * velocity.y;
+  const forceX = springForceX + mass * gravity.x - damping * velocity.x;
 
   const accelerationY = forceY / mass;
   const accelerationX = forceX / mass;
@@ -36,9 +36,9 @@ export default class NotFoundView extends React.Component {
   private mainViewRef: React.RefObject<HTMLDivElement> = React.createRef();
   private hatRef: React.RefObject<HTMLImageElement> = React.createRef();
   private updateTimer?: number;
-  private readonly gravity: Coord2D = {x: 0, y: 10};
-  private hatCoord: Coord2D = {x: 0, y: 0};
-  private hatSpeed: Coord2D = {x: 0, y: 0};
+  private readonly gravity: Coord2D = { x: 0, y: 10 };
+  private hatCoord: Coord2D = { x: 0, y: 0 };
+  private hatSpeed: Coord2D = { x: 0, y: 0 };
   private sparks: Coord2D[] = [];
   private lastUpdate: number = 0;
   private mouseCoord?: Coord2D;
@@ -68,23 +68,14 @@ export default class NotFoundView extends React.Component {
     const delta = Math.min((now - this.lastUpdate) / 1000, 1);
     this.lastUpdate = now;
 
-    const {mouseCoord, hatCoord} = this;
+    const { mouseCoord, hatCoord } = this;
     if (!mouseCoord) {
       return;
     }
-    this.hatSpeed = spring(
-      delta * 2,
-      5,
-      10,
-      30,
-      this.gravity,
-      mouseCoord,
-      hatCoord,
-      this.hatSpeed,
-    );
+    this.hatSpeed = spring(delta * 2, 5, 10, 30, this.gravity, mouseCoord, hatCoord, this.hatSpeed);
     hatCoord.x += this.hatSpeed.x;
     hatCoord.y += this.hatSpeed.y;
-    this.sparks.push({x: hatCoord.x, y: hatCoord.y});
+    this.sparks.push({ x: hatCoord.x, y: hatCoord.y });
     while (this.sparks.length > 100) {
       this.sparks.shift();
     }
@@ -98,24 +89,25 @@ export default class NotFoundView extends React.Component {
     };
   };
 
-
   public render() {
-    return <div className="NotFound-view" ref={this.mainViewRef} onMouseMove={this.getMouseCoords}>
-      {this.sparks.map(({x, y}, i) => (
-        <div
-          className="spark"
-          key={i}
-          style={{
-            transform: `translate(${x - 8}px, ${y - 8}px) scale(${i / this.sparks.length})`,
-          }}
+    return (
+      <div className="NotFound-view" ref={this.mainViewRef} onMouseMove={this.getMouseCoords}>
+        {this.sparks.map(({ x, y }, i) => (
+          <div
+            className="spark"
+            key={i}
+            style={{
+              transform: `translate(${x - 8}px, ${y - 8}px) scale(${i / this.sparks.length})`,
+            }}
+          />
+        ))}
+        <img
+          src={Tophat}
+          width={32}
+          height={32}
+          style={{ transform: `translate(${this.hatCoord.x - 16}px, ${this.hatCoord.y - 16}px)` }}
         />
-      ))}
-      <img
-        src={Tophat}
-        width={32}
-        height={32}
-        style={{transform: `translate(${this.hatCoord.x - 16}px, ${this.hatCoord.y - 16}px)`}}
-      />
-    </div>;
+      </div>
+    );
   }
 }

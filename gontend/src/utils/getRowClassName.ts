@@ -1,4 +1,4 @@
-import {Event} from '../types/api';
+import { Event } from '../types/api';
 
 const getRowClassName = (event: Event, archived: boolean) => ({
   's-row': true,

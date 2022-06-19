@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 
-const Timestamp: React.SFC<{start: string, end?: string}> = ({start, end}) => {
+const Timestamp: React.SFC<{ start: string; end?: string }> = ({ start, end }) => {
   let startText: string;
   let endText: string;
   if (start === end || !end) {
