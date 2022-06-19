@@ -26,7 +26,7 @@
     "@types/react-router-dom": "^4.2.7",
     "classnames": "^2.2.6",
     "immutability-helper": "^2.7.1",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.21",
     "moment": "^2.22.2",
     "normalize.css": "^8.0.0",
     "react": "^16.4.1",
