@@ -4,18 +4,16 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
-    "awesome-typescript-loader": "^5.2.0",
-    "css-loader": "^0.28.11",
-    "file-loader": "^1.1.11",
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
+    "esbuild": "^0.14.46",
+    "esbuild-plugin-less": "^1.1.8",
+    "eslint": "^8.18.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "less": "^3.0.4",
-    "less-loader": "^4.1.0",
-    "prettier": "^1.13.6",
-    "style-loader": "^0.21.0",
-    "tslint": "^5.10.0",
-    "typescript": "^2.9.2",
-    "url-loader": "^1.0.1",
-    "webpack": "^4.12.1",
-    "webpack-command": "^0.3.0"
+    "prettier": "^2.7.1",
+    "typescript": "^4.7.4"
   },
   "dependencies": {
     "@types/lodash": "^4.14.110",
@@ -39,14 +37,13 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "dev": "webpack --watch --mode=development",
-    "build": "webpack --progress --mode=production",
-    "lint": "tslint src/**.ts*",
-    "prettify": "prettier --write 'src/**/*.js*'"
+    "dev": "node esbuild.mjs --watch",
+    "build": "node esbuild.mjs --minify",
+    "lint": "eslint src",
+    "prettify": "prettier --write src"
   },
   "prettier": {
     "arrowParens": "always",
-    "parser": "flow",
     "printWidth": 120,
     "singleQuote": true,
     "trailingComma": "all"

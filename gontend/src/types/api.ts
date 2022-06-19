@@ -1,8 +1,8 @@
-import {EventData} from './event-data';
+import { EventData } from './event-data';
 
 type ISO8601 = string;
 
-export interface GenericMap<T= any> {
+export interface GenericMap<T = any> {
   [key: string]: T;
 }
 

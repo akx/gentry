@@ -1,7 +1,7 @@
 import React from 'react';
-import {GroupsResponse, Project} from '../types/api';
-import {connectListView, ListView} from './ListView';
-import {archiveGroup, resetSearchParams} from '../actions';
+import { GroupsResponse, Project } from '../types/api';
+import { connectListView, ListView } from './ListView';
+import { archiveGroup, resetSearchParams } from '../actions';
 import update from 'immutability-helper';
 import GroupRow from '../components/GroupRow';
 import fetchJSON from '../utils/fetchJSON';
@@ -18,21 +18,20 @@ class GroupListView extends ListView<GroupsResponse> {
     const response = this.state.response!;
     const groups = response.groups.map((e) => {
       if (e.id === groupId) {
-        return update(e, {archived: {$set: true}});
+        return update(e, { archived: { $set: true } });
       }
       return e;
     });
-    this.setState({response: {...response, groups}});
+    this.setState({ response: { ...response, groups } });
   };
 
   protected getTitle(): string {
     return 'Groups';
   }
 
-
   protected renderFilterBar(): React.ReactChild {
-    const {searchParams, projects, eventTypes, dispatch} = this.props;
-    const {response} = this.state;
+    const { searchParams, projects, eventTypes, dispatch } = this.props;
+    const { response } = this.state;
     return (
       <FilterBar
         searchParams={searchParams}
@@ -47,12 +46,12 @@ class GroupListView extends ListView<GroupsResponse> {
   }
 
   protected renderContent(): React.ReactChild {
-    const {projects} = this.props;
-    const {response} = this.state;
+    const { projects } = this.props;
+    const { response } = this.state;
     if (!response) {
       return <div>Loading...</div>;
     }
-    const {groups} = response;
+    const { groups } = response;
     if (groups.length === 0) {
       return <div>No groups – maybe there are none or your filters exclude all of them.</div>;
     }
@@ -72,7 +71,6 @@ class GroupListView extends ListView<GroupsResponse> {
       </div>
     );
   }
-
 }
 
 export default connectListView(GroupListView);

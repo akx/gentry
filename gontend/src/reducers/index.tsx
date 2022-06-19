@@ -1,4 +1,4 @@
-import {combineReducers} from 'redux';
+import { combineReducers } from 'redux';
 import searchParamsReducer from './searchParams';
 import metadataReducer from './metadata';
 

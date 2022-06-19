@@ -5,7 +5,6 @@ interface RawDataContainerState {
   formattedData?: string;
 }
 
-
 class RawDataContainer extends React.PureComponent<{ data: any }, RawDataContainerState> {
   public state: RawDataContainerState = {};
 
@@ -14,11 +13,11 @@ class RawDataContainer extends React.PureComponent<{ data: any }, RawDataContain
   }
 
   private rerenderIfNeeded() {
-    const {data} = this.props;
+    const { data } = this.props;
     if (this.state.data !== data) {
       setTimeout(() => {
         const formattedData = JSON.stringify(data, null, 2);
-        this.setState({data, formattedData});
+        this.setState({ data, formattedData });
       }, 4);
       return true;
     }
@@ -30,7 +29,7 @@ class RawDataContainer extends React.PureComponent<{ data: any }, RawDataContain
       return <React.Fragment>Rendering...</React.Fragment>;
     }
     return (
-      <div style={{maxWidth: '90vw', maxHeight: '80vh', overflow: 'auto'}}>
+      <div style={{ maxWidth: '90vw', maxHeight: '80vh', overflow: 'auto' }}>
         <pre>{this.state.formattedData}</pre>
       </div>
     );

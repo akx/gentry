@@ -1,11 +1,11 @@
 import React from 'react';
 import debounce from 'lodash/debounce';
 import isEqual from 'lodash/isEqual';
-import {connect} from 'react-redux';
-import {resetSearchParams, updateSearchParams} from '../actions';
+import { connect } from 'react-redux';
+import { resetSearchParams, updateSearchParams } from '../actions';
 import FilterBar from '../components/FilterBar';
-import {AppThunkDispatch, SearchParams, State} from '../types/state';
-import {ListResponse, Project} from '../types/api';
+import { AppThunkDispatch, SearchParams, State } from '../types/state';
+import { ListResponse, Project } from '../types/api';
 
 interface ListState<TResponse extends ListResponse> {
   response?: TResponse;
@@ -18,8 +18,10 @@ interface ListProps<TResponse extends ListResponse> {
   eventTypes: string[];
 }
 
-abstract class ListView<TResponse extends ListResponse>
-  extends React.Component<ListProps<TResponse>, ListState<TResponse>> {
+abstract class ListView<TResponse extends ListResponse> extends React.Component<
+  ListProps<TResponse>,
+  ListState<TResponse>
+> {
   public state: ListState<TResponse> = {};
   private debouncedSearch = debounce(this.search, 500);
   private refreshInterval?: number;
@@ -42,7 +44,7 @@ abstract class ListView<TResponse extends ListResponse>
 
   private search() {
     const params = new URLSearchParams();
-    const {searchParams} = this.props;
+    const { searchParams } = this.props;
     Object.keys(searchParams).forEach((key) => {
       const value = searchParams[key];
       if (value !== null && value !== '' && value !== undefined) {
@@ -50,13 +52,13 @@ abstract class ListView<TResponse extends ListResponse>
       }
     });
     this.getData(params).then((response) => {
-      this.setState({response});
-      this.props.dispatch(updateSearchParams({offset: response.offset, limit: response.limit}));
+      this.setState({ response });
+      this.props.dispatch(updateSearchParams({ offset: response.offset, limit: response.limit }));
     });
   }
 
   protected handleChange = (key, value) => {
-    this.props.dispatch(updateSearchParams({[key]: value}));
+    this.props.dispatch(updateSearchParams({ [key]: value }));
   };
 
   protected abstract getData(params: URLSearchParams): Promise<TResponse>;
@@ -66,8 +68,8 @@ abstract class ListView<TResponse extends ListResponse>
   protected abstract getTitle(): string;
 
   protected renderFilterBar(): React.ReactChild {
-    const {searchParams, projects, eventTypes, dispatch} = this.props;
-    const {response} = this.state;
+    const { searchParams, projects, eventTypes, dispatch } = this.props;
+    const { response } = this.state;
     return (
       <FilterBar
         searchParams={searchParams}
@@ -81,11 +83,9 @@ abstract class ListView<TResponse extends ListResponse>
   }
 
   public render() {
-    const {searchParams, projects, eventTypes, dispatch} = this.props;
-    const {response} = this.state;
-    const content = (
-      response ? this.renderContent() : null
-    );
+    const { searchParams, projects, eventTypes, dispatch } = this.props;
+    const { response } = this.state;
+    const content = response ? this.renderContent() : null;
     return (
       <div className="List-view">
         <nav className="top flex flex-sb">
@@ -101,17 +101,12 @@ abstract class ListView<TResponse extends ListResponse>
   }
 }
 
-const mapListViewStateToProps = ({searchParams, metadata}: State) => ({
+const mapListViewStateToProps = ({ searchParams, metadata }: State) => ({
   searchParams,
   projects: metadata.projects,
   eventTypes: metadata.eventTypes,
 });
 
-const connectListView = (listViewClass) => connect(
-  mapListViewStateToProps,
-  null,
-  null,
-  {pure: false},
-)(listViewClass);
+const connectListView = (listViewClass) => connect(mapListViewStateToProps, null, null, { pure: false })(listViewClass);
 
-export {ListView, connectListView, mapListViewStateToProps};
+export { ListView, connectListView, mapListViewStateToProps };

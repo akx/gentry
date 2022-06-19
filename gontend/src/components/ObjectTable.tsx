@@ -1,4 +1,4 @@
-import React, {ReactChild} from 'react';
+import React, { ReactChild } from 'react';
 
 const formatVar = (v) => {
   if (typeof v === 'string') {
@@ -7,10 +7,10 @@ const formatVar = (v) => {
   return JSON.stringify(v);
 };
 const ObjectTable: React.SFC<{
-  obj: object,
-  className: string,
-  title?: ReactChild,
-}> = ({obj, className = '', title}) => {
+  obj: object;
+  className: string;
+  title?: ReactChild;
+}> = ({ obj, className = '', title }) => {
   const keys = Object.keys(obj || {}).sort();
   if (!keys.length) {
     return null;

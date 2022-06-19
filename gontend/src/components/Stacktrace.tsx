@@ -1,8 +1,8 @@
 import React from 'react';
-import {Stacktrace} from '../types/event-data';
+import { Stacktrace } from '../types/event-data';
 import ObjectTable from './ObjectTable';
 
-const StacktraceView: React.SFC<{stacktrace: Stacktrace}> = ({stacktrace}) => {
+const StacktraceView: React.SFC<{ stacktrace: Stacktrace }> = ({ stacktrace }) => {
   if (!stacktrace) {
     return null;
   }
@@ -32,11 +32,7 @@ const StacktraceView: React.SFC<{stacktrace: Stacktrace}> = ({stacktrace}) => {
               </td>
               <td>
                 <h2>
-                  {frame.filename}
-                  :
-                  {frame.lineno} (
-                  <b>{frame.function}</b>
-                  )
+                  {frame.filename}:{frame.lineno} (<b>{frame.function}</b>)
                 </h2>
                 <ObjectTable className="stacktrace-vars" obj={frame.vars} />
               </td>

@@ -1,8 +1,8 @@
 import React from 'react';
 import sortBy from 'lodash/sortBy';
 import Paginator from './Paginator';
-import {SearchParams} from '../types/state';
-import {Project} from '../types/api';
+import { SearchParams } from '../types/state';
+import { Project } from '../types/api';
 
 interface FilterBarProps {
   searchParams: SearchParams;
@@ -15,25 +15,27 @@ interface FilterBarProps {
 }
 
 const orderOptions = {
-  'latest': 'Latest First',
-  'earliest': 'Earliest First',
-  'most_common': 'Most Events First',
+  latest: 'Latest First',
+  earliest: 'Earliest First',
+  most_common: 'Most Events First',
 };
 
 const FilterBar: React.SFC<FilterBarProps> = (props) => {
-  const {searchParams, projects, eventTypes, total, handleChange, handleReset, showOrder} = props;
-  const {project, type, search, offset, limit, archived, order} = searchParams;
+  const { searchParams, projects, eventTypes, total, handleChange, handleReset, showOrder } = props;
+  const { project, type, search, offset, limit, archived, order } = searchParams;
   let orderSelect: JSX.Element | null = null;
   if (showOrder) {
     orderSelect = (
       <select
         value={order}
         onInput={(e) => handleChange('order', (e.target as HTMLSelectElement).value)}
-        style={{marginRight: '1em'}}
+        style={{ marginRight: '1em' }}
       >
-        {Object.entries(orderOptions).map(
-          ([value, text]) => (<option value={value} key={value}>{text}</option>),
-        )}
+        {Object.entries(orderOptions).map(([value, text]) => (
+          <option value={value} key={value}>
+            {text}
+          </option>
+        ))}
       </select>
     );
   }
@@ -51,10 +53,10 @@ const FilterBar: React.SFC<FilterBarProps> = (props) => {
       <select
         value={project || ''}
         onChange={(e) => handleChange('project', (e.target as HTMLSelectElement).value)}
-        style={{marginRight: '1em'}}
+        style={{ marginRight: '1em' }}
       >
         <option value="">All projects</option>
-        {sortBy(projects, 'name').map(({id, name}) => (
+        {sortBy(projects, 'name').map(({ id, name }) => (
           <option key={id} value={id}>
             {name}
           </option>
@@ -63,7 +65,7 @@ const FilterBar: React.SFC<FilterBarProps> = (props) => {
       <select
         value={type || ''}
         onInput={(e) => handleChange('type', (e.target as HTMLSelectElement).value)}
-        style={{marginRight: '1em'}}
+        style={{ marginRight: '1em' }}
       >
         <option value="">All types</option>
         {eventTypes.map((sType) => (
@@ -75,7 +77,7 @@ const FilterBar: React.SFC<FilterBarProps> = (props) => {
       <select
         value={archived || ''}
         onInput={(e) => handleChange('archived', (e.target as HTMLSelectElement).value)}
-        style={{marginRight: '1em'}}
+        style={{ marginRight: '1em' }}
       >
         <option value="">All</option>
         <option value="true">Archived</option>

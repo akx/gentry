@@ -1,5 +1,5 @@
-import {SearchParams} from '../types/state';
-import {Reducer} from 'redux';
+import { SearchParams } from '../types/state';
+import { Reducer } from 'redux';
 
 const initialSearchParams: SearchParams = {
   project: null,
@@ -14,10 +14,10 @@ const initialSearchParams: SearchParams = {
 const searchParamsReducer: Reducer<SearchParams> = (state = initialSearchParams, action) => {
   switch (action.type) {
     case 'updateSearchParams': {
-      return {...state, ...action.payload};
+      return { ...state, ...action.payload };
     }
     case 'resetSearchParams':
-      return {...initialSearchParams};
+      return { ...initialSearchParams };
     default:
       return state;
   }

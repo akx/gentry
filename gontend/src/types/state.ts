@@ -1,6 +1,6 @@
-import {Project} from './api';
-import {AnyAction} from 'redux';
-import {ThunkDispatch} from 'redux-thunk';
+import { Project } from './api';
+import { AnyAction } from 'redux';
+import { ThunkDispatch } from 'redux-thunk';
 
 export interface SearchParams {
   project: null;

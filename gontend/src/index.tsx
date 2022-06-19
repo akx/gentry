@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {HashRouter} from 'react-router-dom';
-import {Provider} from 'react-redux';
-import {applyMiddleware, compose, createStore} from 'redux';
+import { HashRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { applyMiddleware, compose, createStore } from 'redux';
 import persistState from 'redux-localstorage';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers';

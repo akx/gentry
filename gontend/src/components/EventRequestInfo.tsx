@@ -1,8 +1,8 @@
 import React from 'react';
-import {Request} from '../types/event-data';
+import { Request } from '../types/event-data';
 import ObjectTable from './ObjectTable';
 
-const EventRequestInfo: React.SFC<{ requestData: Request }> = ({requestData}) => (
+const EventRequestInfo: React.SFC<{ requestData: Request }> = ({ requestData }) => (
   <div>
     <h2>
       {requestData.method} <a href={requestData.url}>{requestData.url}</a>
