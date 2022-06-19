@@ -4,15 +4,19 @@
   "main": "index.js",
   "license": "MIT",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.28.0",
+    "@typescript-eslint/parser": "^5.28.0",
     "awesome-typescript-loader": "^5.2.0",
     "css-loader": "^0.28.11",
+    "eslint": "^8.18.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "file-loader": "^1.1.11",
     "less": "^3.0.4",
     "less-loader": "^4.1.0",
     "prettier": "^2.7.1",
     "style-loader": "^0.21.0",
-    "tslint": "^5.10.0",
-    "typescript": "^2.9.2",
+    "typescript": "^4.7.4",
     "url-loader": "^1.0.1",
     "webpack": "^4.12.1",
     "webpack-command": "^0.3.0"
@@ -41,7 +45,7 @@
   "scripts": {
     "dev": "webpack --watch --mode=development",
     "build": "webpack --progress --mode=production",
-    "lint": "tslint src/**.ts*",
+    "lint": "eslint src",
     "prettify": "prettier --write src"
   },
   "prettier": {
