@@ -8,7 +8,7 @@ attrs==21.4.0
     # via pytest
 black==22.1.0
     # via -r requirements-dev.in
-certifi==2021.10.8
+certifi==2022.12.7
     # via
     #   requests
     #   sentry-sdk
@@ -77,8 +77,6 @@ tomli==2.0.1
     #   coverage
     #   pep517
     #   pytest
-typing-extensions==4.1.1
-    # via black
 urllib3==1.26.8
     # via
     #   requests
