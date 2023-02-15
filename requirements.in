@@ -1,7 +1,7 @@
 PyYAML
 django-environ
 django-polymorphic
-django~=4.0  # TODO: needs lepo update
+django~=4.1  # TODO: needs lepo update
 lepo==0.4.0rc1
 python-dateutil
 pytz
