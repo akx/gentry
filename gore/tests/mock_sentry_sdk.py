@@ -12,7 +12,7 @@ class MockTransport(HttpTransport):
     response_queue: Queue
     django_client: django.test.Client
 
-    def _make_pool(self, parsed_dsn, http_proxy, https_proxy, ca_certs):
+    def _make_pool(self, *args, **kwargs):
         return self  # this is weird, but allows us to use this same object for `request`
 
     def request(self, method, url, body, headers):
