@@ -6,7 +6,7 @@ from django.db import transaction
 from django.http import JsonResponse
 from django.utils.encoding import force_str
 
-from gore.auth import validate_auth_header, get_header_timestamp
+from gore.auth import get_header_timestamp, validate_auth_header
 from gore.excs import InvalidAuth
 from gore.models import Event
 from gore.signals import event_received

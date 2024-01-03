@@ -3,7 +3,7 @@ from django.contrib.admin.sites import AlreadyRegistered
 from polymorphic.admin import PolymorphicChildModelFilter, PolymorphicParentModelAdmin
 from polymorphic.admin.childadmin import PolymorphicChildModelAdmin
 
-from .models import Notifier, Exclude
+from .models import Exclude, Notifier
 
 
 class ExcludeInline(admin.TabularInline):

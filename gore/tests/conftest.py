@@ -1,8 +1,8 @@
 import pytest
 from django.utils.crypto import get_random_string
 
-from gore.tests.mock_raven import _get_mock_raven_client
 from gore.models import Project
+from gore.tests.mock_raven import _get_mock_raven_client
 
 
 @pytest.fixture()
