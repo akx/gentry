@@ -1,3 +1,25 @@
 [tool.black]
 line-length = 120
 skip-string-normalization = true
+
+[tool.ruff]
+exclude = [
+    "migrations",
+    "*node_modules*",
+]
+
+line-length = 120
+extend-select = [
+    "C9",
+    "E",
+    "F",
+    "I",
+    "W",
+]
+ignore = ["E722"]
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "gentry.settings"

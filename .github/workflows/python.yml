@@ -18,6 +18,6 @@ jobs:
           python-version: '3.8'
           cache: pip
       - run: pip install -r requirements.txt -r requirements-dev.txt
-      - run: flake8
+      - run: ruff check .
       - run: py.test -vvv --cov .
       - uses: codecov/codecov-action@v3
