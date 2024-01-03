@@ -1,5 +1,7 @@
 import logging
+import random
 
+from django.conf import settings
 from django.http import JsonResponse
 
 from gore.auth import validate_auth_header
@@ -15,6 +17,9 @@ def store_envelope(request, project):
         auth_header = validate_auth_header(request, project)
     except InvalidAuth as ia:
         return JsonResponse({'error': str(ia)}, status=401)
+
+    if random.random() < settings.GORE_STORE_ENVELOPE_PROBABILITY:
+        return JsonResponse({"message": "dropped"}, status=200)
 
     body = decode_body(request, auth_header)
     envelope = Envelope(project_id=project, raw_data=body)
