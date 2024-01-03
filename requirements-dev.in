@@ -1,10 +1,9 @@
 black
-flake8
-isort
 pip-tools
 pytest
 pytest-cov
 pytest-django
 raven
 requests_mock
+ruff
 sentry-sdk

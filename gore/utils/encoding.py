@@ -1,7 +1,7 @@
 import base64
 import gzip
 import zlib
-from typing import Dict, Any
+from typing import Any, Dict
 
 
 def decode_body(request, auth_header: Dict[str, Any]):

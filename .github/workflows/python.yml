@@ -10,20 +10,14 @@ jobs:
   Build:
     env:
       DEBUG: "1"
-    runs-on: '${{ matrix.os }}'
-    strategy:
-      matrix:
-        os:
-          - ubuntu-20.04
-        python-version:
-          - '3.8'
+    runs-on: ubuntu-latest
     steps:
-      - name: 'Set up Python ${{ matrix.python-version }}'
-        uses: actions/setup-python@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: '${{ matrix.python-version }}'
-      - uses: actions/checkout@v2
+          python-version: '3.8'
+          cache: pip
       - run: pip install -r requirements.txt -r requirements-dev.txt
-      - run: flake8
+      - run: ruff check .
       - run: py.test -vvv --cov .
-      - run: 'bash <(curl -s https://codecov.io/bash)'
+      - uses: codecov/codecov-action@v3

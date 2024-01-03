@@ -6,7 +6,6 @@ import gotify.utils
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('gotify', '0002_poly_meta'),
     ]
@@ -17,7 +16,12 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('pattern', models.CharField(max_length=255, validators=[gotify.utils.is_valid_regex])),
-                ('notifier', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='excludes', to='gotify.notifier')),
+                (
+                    'notifier',
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, related_name='excludes', to='gotify.notifier'
+                    ),
+                ),
             ],
         ),
     ]
