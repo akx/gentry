@@ -24,6 +24,7 @@ LOGIN_URL = '/admin/login/'
 URL_BASE = env.str('URL_BASE', default=('http://localhost:8000' if DEBUG else None))
 GOTIFY_IMMEDIATE = env.bool('GOTIFY_IMMEDIATE', default=False)
 GOTIFY_IMMEDIATE_THREAD = env.bool('GOTIFY_IMMEDIATE_THREAD', default=False)
+GORE_STORE_ENVELOPE_PROBABILITY = env.float('GORE_STORE_ENVELOPE_PROBABILITY', default=1.0)
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 INSTALLED_APPS = [
