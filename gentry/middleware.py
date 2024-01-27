@@ -4,7 +4,6 @@ from django.contrib.staticfiles import finders
 from whitenoise.middleware import WhiteNoiseMiddleware
 from whitenoise.responders import IsDirectoryError
 
-from gentry import settings
 from gentry.utils import set_detected_url_root
 
 
@@ -29,12 +28,3 @@ class GentryWhiteNoiseMiddleware(WhiteNoiseMiddleware):
     @lru_cache()
     def cached_find_file(self, url):
         return self.find_file(url)
-
-    def process_request(self, request):
-        if settings.DEBUG:
-            static_file = self.find_file(request.path_info)
-        else:
-            static_file = self.cached_find_file(request.path_info)
-
-        if static_file is not None:
-            return self.serve(static_file, request)
