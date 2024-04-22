@@ -1,5 +1,4 @@
 black
-pip-tools
 pytest
 pytest-cov
 pytest-django
