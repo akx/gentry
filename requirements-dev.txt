@@ -6,7 +6,7 @@ certifi==2024.2.2
     #   sentry-sdk
 charset-normalizer==3.3.2
     # via requests
-coverage==7.4.4
+coverage[toml]==7.4.4
     # via pytest-cov
 idna==3.7
     # via requests
@@ -18,17 +18,24 @@ pluggy==1.5.0
     # via pytest
 pytest==8.1.1
     # via
+    #   -r requirements-dev.in
     #   pytest-cov
     #   pytest-django
 pytest-cov==5.0.0
+    # via -r requirements-dev.in
 pytest-django==4.8.0
+    # via -r requirements-dev.in
 raven==6.10.0
-requests==2.31.0
+    # via -r requirements-dev.in
+requests==2.32.2
     # via requests-mock
 requests-mock==1.12.1
+    # via -r requirements-dev.in
 ruff==0.4.1
+    # via -r requirements-dev.in
 sentry-sdk==1.45.0
-urllib3==2.2.1
+    # via -r requirements-dev.in
+urllib3==2.2.2
     # via
     #   requests
     #   sentry-sdk
