@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import json
 from typing import Any, Dict, Optional
 
@@ -6,6 +8,7 @@ from django.utils import timezone
 from django.utils.timezone import now
 
 from gentry.utils import make_absolute_uri
+from gore.models import Envelope
 
 
 def determine_type(body):
@@ -35,7 +38,14 @@ def get_message_from_body(body: Dict[str, Any]) -> Optional[str]:
 
 
 class EventManager(models.Manager):
-    def create_from_raven(self, project_id, body: Dict[str, Any], timestamp=None):
+    def create_from_raven(
+        self,
+        *,
+        project_id,
+        body: Dict[str, Any],
+        timestamp=None,
+        envelope: Envelope | None = None,
+    ):
         message = get_message_from_body(body) or ''
         culprit = str(body.get('culprit', ''))
         return self.create(
@@ -47,6 +57,7 @@ class EventManager(models.Manager):
             project_id=project_id,
             timestamp=(timestamp or now()),
             type=determine_type(body),
+            envelope=envelope,
         )
 
 
@@ -62,6 +73,7 @@ class Event(models.Model):
     data = models.TextField(blank=True, editable=False)
     archived = models.BooleanField(default=False, db_index=True)
     group = models.ForeignKey('gore.EventGroup', blank=True, null=True, on_delete=models.CASCADE)
+    envelope = models.ForeignKey('gore.Envelope', blank=True, null=True, on_delete=models.SET_NULL)
 
     objects = EventManager()
 
