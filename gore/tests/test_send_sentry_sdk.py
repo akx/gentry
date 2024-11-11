@@ -3,7 +3,6 @@ import time
 import pytest
 import sentry_sdk
 from django.utils.crypto import get_random_string
-from sentry_sdk import Hub
 
 from gore.tests.mock_sentry_sdk import _get_mock_sentry_sdk_client
 
@@ -15,8 +14,10 @@ def configure_sentry_sdk(request, project, client):
         django_client=client,
     )
     sentry_sdk_client.project = project
-    Hub.current.bind_client(sentry_sdk_client)
-    request.addfinalizer(lambda: Hub.current.bind_client(None))
+    scope = sentry_sdk.get_global_scope()
+    old_client = scope.get_client()
+    scope.set_client(sentry_sdk_client)
+    request.addfinalizer(lambda: scope.set_client(old_client))
     return sentry_sdk_client
 
 
@@ -25,23 +26,27 @@ def test_message_capture(configure_sentry_sdk, project):
     message = get_random_string(15, 'iaeoi  ')
     sentry_sdk.capture_message(message)
     request, response = configure_sentry_sdk.response_queue.get()
-    assert response.status_code == 201
+    assert response.status_code in (200, 201)
     event = project.event_set.first()
     assert event.message == message
     assert event.type == 'message'
 
 
 @pytest.mark.django_db(transaction=True)
-def test_exception_capture(configure_sentry_sdk, project):
+@pytest.mark.parametrize("save_envelope", (False, True), ids=("drop", "save"))
+def test_exception_capture(configure_sentry_sdk, project, settings, save_envelope):
+    settings.GORE_STORE_ENVELOPE_PROBABILITY = 1.0 if save_envelope else 0.0
     message = get_random_string(15, 'iaeoi  ')
     try:
         raise ValueError(message)
     except Exception:
         sentry_sdk.capture_exception()
-    configure_sentry_sdk.response_queue.get()
+    req, res = configure_sentry_sdk.response_queue.get()
+    assert "stored 1 events" in str(res.content)
     event = project.event_set.first()
     assert event.message.endswith(message)
     assert event.type == 'exception'
+    assert (event.envelope is not None) == save_envelope
 
 
 # @pytest.mark.django_db(transaction=True)

@@ -10,10 +10,13 @@ charset-normalizer==3.3.2
     # via requests
 django==4.2.11
     # via
+    #   -r requirements.in
     #   django-polymorphic
     #   lepo
 django-environ==0.11.2
+    # via -r requirements.in
 django-polymorphic==3.1.0
+    # via -r requirements.in
 idna==3.7
     # via requests
 iso8601==2.1.0
@@ -21,6 +24,7 @@ iso8601==2.1.0
 jsonschema==3.2.0
     # via lepo
 lepo==0.4.0rc1
+    # via -r requirements.in
 marshmallow==3.21.1
     # via lepo
 packaging==24.0
@@ -28,9 +32,13 @@ packaging==24.0
 pyrsistent==0.20.0
     # via jsonschema
 python-dateutil==2.9.0.post0
+    # via -r requirements.in
 pytz==2024.1
+    # via -r requirements.in
 pyyaml==6.0.1
+    # via -r requirements.in
 requests==2.31.0
+    # via -r requirements.in
 setuptools==69.5.1
     # via jsonschema
 six==1.16.0
@@ -42,3 +50,4 @@ sqlparse==0.5.0
 urllib3==2.2.1
     # via requests
 whitenoise==6.6.0
+    # via -r requirements.in
