@@ -1,5 +1,5 @@
 import json
-from typing import Any, List
+from typing import Any, Iterable
 
 from django.db import models
 from django.utils import timezone
@@ -11,7 +11,9 @@ class Envelope(models.Model):
     date_added = models.DateTimeField(default=timezone.now, editable=False)
     raw_data = models.TextField(blank=True, editable=False)
 
-    def parse(self) -> List[Any]:
+    def parse(self) -> Iterable[Any]:
         # According to sentry-sdk source, envelopes are basically JSONL, with the first line being a header
-        body_lines = force_str(self.raw_data).splitlines()
-        return [json.loads(line.strip()) for line in body_lines if line.strip()]
+        for line in force_str(self.raw_data).splitlines():
+            line = line.strip()
+            if line:
+                yield json.loads(line)
