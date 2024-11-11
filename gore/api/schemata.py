@@ -1,63 +1,70 @@
-from marshmallow import Schema, fields
+import datetime
+from typing import List, Optional
+
+import pydantic
+from ninja import Schema
 
 
 class ProjectSchema(Schema):
-    class Meta:
-        fields = ('id', 'slug', 'name')
+    id: int
+    slug: str
+    name: str
 
 
 class EventGroupSubSchema(Schema):
-    class Meta:
-        fields = (
-            'id',
-            'group_hash',
-            'first_event_time',
-            'last_event_time',
-            'project_id',
-            'n_events',
-            'archived',
-        )
+    id: int
+    group_hash: str
+    first_event_time: datetime.datetime
+    last_event_time: datetime.datetime
+    project_id: int
+    n_events: int
+    archived: bool
 
 
 class EventSchema(Schema):
-    group = fields.Nested(EventGroupSubSchema)
-
-    class Meta:
-        fields = (
-            'id',
-            'message',
-            'culprit',
-            'level',
-            'type',
-            'timestamp',
-            'project_id',
-            'archived',
-            'group',
-        )
+    id: int
+    message: str
+    culprit: str
+    level: str
+    type: str
+    timestamp: datetime.datetime
+    project_id: int
+    archived: bool
+    group: Optional[EventGroupSubSchema]
 
 
 class EventGroupListSchema(EventGroupSubSchema):
-    first_event = fields.Nested(EventSchema, exclude=('group',))
-
-    class Meta:
-        fields = EventGroupSubSchema.Meta.fields + ('first_event',)
+    first_event: Optional[EventSchema]
 
 
 class EventGroupDetailSchema(EventGroupListSchema):
-    events = fields.Nested(EventSchema, exclude=('group',), many=True)
-    project = fields.Nested(ProjectSchema)
-
-    class Meta:
-        fields = EventGroupListSchema.Meta.fields + ('events', 'project')
+    events: List[EventSchema]
+    project: ProjectSchema
 
 
 class EventDetailSchema(Schema):
-    project = fields.Nested(ProjectSchema)
-    group = fields.Nested(EventGroupSubSchema)
-    data = fields.Method(serialize='get_data')
+    id: int
+    message: str
+    culprit: str
+    level: str
+    type: str
+    timestamp: datetime.datetime
+    project_id: int
+    archived: bool
+    group: Optional[EventGroupSubSchema]
+    project: ProjectSchema
+    data: dict = pydantic.Field(alias='data_dict')
 
-    class Meta:
-        fields = EventSchema.Meta.fields + ('project', 'data')
 
-    def get_data(self, instance):
-        return instance.data_dict
+class EventsListResponse(Schema):
+    total: int
+    offset: int
+    limit: int
+    events: List[EventSchema]
+
+
+class GroupsListResponse(Schema):
+    total: int
+    offset: int
+    limit: int
+    groups: List[EventGroupListSchema]
