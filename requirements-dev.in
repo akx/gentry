@@ -4,4 +4,4 @@ pytest-django
 raven
 requests_mock
 ruff
-sentry-sdk
+sentry-sdk>=2.0
